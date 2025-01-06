@@ -1,25 +1,25 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { UserAuth } from '../components/context/AuthContext';
+import { UserAuth } from '../../components/context/AuthContext';
 
-const Register = () => {
+const LoginGuard = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState("");
 
-    const {session, registerNewUser} = UserAuth();
+    const {session, login} = UserAuth();
     const navigate = useNavigate();
     console.log(session);   
 
-    const handleRegister = async (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault()
         setLoading(true)
         try {
-            const result = await registerNewUser(email,password)   
+            const result = await login(email,password)   
 
             if(result.success) {
-                navigate('/homepage')
+                navigate('/guard')
             };
         } catch (error) {
             setError("an error occured", error);
@@ -30,10 +30,10 @@ const Register = () => {
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <form onSubmit={handleRegister} className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
-                <h2 className="text-2xl font-bold mb-4 text-gray-800">Register</h2>
+            <form onSubmit={handleLogin} className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
+                <h2 className="text-2xl font-bold mb-4 text-gray-800">Login</h2>
                 <p className="text-sm text-gray-600 mb-6">
-                Sudah punya akun? <Link to="/Login" className="text-blue-500 hover:underline">Login</Link>
+                Belum Punya akun? <Link to="/register/guard" className="text-blue-500 hover:underline">Register</Link>
                 </p>
                 <div className="space-y-4">
                     <input
@@ -53,7 +53,7 @@ const Register = () => {
                         disabled={loading}
                         className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
                     >
-                        Register
+                        Login
                     </button>
                     {error && <p className='text-red-700 text-center pt-4'>{error}</p>}
                 </div>
@@ -62,4 +62,4 @@ const Register = () => {
     )
 }
 
-export default Register
+export default LoginGuard

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import MapComponent from "../components/fragments/map";
-import Camera from "../components/fragments/camera";
-import MateContent from "../components/fragments/matecontent";
+import MapComponent from "../../components/fragments/map";
+import Camera from "../../components/fragments/camera";
+import MateContent from "../../components/fragments/matecontent";
 
 const Assistant = () => {
     const [showPopup, setShowPopup] = useState(false);

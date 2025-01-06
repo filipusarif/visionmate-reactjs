@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { UserAuth } from '../components/context/AuthContext';
+import { UserAuth } from '../../components/context/AuthContext';
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -19,7 +19,7 @@ const Login = () => {
             const result = await login(email,password)   
 
             if(result.success) {
-                navigate('/homepage')
+                navigate('/assistant')
             };
         } catch (error) {
             setError("an error occured", error);
