@@ -7,6 +7,7 @@ const Assistant = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [isListening, setIsListening] = useState(false);
     const [transcript, setTranscript] = useState("");
+    const [cameraResponse, setCameraResponse] = useState(""); // Tambahkan state untuk menyimpan response
     const pressTimer = useRef(null);
     const closeTimer = useRef(null);
     const recognitionRef = useRef(null);
@@ -57,7 +58,6 @@ const Assistant = () => {
 
     useEffect(() => {
         if (showPopup) {
-            // Play popup sound
             const utterance = new SpeechSynthesisUtterance("Halo Mate, ada apa?");
             utterance.lang = "id-ID";
             utterance.onend = () => {
@@ -75,6 +75,18 @@ const Assistant = () => {
         }
     }, [showPopup]);
 
+
+    // Fungsi untuk menerima data dari child
+    const handleDataFromChild = (data) => {
+        // setDataFromChild(data);
+        setCameraResponse(data);
+        console.log('Data dari Child:', data);
+    };
+
+    useEffect(()=>{
+        console.log("camera ini ",cameraResponse)
+    }, [cameraResponse])
+
     return (
         <section
             className="flex w-screen h-screen relative"
@@ -85,19 +97,13 @@ const Assistant = () => {
             onTouchEnd={handleMouseUp}
         >
             <MapComponent />
-            <Camera />
-            <MateContent message={transcript} />
+            <Camera setCameraResponse={handleDataFromChild} /> {/* Kirim handler ke Camera */}
+            <MateContent message={transcript} responseTxt={cameraResponse} /> {/* Kirim response ke MateContent */}
             {showPopup && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 ">
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-4 rounded shadow w-[40%] h-[30%] flex justify-center items-center flex-col">
                         <p>Halo Mate, Ada apa?</p>
-                        <p>{isListening && "Mendengarkan..." }</p>
-                        {/* <button
-                            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-                            onClick={handleClosePopup}
-                        >
-                            Tutup
-                        </button> */}
+                        <p>{isListening && "Mendengarkan..."}</p>
                     </div>
                 </div>
             )}
