@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
-export default function MateContent( {message} ) {
+export default function MateContent({ message, responseTxt }) {
   const [responseText, setResponseText] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     if (message) {
@@ -12,8 +13,26 @@ export default function MateContent( {message} ) {
     }
   }, [message]);
 
+  useEffect(() => {
+    if (!responseTxt) return;
+
+    console.log("Response:", responseTxt);
+
+    // Tambahkan pesan ke chat
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { sender: "ai", text: responseTxt || "No action received." },
+    ]);
+
+    // Text-to-Speech
+    const synth = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(responseTxt || "No action received.");
+    utterance.lang = "id-ID";
+    synth.speak(utterance);
+  }, [responseTxt]);
+
   const handleSubmitVoice = async (inputMessage) => {
-    const textToSend = inputMessage || inputValue; 
+    const textToSend = inputMessage || inputValue;
     console.log(textToSend);
 
     if (!textToSend) {
@@ -53,6 +72,11 @@ export default function MateContent( {message} ) {
         ...prevMessages,
         { sender: "ai", text: value || "No action received." },
       ]);
+      // Text-to-Speech
+      const synth = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(value || "No action received.");
+      utterance.lang = "id-ID";
+      synth.speak(utterance);
 
       executeAction(action, value);
     } catch (error) {
@@ -62,13 +86,13 @@ export default function MateContent( {message} ) {
       ]);
     } finally {
       setLoading(false);
-      setInputValue(""); 
+      setInputValue("");
     }
   };
 
   const handleSubmitType = async (e) => {
     e.preventDefault();
-    const textToSend = inputValue; 
+    const textToSend = inputValue;
     console.log(textToSend);
 
     if (!textToSend) {
@@ -107,7 +131,12 @@ export default function MateContent( {message} ) {
         ...prevMessages,
         { sender: "ai", text: value || "No action received." },
       ]);
-
+      
+      // Text-to-Speech
+      const synth = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(value || "No action received.");
+      utterance.lang = "id-ID";
+      synth.speak(utterance);
       executeAction(action, value);
     } catch (error) {
       setMessages((prevMessages) => [
@@ -122,7 +151,7 @@ export default function MateContent( {message} ) {
 
   const executeAction = (action, value) => {
     if (action === "switch") {
-      window.location.href = value; 
+      window.location.href = value;
     } else if (action === "go") {
       alert(`Navigating to location: ${value}`);
     } else if (action === "control") {
@@ -133,14 +162,27 @@ export default function MateContent( {message} ) {
   return (
     <div className="w-[30vw] p-5 flex flex-col gap-3">
       <h1 className="text-2xl mb-4">Simple Chat</h1>
-      
+
       <div className="chat-box p-4 border rounded bg-gray-50 basis-5/6 overflow-y-auto mb-4">
         {messages.map((msg, index) => (
-          <div key={index} className={`chat-message ${msg.sender === "user" ? "text-right" : "text-left"}`}>
+          <div
+            key={index}
+            className={`chat-message ${
+              msg.sender === "user" ? "text-right" : "text-left"
+            }`}
+          >
             <div
-              className={`inline-block ${msg.sender === "user" ? "bg-blue-500 text-white" : "bg-gray-200 text-black"} p-2 rounded-lg my-2`}
+              className={`inline-block ${
+                msg.sender === "user"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-black"
+              } p-2 rounded-lg my-2`}
             >
-              <p>{typeof msg.text === "string" ? msg.text : JSON.stringify(msg.text)}</p>
+              <p>
+                {typeof msg.text === "string"
+                  ? msg.text
+                  : JSON.stringify(msg.text)}
+              </p>
             </div>
           </div>
         ))}
@@ -154,7 +196,7 @@ export default function MateContent( {message} ) {
       </div>
 
       <div className="flex flex-col gap-4 basis-1/6">
-        <form onSubmit={handleSubmitType}> {/* Gunakan form untuk pengiriman data */}
+        <form onSubmit={handleSubmitType}>
           <input
             type="text"
             value={inputValue}
