@@ -11,6 +11,7 @@ const Assistant = () => {
     const pressTimer = useRef(null);
     const closeTimer = useRef(null);
     const recognitionRef = useRef(null);
+    const [ map, setMap ] = useState("");
 
     // Initialize Speech Recognition
     useEffect(() => {
@@ -83,9 +84,14 @@ const Assistant = () => {
         console.log('Data dari Child:', data);
     };
 
-    useEffect(()=>{
-        console.log("camera ini ",cameraResponse)
-    }, [cameraResponse])
+    const handleDataMap = (data) =>{
+        setMap(data);
+    }
+
+    useEffect(() => {
+        if (!map) return;
+        console.log("map assistant", map)
+    }, [map])
 
     return (
         <section
@@ -96,9 +102,9 @@ const Assistant = () => {
             onTouchStart={handleMouseDown}
             onTouchEnd={handleMouseUp}
         >
-            <MapComponent />
+            <MapComponent to={map}/>
             <Camera setCameraResponse={handleDataFromChild} /> {/* Kirim handler ke Camera */}
-            <MateContent message={transcript} responseTxt={cameraResponse} /> {/* Kirim response ke MateContent */}
+            <MateContent message={transcript} responseTxt={cameraResponse} setMap={handleDataMap}/> {/* Kirim response ke MateContent */}
             {showPopup && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-4 rounded shadow w-[40%] h-[30%] flex justify-center items-center flex-col">

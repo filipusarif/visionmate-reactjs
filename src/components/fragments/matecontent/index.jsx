@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 
-export default function MateContent({ message, responseTxt }) {
+export default function MateContent({ message, responseTxt, setMap }) {
   const [responseText, setResponseText] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -68,6 +68,7 @@ export default function MateContent({ message, responseTxt }) {
       const data = await response.json();
       const { action, value } = data;
 
+      executeAction(action, value);
       setMessages((prevMessages) => [
         ...prevMessages,
         { sender: "ai", text: value || "No action received." },
@@ -78,7 +79,6 @@ export default function MateContent({ message, responseTxt }) {
       utterance.lang = "id-ID";
       synth.speak(utterance);
 
-      executeAction(action, value);
     } catch (error) {
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -127,6 +127,7 @@ export default function MateContent({ message, responseTxt }) {
       const data = await response.json();
       const { action, value } = data;
 
+      executeAction(action, value);
       setMessages((prevMessages) => [
         ...prevMessages,
         { sender: "ai", text: value || "No action received." },
@@ -137,7 +138,6 @@ export default function MateContent({ message, responseTxt }) {
       const utterance = new SpeechSynthesisUtterance(value || "No action received.");
       utterance.lang = "id-ID";
       synth.speak(utterance);
-      executeAction(action, value);
     } catch (error) {
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -153,7 +153,7 @@ export default function MateContent({ message, responseTxt }) {
     if (action === "switch") {
       window.location.href = value;
     } else if (action === "go") {
-      alert(`Navigating to location: ${value}`);
+      setMap(value);
     } else if (action === "control") {
       console.log(`Control interval set to: ${value} ms`);
     }
