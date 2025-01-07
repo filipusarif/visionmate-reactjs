@@ -50,7 +50,7 @@ export default function Camera({ setCameraResponse }) {
                 canvas.toBlob(async (blob) => {
                     const formData = new FormData();
                     formData.append("file", blob, "image.png");
-                    formData.append("api_key", import.meta.env.VITE_NEVA_API_KEY);
+                    formData.append("api_key", process.env.VITE_NEVA_API_KEY);
 
                     try {
                         const response = await fetch("http://localhost:8000/detectnev/", {

@@ -57,7 +57,7 @@ export default function MateContent({ message, responseTxt, setMap }) {
         },
         body: JSON.stringify({
           message: textToSend,
-          api_key: import.meta.env.VITE_NVIDIA_API_KEY,
+          api_key: process.env.VITE_NVIDIA_API_KEY,
         }),
       });
 
