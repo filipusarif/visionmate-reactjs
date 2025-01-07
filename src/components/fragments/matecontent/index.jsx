@@ -160,7 +160,7 @@ export default function MateContent({ message, responseTxt, setMap }) {
   };
 
   return (
-    <div className="w-[30vw] p-5 flex flex-col gap-3">
+    <div className="md:w-[30vw] w-screen h-[40%] md:h-screen p-5 flex flex-col gap-3">
       <h1 className="text-2xl mb-4">Simple Chat</h1>
 
       <div className="chat-box p-4 border rounded bg-gray-50 basis-5/6 overflow-y-auto mb-4">

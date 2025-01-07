@@ -4,11 +4,19 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
 
-// Komponen untuk menemukan lokasi dan menampilkan rute
-function LocateUserAndRoute({ destination }) {
+// Fungsi untuk instruksi suara
+function speak(message) {
+    const speech = new SpeechSynthesisUtterance(message);
+    speech.lang = "id-ID";
+    window.speechSynthesis.speak(speech);
+}
+
+// Komponen untuk menemukan lokasi dan menampilkan rute dengan instruksi suara
+function LocateUserAndRoute({ destination, audioEnabled }) {
     const map = useMap();
     const routingControlRef = useRef(null);
     const [userPosition, setUserPosition] = useState(null);
+    const [lastInstruction, setLastInstruction] = useState(null);
 
     useEffect(() => {
         const watchId = navigator.geolocation.watchPosition(
@@ -16,15 +24,12 @@ function LocateUserAndRoute({ destination }) {
                 const { latitude, longitude } = position.coords;
                 const newUserPosition = { lat: latitude, lng: longitude };
                 setUserPosition(newUserPosition);
-
                 console.log(userPosition);
-                console.log("New Position:", position.coords);
-                // Jika kontrol rute belum ada, buat kontrol rute baru
                 if (!routingControlRef.current && destination.length === 2) {
                     routingControlRef.current = L.Routing.control({
                         waypoints: [
-                            L.latLng(latitude, longitude), // Lokasi awal pengguna
-                            L.latLng(...destination), // Tujuan
+                            L.latLng(latitude, longitude),
+                            L.latLng(...destination),
                         ],
                         router: L.Routing.osrmv1({
                             serviceUrl: "https://router.project-osrm.org/route/v1",
@@ -34,18 +39,31 @@ function LocateUserAndRoute({ destination }) {
                         lineOptions: {
                             styles: [{ color: "green", weight: 4 }],
                         },
-                        addWaypoints: false, // Mencegah pengguna menambah waypoint manual
-                    }).addTo(map);
+                        addWaypoints: false,
+                    })
+                        .on("routesfound", (e) => {
+                            const route = e.routes[0];
+                            const instruction = route.instructions[0];
+                            if (
+                                instruction &&
+                                instruction.text !== lastInstruction &&
+                                audioEnabled
+                            ) {
+                                setLastInstruction(instruction.text);
+                                speak(
+                                    `${instruction.distance} meter lagi, ${instruction.text}`
+                                );
+                            }
+                        })
+                        .addTo(map);
                 }
 
-                // Jika kontrol rute sudah ada, perbarui hanya lokasi pengguna
                 if (routingControlRef.current) {
                     const waypoints = routingControlRef.current.getWaypoints();
-                    waypoints[0] = L.Routing.waypoint(L.latLng(latitude, longitude)); // Perbarui lokasi pengguna
-                    routingControlRef.current.setWaypoints(waypoints); // Set waypoints tanpa merender ulang
+                    waypoints[0] = L.Routing.waypoint(L.latLng(latitude, longitude));
+                    routingControlRef.current.setWaypoints(waypoints);
                 }
 
-                // Transisi halus ke posisi pengguna
                 map.flyTo([latitude, longitude], 18, { animate: true, duration: 2 });
             },
             (error) => {
@@ -65,19 +83,14 @@ function LocateUserAndRoute({ destination }) {
                 routingControlRef.current = null;
             }
         };
-    }, [map, destination]);
+    }, [map, destination, audioEnabled, lastInstruction]);
 
     useEffect(() => {
         if (userPosition) {
-            const userMarker = L.marker([userPosition.lat, userPosition.lng], {
-                // icon: L.icon({
-                //     iconUrl: "https://w7.pngwing.com/pngs/731/25/png-transparent-location-icon-computer-icons-google-map-maker-marker-pen-cartodb-map-marker-heart-logo-color-thumbnail.png",
-                //     iconSize: [30, 30],
-                // }),
-            }).addTo(map);
-    
+            const userMarker = L.marker([userPosition.lat, userPosition.lng]).addTo(map);
+
             return () => {
-                map.removeLayer(userMarker); // Hapus marker lama
+                map.removeLayer(userMarker);
             };
         }
     }, [userPosition, map]);
@@ -85,10 +98,11 @@ function LocateUserAndRoute({ destination }) {
     return null;
 }
 
-
 const MapComponent = ({ to }) => {
     const [destination, setDestination] = useState([]);
     const [placeName, setPlaceName] = useState("");
+    const [audioEnabled, setAudioEnabled] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (to) {
@@ -101,8 +115,6 @@ const MapComponent = ({ to }) => {
             handleSearch();
         }
     }, [placeName]);
-
-    const [loading, setLoading] = useState(false);
 
     const handleSearch = async () => {
         setLoading(true);
@@ -130,20 +142,29 @@ const MapComponent = ({ to }) => {
 
     return (
         <div className="relative w-screen h-screen z-0">
-            {loading && <div className="absolute top-0 right-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-10">
-                <div className="spinner" />
-            </div>}
-            {/* Peta */}
+            {loading && (
+                <div className="absolute top-0 right-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-10">
+                    <div className="spinner" />
+                </div>
+            )}
+            {/* <div className="absolute top-4 left-4 z-20">
+                <button
+                    onClick={() => setAudioEnabled(!audioEnabled)}
+                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                >
+                    {audioEnabled ? "Matikan Suara" : "Aktifkan Suara"}
+                </button>
+            </div> */}
             <MapContainer
                 center={[-6.983056, 110.4186]}
                 zoom={13}
-                style={{ width: "100%", height: "100%", zIndex:0 }}
+                style={{ width: "100%", height: "100%", zIndex: 0 }}
             >
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="&copy; OpenStreetMap contributors"
                 />
-                <LocateUserAndRoute destination={destination} />
+                <LocateUserAndRoute destination={destination} audioEnabled={audioEnabled} />
             </MapContainer>
         </div>
     );
