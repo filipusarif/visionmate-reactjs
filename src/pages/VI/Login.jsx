@@ -20,7 +20,7 @@ const Login = () => {
             const result = await login(email,password)   
 
             if(result.success) {
-                navigate('/assistant')
+                navigate('/vi')
             };
         } catch (error) {
             setError("an error occured", error);

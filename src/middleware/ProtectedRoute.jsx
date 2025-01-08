@@ -16,7 +16,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     console.log(userRole)
     if (!allowedRoles.includes(userRole)) {
         // Redirect ke halaman tidak diizinkan jika role tidak sesuai
-        return <Navigate to="/unauthorized " replace />;
+        return <Navigate to="/" replace />;
     }
 
     return children;
