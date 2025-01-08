@@ -95,7 +95,7 @@ const Assistant = () => {
 
     return (
         <section
-            className="flex w-screen h-screen relative"
+            className="flex md:flex-row flex-col w-screen h-screen relative"
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
