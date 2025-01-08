@@ -54,29 +54,24 @@ export const AuthContextProvider = ({children}) => {
 
     useEffect(() => {
         const savedSession = Cookies.get("userSession");
+    
         if (savedSession) {
-            setSession(JSON.parse(savedSession));
-        } else {
-            setSession(false); // Tandai tidak ada sesi
+            const parsedSession = JSON.parse(savedSession);
+            setSession(parsedSession);
         }
-
-        // Sinkronkan dengan perubahan sesi Supabase
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            if (session) {
-                Cookies.set("userSession", JSON.stringify(session), { expires: 1, secure: true });
-                setSession(session);
-            }
-        });
-
+    
+        // Sinkronkan dengan Supabase untuk mendeteksi perubahan state autentikasi
         supabase.auth.onAuthStateChange((_event, session) => {
             if (session) {
                 Cookies.set("userSession", JSON.stringify(session), { expires: 1, secure: true });
+                setSession(session);
             } else {
                 Cookies.remove("userSession");
+                setSession(null);
             }
-            setSession(session);
         });
     }, []);
+    
 
     //Log Out
     const logOut = async () => {

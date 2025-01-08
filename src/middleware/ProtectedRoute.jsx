@@ -6,6 +6,10 @@ import { UserAuth } from "../components/context/AuthContext";
 const ProtectedRoute = ({ children, allowedRoles }) => {
     const { session } = UserAuth();
 
+    if (session === null) {
+        return <div>Loading...</div>;
+    }
+
     if (!session) {
         // Redirect ke login jika tidak ada sesi
         return <Navigate to="/login" />;
