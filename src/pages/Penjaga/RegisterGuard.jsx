@@ -3,13 +3,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { UserAuth } from '../../components/context/AuthContext';
 
 const RegisterGuard = () => {
-    const [fullName, setFullName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [phone, setPhone] = useState("");
-    const [language, setLanguage] = useState("Bahasa Indonesia");
-    const [role] = useState("Guard");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState("");
 
@@ -19,6 +12,15 @@ const RegisterGuard = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault()
+        const form = e.target;
+
+        const fullName = form.fullName.value;
+        const email = form.email.value;
+        const phone = form.phone.value;
+        const password = form.password.value;
+        const confirmPassword = form.confirmPassword.value;
+        const language = form.language.value;
+        const role = form.role.value;
         setLoading(true)
 
         if (password !== confirmPassword) {
@@ -31,7 +33,7 @@ const RegisterGuard = () => {
             const result = await registerNewUser(fullName, email, password, role, phone, language)   
 
             if(result.success) {
-                navigate('/login')
+                navigate('/login/guard')
             };
         } catch (error) {
             setError("an error occured", error);
@@ -45,59 +47,64 @@ const RegisterGuard = () => {
             <form onSubmit={handleRegister} className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
                 <h2 className="text-2xl font-bold mb-4 text-gray-800">Register</h2>
                 <p className="text-sm text-gray-600 mb-6">
-                Sudah punya akun? <Link to="/Login" className="text-blue-500 hover:underline">Login</Link>
+                Sudah punya akun? <Link to="/login/guard" className="text-blue-500 hover:underline">Login</Link>
                 </p>
                 <div className="space-y-4">
                     <input
-                        onChange={(e) => setFullName(e.target.value)}
+                        name="fullName"
                         type="text"
                         placeholder="Nama Lengkap"
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                     <input
-                        onChange={(e) => setEmail(e.target.value)}
+                        name="email"
                         type="email"
                         placeholder="Email"
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                     <input
-                        onChange={(e) => setPhone(e.target.value)}
+                        name="phone"
                         type="tel"
                         placeholder="No Telepon"
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                     <select
-                        onChange={(e) => setLanguage(e.target.value)}
-                        value={language}
+                        name="language"
+                        defaultValue="Bahasa Indonesia"
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                     >
-                        <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                        <option value="Bahasa Indonesia">Indonesia</option>
                         <option value="English">English</option>
                     </select>
                     <input
-                        onChange={(e) => setPassword(e.target.value)}
+                        name="password"
                         type="password"
                         placeholder="Password"
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                     <input
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        name="confirmPassword"
                         type="password"
                         placeholder="Konfirmasi Password"
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                    <input
+                        name="role"
+                        type="hidden"
+                        value="Guard"
                     />
                     <button
                         type="submit"
                         disabled={loading}
                         className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
                     >
-                        {loading ? "Mendaftarkan..." : "Register"}
+                        {loading ? "Loading..." : "Register"}
                     </button>
                     {error && <p className='text-red-700 text-center pt-4'>{error}</p>}
                 </div>

@@ -1,10 +1,11 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import { supabase } from "../../services/lib/supabaseClient";
+import Cookies from "js-cookie";
 
 const AuthContext = createContext()
 
 export const AuthContextProvider = ({children}) => {
-    const [session, setSession] = useState(undefined);
+    const [session, setSession] = useState(null);
 
     // Register
     const registerNewUser = async (fullName, email, password, role, phone, language) => {
@@ -31,37 +32,61 @@ export const AuthContextProvider = ({children}) => {
     // Login
     const login = async (email, password) => {
         try {
-            const {data, error} = await supabase.auth.signInWithPassword({
+            const { data, error } = await supabase.auth.signInWithPassword({
                 email: email,
                 password: password,
             });
-            if(error){
-                console.error("Login error occured: ", error);
-                return {success: false, error: error.message};
+            if (error) {
+                console.error("Login error occurred: ", error);
+                return { success: false, error: error.message };
             }
+
+            // Simpan sesi ke cookies
+            Cookies.set("userSession", JSON.stringify(data.session), { expires: 1, secure: true });
+            setSession(data.session);
+
             console.log("Login Success: ", data);
-            return {success:true, data};
+            return { success: true, data };
         } catch (error) {
-            console.error("an error occured", error);
+            console.error("An error occurred", error);
         }
     };
 
-    useEffect(()=> {
-        supabase.auth.getSession().then(({data: {session}}) => {
-            setSession(session);
+    useEffect(() => {
+        const savedSession = Cookies.get("userSession");
+        if (savedSession) {
+            setSession(JSON.parse(savedSession));
+        } else {
+            setSession(false); // Tandai tidak ada sesi
+        }
+
+        // Sinkronkan dengan perubahan sesi Supabase
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                Cookies.set("userSession", JSON.stringify(session), { expires: 1, secure: true });
+                setSession(session);
+            }
         });
 
         supabase.auth.onAuthStateChange((_event, session) => {
+            if (session) {
+                Cookies.set("userSession", JSON.stringify(session), { expires: 1, secure: true });
+            } else {
+                Cookies.remove("userSession");
+            }
             setSession(session);
         });
-    },[]);
+    }, []);
 
     //Log Out
-    const logOut = () => {
-        const {error} = supabase.auth.signOut();
-        if(error){
-            console.error("there was an error: ", error);
+    const logOut = async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            console.error("There was an error: ", error);
         }
+
+        // Hapus sesi dari cookies
+        Cookies.remove("userSession");
         setSession(null);
     };
     
