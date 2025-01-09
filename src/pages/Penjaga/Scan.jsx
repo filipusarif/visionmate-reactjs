@@ -8,7 +8,7 @@ const Scan = () => {
     const [data, setData] = useState(''); // Menyimpan hasil scan barcode
     const [error, setError] = useState(null); // Menyimpan error (jika ada)
     const [status, setStatus] = useState(''); // Status penyimpanan ke Supabase
-    const [guardId, setGuardId] = useState('664aa89f-ecfa-4b62-bd65-a35d18566a7f'); // ID pengguna yang login
+    const guardId = useRef(null);
     const toastShownRef = useRef(true); 
     const toastVisibleRef = useRef(false);
 
@@ -19,7 +19,7 @@ const Scan = () => {
             if (error) {
                 console.error("Error fetching session:", error);
             } else if (data?.session?.user?.id) {
-                setGuardId(data.session.user.id); 
+                guardId.current = data.session.user.id;
             } else {
                 console.warn("No active session found.");
             }
@@ -27,12 +27,16 @@ const Scan = () => {
         fetchGuardId();
     }, []);
 
+    useEffect(()=>{
+        console.log(guardId.current)
+    }, [guardId.current])
+
     const checkIfBarcodeExists = async (scannedData) => {
         const { data, error } = await supabase
             .from('connections')
             .select('vi_id, guard_id')
             .eq('vi_id', scannedData)
-            .eq('guard_id', guardId)
+            .eq('guard_id', guardId.current)
             .single(); 
 
         if (error) {
@@ -44,7 +48,7 @@ const Scan = () => {
     };
 
     const saveToSupabase = async (scannedData) => {
-        if (!guardId) {
+        if (!guardId.current) {
             console.error("Guard ID belum tersedia.");
             setStatus('Guard ID belum ditemukan.');
             return;
@@ -78,7 +82,7 @@ const Scan = () => {
                 .insert([
                     {
                         vi_id: scannedData,
-                        guard_id: guardId,
+                        guard_id: guardId.current,
                     },
                 ]);
 
