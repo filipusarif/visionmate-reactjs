@@ -2,7 +2,6 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { UserAuth } from "../components/context/AuthContext";
 
-
 const ProtectedRoute = ({ children, allowedRoles }) => {
     const { session } = UserAuth();
 
@@ -15,9 +14,14 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
         return <Navigate to="/login" />;
     }
 
-    const userRole = session.user.user_metadata?.role;
+    const userRole = session.role;
 
-    console.log(userRole)
+    console.log("TESTT",userRole);
+    if (!userRole) {
+        console.error("User role is undefined");
+        return <Navigate to="/login" replace />; // Redirect jika role tidak ditemukan
+    }
+
     if (!allowedRoles.includes(userRole)) {
         // Redirect ke halaman tidak diizinkan jika role tidak sesuai
         return <Navigate to="/" replace />;

@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import { UserAuth } from '../components/context/AuthContext'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import { UserAuth } from "../components/context/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 
 const Homepage = () => {
-  const {session, logOut} = UserAuth();
+  const { session, logOut } = UserAuth();
   const navigate = useNavigate();
 
-  console.log(session);
+  console.log("homepage",session);
 
   const handleLogOut = async (e) => {
     e.preventDefault();
@@ -16,12 +16,23 @@ const Homepage = () => {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const handleDashboardRedirect = () => {
+    console.log("Redirecting, session.role:", session?.role); // Debugging
+    if (session?.role === "VI") {
+      navigate("/vi");
+    } else if (session?.role === "Guard") {
+      navigate("/guard");
+    } else {
+      console.error("Unknown role:", session?.role);
+    }
   };
 
   return (
@@ -67,18 +78,29 @@ const Homepage = () => {
             </li>
           </ul>
           <div className="hidden md:flex">
-            <Link
-              to="/login"
-              className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg mr-2"
-            >
-              Login
-            </Link>
-            <Link
-              to="/register"
-              className="bg-green-500 hover:bg-green-600 text-gray-700 px-4 py-2 rounded-lg mr-2"
-            >
-              Register
-            </Link>
+            {session ? (
+              <button
+                onClick={handleDashboardRedirect}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg mr-2"
+              >
+                Dashboard
+              </button>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg mr-2"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg mr-2"
+                >
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </div>
 
@@ -99,12 +121,23 @@ const Homepage = () => {
                 <a href="#service">Service</a>
               </li>
               <div className="flex flex-col items-center space-y-2">
-                <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg">
-                  Login
-                </button>
-                <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg">
-                  Register
-                </button>
+                {session ? (
+                  <button
+                    onClick={handleDashboardRedirect}
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg"
+                  >
+                    Dashboard
+                  </button>
+                ) : (
+                  <>
+                    <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg">
+                      Login
+                    </button>
+                    <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg">
+                      Register
+                    </button>
+                  </>
+                )}
               </div>
             </ul>
           </div>
@@ -160,7 +193,7 @@ const Homepage = () => {
         </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default Homepage
+export default Homepage;
