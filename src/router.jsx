@@ -12,6 +12,7 @@ import RegisterGuard from "./pages/Penjaga/RegisterGuard";
 import Notfound from "./pages/NotFound";
 import Barcode from "./pages/VI/Barcode";
 import Scan from "./pages/Penjaga/Scan";
+import Monitoring from "./pages/Penjaga/Monitoring";
 
 
 export const router = createBrowserRouter([
@@ -26,9 +27,9 @@ export const router = createBrowserRouter([
     {
         path: "/vi",
         element: (
-            <ProtectedRoute allowedRoles={["VI"]}>
                 <Assistant />
-            </ProtectedRoute>
+            // <ProtectedRoute allowedRoles={["VI"]}>
+            // </ProtectedRoute>
         ),
         errorElement: (
             <Notfound />
@@ -57,7 +58,20 @@ export const router = createBrowserRouter([
     {
         path: "/guard/scan",
         element: (
+            <ProtectedRoute allowedRoles={["Guard"]}>
                 <Scan />
+            </ProtectedRoute>
+        ),
+        errorElement: (
+            <Notfound />
+        ),
+    },
+    {
+        path: "/guard/monitoring",
+        element: (
+                <Monitoring />
+            // <ProtectedRoute allowedRoles={["Guard"]}>
+            // </ProtectedRoute>
         ),
         errorElement: (
             <Notfound />

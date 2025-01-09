@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import MapComponent from "../../components/fragments/map";
 import Camera from "../../components/fragments/camera";
 import MateContent from "../../components/fragments/matecontent";
+import { supabase } from "../../services/lib/supabaseClient";
 
 const Assistant = () => {
     const [showPopup, setShowPopup] = useState(false);
@@ -12,7 +13,28 @@ const Assistant = () => {
     const closeTimer = useRef(null);
     const recognitionRef = useRef(null);
     const [ map, setMap ] = useState("");
+    const [userId, setUserId] = useState(null);
 
+
+    // Ambil ID user dari sesi login
+    useEffect(() => {
+        const fetchUserId = async () => {
+            const { data, error } = await supabase.auth.getSession();
+            if (error) {
+                console.error("Error fetching session:", error);
+            } else if (data?.session?.user?.id) {
+                setUserId(data.session.user.id); // Set state dengan ID user
+            } else {
+                console.warn("No active session found.");
+            }
+        };
+        fetchUserId();
+    }, []);
+
+    useEffect(() => {
+        console.log("id", userId)
+    }, [userId])
+    
     // Initialize Speech Recognition
     useEffect(() => {
         if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
@@ -102,7 +124,7 @@ const Assistant = () => {
             onTouchStart={handleMouseDown}
             onTouchEnd={handleMouseUp}
         >
-            <MapComponent to={map}/>
+            <MapComponent to={map} id={userId}/>
             <Camera setCameraResponse={handleDataFromChild} /> {/* Kirim handler ke Camera */}
             <MateContent message={transcript} responseTxt={cameraResponse} setMap={handleDataMap}/> {/* Kirim response ke MateContent */}
             {showPopup && (
