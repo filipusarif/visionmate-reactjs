@@ -27,9 +27,9 @@ export const router = createBrowserRouter([
     {
         path: "/vi",
         element: (
+            <ProtectedRoute allowedRoles={["VI"]}>
                 <Assistant />
-            // <ProtectedRoute allowedRoles={["VI"]}>
-            // </ProtectedRoute>
+            </ProtectedRoute>
         ),
         errorElement: (
             <Notfound />
@@ -38,7 +38,9 @@ export const router = createBrowserRouter([
     {
         path: "/vi/barcode",
         element: (
+            <ProtectedRoute allowedRoles={["VI"]}>
                 <Barcode />
+            </ProtectedRoute>
         ),
         errorElement: (
             <Notfound />
@@ -69,9 +71,9 @@ export const router = createBrowserRouter([
     {
         path: "/guard/monitoring",
         element: (
+            <ProtectedRoute allowedRoles={["Guard"]}>
                 <Monitoring />
-            // <ProtectedRoute allowedRoles={["Guard"]}>
-            // </ProtectedRoute>
+            </ProtectedRoute>
         ),
         errorElement: (
             <Notfound />

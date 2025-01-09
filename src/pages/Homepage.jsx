@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { UserAuth } from "../components/context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import Navbar from "../components/fragments/navbar";
 
 const Homepage = () => {
   const { session, logOut } = UserAuth();
@@ -24,125 +25,11 @@ const Homepage = () => {
     setMenuOpen(!menuOpen);
   };
 
-  const handleDashboardRedirect = () => {
-    console.log("Redirecting, session.role:", session?.role); // Debugging
-    if (session?.role === "VI") {
-      navigate("/vi");
-    } else if (session?.role === "Guard") {
-      navigate("/guard");
-    } else {
-      console.error("Unknown role:", session?.role);
-    }
-  };
+  
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      {/* Navbar */}
-      <nav className="bg-white shadow-lg">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800">VisionMate</h1>
-          {/* Hamburger Menu */}
-          <button
-            onClick={toggleMenu}
-            className="block md:hidden text-gray-600 hover:text-gray-900"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16m-7 6h7"
-              ></path>
-            </svg>
-          </button>
-
-          {/* Desktop Menu */}
-          <ul className="hidden md:flex space-x-8">
-            <li className="text-gray-600 hover:text-gray-900">
-              <a href="#home">Home</a>
-            </li>
-            <li className="text-gray-600 hover:text-gray-900">
-              <a href="#about">About</a>
-            </li>
-            <li className="text-gray-600 hover:text-gray-900">
-              <a href="#product">Product</a>
-            </li>
-            <li className="text-gray-600 hover:text-gray-900">
-              <a href="#service">Service</a>
-            </li>
-          </ul>
-          <div className="hidden md:flex">
-            {session ? (
-              <button
-                onClick={handleDashboardRedirect}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg mr-2"
-              >
-                Dashboard
-              </button>
-            ) : (
-              <>
-                <Link
-                  to="/login"
-                  className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg mr-2"
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg mr-2"
-                >
-                  Register
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {menuOpen && (
-          <div className="md:hidden bg-gray-50 shadow-lg">
-            <ul className="flex flex-col items-center space-y-4 py-4">
-              <li className="text-gray-600 hover:text-gray-900">
-                <a href="#home">Home</a>
-              </li>
-              <li className="text-gray-600 hover:text-gray-900">
-                <a href="#about">About</a>
-              </li>
-              <li className="text-gray-600 hover:text-gray-900">
-                <a href="#product">Product</a>
-              </li>
-              <li className="text-gray-600 hover:text-gray-900">
-                <a href="#service">Service</a>
-              </li>
-              <div className="flex flex-col items-center space-y-2">
-                {session ? (
-                  <button
-                    onClick={handleDashboardRedirect}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg"
-                  >
-                    Dashboard
-                  </button>
-                ) : (
-                  <>
-                    <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg">
-                      Login
-                    </button>
-                    <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg">
-                      Register
-                    </button>
-                  </>
-                )}
-              </div>
-            </ul>
-          </div>
-        )}
-      </nav>
+      <Navbar session={session}/>
 
       {/* Hero Section */}
       <header className="container mx-auto px-4 py-16 flex flex-col-reverse lg:flex-row items-center">
