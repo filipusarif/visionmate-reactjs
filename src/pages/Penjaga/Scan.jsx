@@ -37,7 +37,6 @@ const Scan = () => {
             .select('vi_id, guard_id')
             .eq('vi_id', scannedData)
             .eq('guard_id', guardId.current)
-            .single(); 
 
         if (error) {
             console.error("Error checking barcode:", error);
