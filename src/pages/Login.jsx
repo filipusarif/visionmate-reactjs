@@ -8,10 +8,8 @@ const Login = () => {
     const [agreed, setAgreed] = useState(false);
     const [saveInfo, setSaveInfo] = useState(true);
 
-    const { session, login } = UserAuth();
+    const { login } = UserAuth();
     const navigate = useNavigate();
-
-    console.log(session);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -29,6 +27,7 @@ const Login = () => {
             const result = await login(email, password);
 
             if (result.success) {
+                console.log("Login result:", result);
                 const userRole = result.data.role; // Assume role is returned in result.data
 
                 if (userRole === 'VI') {
