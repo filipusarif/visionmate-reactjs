@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { UserAuth } from "../components/context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/fragments/navbar";
+import Hero from "../components/fragments/hero";
 
 const Homepage = () => {
   const { session, logOut } = UserAuth();
@@ -28,12 +29,11 @@ const Homepage = () => {
   
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 w-screen min-h-screen">
       <Navbar session={session}/>
-
+      <Hero />
       {/* Hero Section */}
-      <header className="container mx-auto px-4 py-16 flex flex-col-reverse lg:flex-row items-center">
-        {/* Text Content */}
+      {/* <header className="container mx-auto px-4 py-16 flex flex-col-reverse lg:flex-row items-center">
         <div className="lg:w-1/2">
           <p className="text-sm bg-green-100 text-green-600 px-2 py-1 rounded-lg inline-block mb-4">
             #1 Vision Map App 2024
@@ -55,7 +55,7 @@ const Homepage = () => {
           </div>
         </div>
 
-        {/* Image Content */}
+       
         <div className="lg:w-1/2 flex justify-center mb-6 lg:mb-0">
           <img
             src="https://via.placeholder.com/300x400" // Replace with actual image URL
@@ -63,7 +63,7 @@ const Homepage = () => {
             className="rounded-lg shadow-lg"
           />
         </div>
-      </header>
+      </header> */}
 
       {/* Trusted By Section */}
       <section className="bg-gray-100 py-8">

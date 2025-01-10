@@ -12,7 +12,6 @@ const Navbar = ({ session }) => {
 
     const navigate = useNavigate();
 
-
     const handleDashboardRedirect = () => {
         console.log("Redirecting, session.role:", session?.role); // Debugging
         if (session?.role === "VI") {
@@ -25,7 +24,7 @@ const Navbar = ({ session }) => {
     };
 
     return (
-    <nav className="fixed w-full bg-background border-gray-200 py-2.5 dark:bg-gray-900">
+    <nav className="fixed w-full z-50 bg-background border-gray-200 py-2.5 dark:bg-gray-900">
         <div className='container'>
         <div className="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
             <a href="/" className="flex items-center">
@@ -40,10 +39,14 @@ const Navbar = ({ session }) => {
                 {session ? (
                     <button
                     onClick={handleDashboardRedirect}    
-                        className="text-white bg-primary hover:bg-primary-hover focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-primary-hobg-primary-hover">Dashboard</button>
+                        className="text-white bg-primary hover:bg-primary-hover focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-primary-hobg-primary-hover">Dashboard</button>
                 ):(
-                    <Link to="/register"
-                        className="text-white bg-primary hover:bg-primary-hover focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-primary-hobg-primary-hover">Daftar Sekarang</Link>
+                    <div className='flex gap-4 items-center'>
+                        <Link to="/login"
+                            className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Masuk</Link>
+                        <Link to="/register"
+                            className="text-white flex gap-1 items-center bg-primary hover:bg-primary-hover focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-primary-hobg-primary-hover">Daftar Sekarang <img src="assets/images/arrow-right.svg" alt="" /></Link>
+                    </div>
                 )}
                 <button data-collapse-toggle="mobile-menu-2" type="button"
                     className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -62,7 +65,7 @@ const Navbar = ({ session }) => {
                 </button>
             </div>
             <div  className={`items-center justify-between w-full lg:flex lg:w-auto lg:order-1 ${isOpen ? 'block' : 'hidden'}`} id="mobile-menu-2">
-                <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-4 lg:mt-0">
                     <li>
                         <a href="#"
                             className="block py-2 pl-3 pr-4 text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white"
