@@ -9,6 +9,7 @@ import Notfound from "./pages/NotFound";
 import Barcode from "./pages/VI/Barcode";
 import Scan from "./pages/Penjaga/Scan";
 import Monitoring from "./pages/Penjaga/Monitoring";
+import EditProfile from "./pages/EditProfile";
 
 
 export const router = createBrowserRouter([
@@ -32,6 +33,17 @@ export const router = createBrowserRouter([
         element: (
             <ProtectedRoute allowedRoles={["VI"]}>
                 <Barcode />
+            </ProtectedRoute>
+        ),
+        errorElement: (
+            <Notfound />
+        ),
+    },
+    {
+        path: "/vi/editprofile",
+        element: (
+            <ProtectedRoute allowedRoles={["VI"]}>
+                <EditProfile/>
             </ProtectedRoute>
         ),
         errorElement: (
@@ -65,6 +77,17 @@ export const router = createBrowserRouter([
         element: (
             <ProtectedRoute allowedRoles={["Guard"]}>
                 <Monitoring />
+            </ProtectedRoute>
+        ),
+        errorElement: (
+            <Notfound />
+        ),
+    },
+    {
+        path: "/guard/editprofile",
+        element: (
+            <ProtectedRoute allowedRoles={["Guard"]}>
+                <EditProfile/>
             </ProtectedRoute>
         ),
         errorElement: (
