@@ -11,10 +11,13 @@ export default {
       padding: {
         DEFAULT: '1rem',
         sm: '2rem',
-        lg: '4rem',
-        xl: '5rem',
-        '2xl': '6rem',
+        lg: '2rem',
+        xl: '2rem',
+        '2xl': '4rem',
       },
+    },
+    fontFamily: {
+      'Roboto' : ['Roboto', 'sans-serif'],
     },
     colors: {
       transparent: 'transparent',
@@ -24,8 +27,8 @@ export default {
       'complementary': '#334155',
       'background':'#FFFFFF',
       'primary-hover':'#534FDE',
-      'very-light':'#D9D9D9',
-      'yellowAbout':'#FAFF00',
+      'non-active':'#475569',
+      'dark':'#0F172A',
       'redAbout':'#D62A2A',
       'lightBlueAbout':'#2AA7D6',
       'brownAbout':'#D67D2A',

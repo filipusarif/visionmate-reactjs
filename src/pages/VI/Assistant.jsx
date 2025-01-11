@@ -4,6 +4,7 @@ import Camera from "../../components/fragments/camera";
 import MateContent from "../../components/fragments/matecontent";
 import useSession from "../../hooks/useSession";
 import { UserAuth } from "../../components/context/AuthContext";
+import Navbar from "../../components/fragments/navbar";
 
 
 const Assistant = () => {
@@ -99,33 +100,36 @@ const Assistant = () => {
     }, [map])
 
     return (
-        <section
-            className="flex md:flex-row flex-col w-screen h-screen relative"
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp}
-            onTouchStart={handleMouseDown}
-            onTouchEnd={handleMouseUp}
-        >
-            {userData ? (
-                <>
-                    <MapComponent to={map} id={userData.id}/>
-                    <Camera setCameraResponse={handleDataFromChild} /> {/* Kirim handler ke Camera */}
-                    <MateContent message={transcript} responseTxt={cameraResponse} setMap={handleDataMap}/> {/* Kirim response ke MateContent */}
-                    {showPopup && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                            <div className="bg-white p-4 rounded shadow w-[40%] h-[30%] flex justify-center items-center flex-col">
-                                <p>Halo Mate, Ada apa?</p>
-                                <p>{isListening && "Mendengarkan..."}</p>
+        <>
+            <Navbar  session={userData}/>
+            <section
+                className="flex md:flex-row-reverse flex-col w-screen h-screen relative"
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp}
+                onTouchStart={handleMouseDown}
+                onTouchEnd={handleMouseUp}
+            >
+                {userData ? (
+                    <>
+                        <MapComponent to={map} id={userData.id}/>
+                        <Camera setCameraResponse={handleDataFromChild} /> {/* Kirim handler ke Camera */}
+                        <MateContent message={transcript} responseTxt={cameraResponse} setMap={handleDataMap}/> {/* Kirim response ke MateContent */}
+                        {showPopup && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                                <div className="bg-white p-4 rounded shadow w-[40%] h-[30%] flex justify-center items-center flex-col">
+                                    <p>Halo Mate, Ada apa?</p>
+                                    <p>{isListening && "Mendengarkan..."}</p>
+                                </div>
                             </div>
-                        </div>
-                    )}
-                </>
-            ) : (
-                <p>Loading...</p>
-            )}
-            
-        </section>
+                        )}
+                    </>
+                ) : (
+                    <p>Loading...</p>
+                )}
+                
+            </section>
+        </>
     );
 };
 
