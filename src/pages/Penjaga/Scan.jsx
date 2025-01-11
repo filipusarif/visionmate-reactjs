@@ -3,6 +3,8 @@ import { QrReader } from 'react-qr-reader';
 import { supabase } from '../../services/lib/supabaseClient';
 import { toast, ToastContainer } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'js-cookie';
+
 
 const Scan = () => {
     const [data, setData] = useState(''); // Menyimpan hasil scan barcode
@@ -14,22 +16,19 @@ const Scan = () => {
 
     // Ambil ID guard dari sesi login
     useEffect(() => {
-        const fetchGuardId = async () => {
-            const { data, error } = await supabase.auth.getSession();
-            if (error) {
-                console.error("Error fetching session:", error);
-            } else if (data?.session?.user?.id) {
-                guardId.current = data.session.user.id;
-            } else {
-                console.warn("No active session found.");
+        const savedSession = Cookies.get("userSession");
+        if (savedSession) {
+            try {
+                const parsedSession = JSON.parse(savedSession);
+                guardId.current = parsedSession.id
+            } catch (error) {
+                console.error("Error parsing session cookies:", error);
             }
-        };
-        fetchGuardId();
+        } else {
+            console.warn("No session cookies found.");
+        }
     }, []);
 
-    useEffect(()=>{
-        console.log(guardId.current)
-    }, [guardId.current])
 
     const checkIfBarcodeExists = async (scannedData) => {
         const { data, error } = await supabase
@@ -76,6 +75,8 @@ const Scan = () => {
         // Jika barcode belum ada atau belum terhubung, simpan ke database
         setStatus('Menyimpan data...');
         try {
+            console.log("save",guardId.current)
+            console.log("save2",scannedData)
             const { error } = await supabase
                 .from('connections')
                 .insert([
@@ -125,13 +126,13 @@ const Scan = () => {
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
             <h1 className="text-2xl font-bold mb-4">Scan Barcode</h1>
-            
             <div className="w-80 h-80 bg-white shadow-lg rounded-lg">
                 <QrReader
                     constraints={{ facingMode: "environment" }} // Menggunakan kamera belakang
                     onResult={(result, error) => {
                         if (result) {
                             const scannedData = result.text;
+                            console.log(scannedData);
                             setData(scannedData); 
                             saveToSupabase(scannedData); 
                         }

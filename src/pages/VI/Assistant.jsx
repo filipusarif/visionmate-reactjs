@@ -3,6 +3,8 @@ import MapComponent from "../../components/fragments/map";
 import Camera from "../../components/fragments/camera";
 import MateContent from "../../components/fragments/matecontent";
 import { supabase } from "../../services/lib/supabaseClient";
+import Cookies from 'js-cookie';
+
 
 const Assistant = () => {
     const [showPopup, setShowPopup] = useState(false);
@@ -18,17 +20,17 @@ const Assistant = () => {
 
     // Ambil ID user dari sesi login
     useEffect(() => {
-        const fetchUserId = async () => {
-            const { data, error } = await supabase.auth.getSession();
-            if (error) {
-                console.error("Error fetching session:", error);
-            } else if (data?.session?.user?.id) {
-                setUserId(data.session.user.id); // Set state dengan ID user
-            } else {
-                console.warn("No active session found.");
+        const savedSession = Cookies.get("userSession");
+        if (savedSession) {
+            try {
+                const parsedSession = JSON.parse(savedSession);
+                setUserId(parsedSession.id); 
+            } catch (error) {
+                console.error("Error parsing session cookies:", error);
             }
-        };
-        fetchUserId();
+        } else {
+            console.warn("No session cookies found.");
+        }
     }, []);
 
     useEffect(() => {

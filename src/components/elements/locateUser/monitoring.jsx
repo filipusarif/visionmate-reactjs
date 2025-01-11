@@ -42,9 +42,9 @@ const updateDataLocation = async (id, lat, long) => {
         return;
     }
     const { error } = await supabase
-        .from("connections")
+        .from("users")
         .update({ latitude: lat, longitude: long })
-        .eq("vi_id", id) 
+        .eq("id", id) 
 
     if (error) {
         console.error("Data gagal diupdate:", error.message);
@@ -102,8 +102,8 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
     const getUserName = async (vi_id) => {
         try {
             const { data, error } = await supabase
-                .from("auth.users") // Mengambil data dari tabel auth.users
-                .select("id, raw_user_meta_data") // Sertakan kolom raw_user_meta_data
+                .from("users") // Mengambil data dari tabel auth.users
+                .select("fullName") // Sertakan kolom raw_user_meta_data
                 .eq("id", vi_id);
     
             if (error) {
@@ -145,14 +145,14 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
                 setUserPosition(newUserPosition);
 
                 // // Batasi frekuensi update lokasi ke database
-                // if (updateTimeoutRef.current) clearTimeout(updateTimeoutRef.current);
-                // updateTimeoutRef.current = setTimeout(async () => {
-                //     const exists = await checkIfConnectionExists(id);
-                //     console.log("ada",exists)
-                //     if (exists) {
-                //         await updateDataLocation(id, latitude, longitude);
-                //     }
-                // }, 1000);
+                if (updateTimeoutRef.current) clearTimeout(updateTimeoutRef.current);
+                updateTimeoutRef.current = setTimeout(async () => {
+                    const exists = await checkIfConnectionExists(id);
+                    console.log("ada",exists)
+                    if (exists) {
+                        await updateDataLocation(id, latitude, longitude);
+                    }
+                }, 1000);
 
                 // Update routing control
                 if (!routingControlRef.current && destination.length === 2) {

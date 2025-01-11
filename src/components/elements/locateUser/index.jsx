@@ -42,9 +42,9 @@ const updateDataLocation = async (id, lat, long) => {
         return;
     }
     const { error } = await supabase
-        .from("connections")
+        .from("users")
         .update({ latitude: lat, longitude: long })
-        .eq("vi_id", id) 
+        .eq("id", id) 
 
     if (error) {
         console.error("Data gagal diupdate:", error.message);

@@ -2,23 +2,40 @@ import { useRef, useEffect, useState } from "react";
 import MapMonitoring from "../../components/fragments/mapmonitoring";
 import MonitoringContent from "../../components/fragments/monitoringcontent";
 import { supabase } from "../../services/lib/supabaseClient";
+import Cookies from 'js-cookie';
+
 
 const Monitoring = () => {
-    const [guardId, setGuardId] = useState();
-    // Ambil ID guard dari sesi login
+    const [guardId, setGuardId] = useState(null);
+
+    // Ambil ID user dari sesi login
     useEffect(() => {
-        const fetchGuardId = async () => {
-            const { data, error } = await supabase.auth.getSession();
-            if (error) {
-                console.error("Error fetching session:", error);
-            } else if (data?.session?.user?.id) {
-                setGuardId(data.session.user.id);
-            } else {
-                console.warn("No active session found.");
+        const savedSession = Cookies.get("userSession");
+        if (savedSession) {
+            try {
+                const parsedSession = JSON.parse(savedSession);
+                setGuardId(parsedSession.id); 
+            } catch (error) {
+                console.error("Error parsing session cookies:", error);
             }
-        };
-        fetchGuardId();
+        } else {
+            console.warn("No session cookies found.");
+        }
     }, []);
+
+    useEffect(() => {
+            const savedSession = Cookies.get("userSession");
+            if (savedSession) {
+                try {
+                    const parsedSession = JSON.parse(savedSession);
+                    setGuardId(parsedSession.id);
+                } catch (error) {
+                    console.error("Error parsing session cookies:", error);
+                }
+            } else {
+                console.warn("No session cookies found.");
+            }
+        }, []);
     
     return (
         <section className="flex md:flex-row flex-col-reverse w-screen h-screen relative">

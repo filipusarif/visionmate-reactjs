@@ -62,8 +62,6 @@ export const AuthContextProvider = ({ children }) => {
             // Create session data and save to cookies
             const sessionData = {
                 id: data.id,
-                email: data.email,
-                fullname: data.fullName,
                 role: data.role,
             };
 
