@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/fragments/navbar";
 import Hero from "../components/fragments/hero";
 import Feature from "../components/fragments/feature";
+import Pricing from "../components/fragments/pricing";
 
 const Homepage = () => {
   const { decryptSession } = UserAuth(); // Gunakan decryptSession
@@ -23,6 +24,7 @@ const Homepage = () => {
       <Navbar session={session}/>
       <Hero />
       <Feature />
+      <Pricing />
     </div>
   );
 };

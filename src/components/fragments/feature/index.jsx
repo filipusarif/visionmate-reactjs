@@ -26,7 +26,7 @@ const Feature = () => {
     useEffect(() => {
         const interval = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % slides.length);
-        }, 3000);
+        }, 5000);
 
         return () => clearInterval(interval);
     }, [slides.length]);
@@ -44,18 +44,18 @@ const Feature = () => {
                 <Card image={"assets/images/feat/1.svg"} title={"Sinyal Bantuan"} text={"Mengirim pesan darurat ke pendamping saat membutuhkan bantuan."} color={"bg-[#DBEAFE]"}/>
                 <Card image={"assets/images/feat/4.svg"} title={"Suara Interaktif"} text={"Berkomunikasi dengan pengguna melalui panduan suara untuk kemudahan fitur."} color={"bg-[#EDE9FE]"}/>
             </section>
-            <section className="w-screen min-h-screen flex flex-col gap-4 justify-center items-center py-20 container mx-auto">
+            <section className="w-screen min-h-screen flex flex-col gap-16 justify-center items-center py-20 container mx-auto">
                 <div className="flex text-center flex-col gap-2">
                     <h1 className="text-[56px] font-extrabold">Intergrasi Kecerdasan Buatan</h1>
                     <p className="text-lg font-normal">Sistem kami telah menerapkan kecerdasan buatan untuk membantu user dalam pengguna</p>
                 </div>
                 <main className="flex justify-center items-center w-full h-full gap-10">
-                    <div className="w-1/2 h-fit">
-                        <div className=""/>
-                        <div className=""/>
+                    <div className="w-1/2 relative h-fit flex justify-center items-center">
+                        <div className="absolute w-[30rem] h-[30rem] rounded-full border-8 border-danger"/>
+                        <div className="absolute w-[25rem] h-[25rem] rounded-full border-2 border-danger"/>
                         <video
                         src="assets/videos/baammsss.mp4"
-                        className="w-[80%] object-cover rounded-lg "
+                        className="h-[50rem] z-10 object-cover rounded-lg border-8 border-slate-500 shadow-xl"
                         autoPlay
                         loop
                         muted
@@ -63,19 +63,18 @@ const Feature = () => {
                     </div>
                     <div className="w-full md:w-1/2 flex flex-col items-start justify-center mt-8 md:mt-0">
                         <div className="relative w-full max-w-[400px]">
-                        {/* Garis Biru di Samping */}
-                        <div className="absolute left-0 top-0 h-full w-1 bg-blue-500"></div>
-
-                        {/* Semua Judul dan Konten */}
+                        
                         <div className="ml-6">
                             {slides.map((slide, index) => (
-                            <div key={index} className="mb-4">
+                            <div key={index} className={`mb-4 border-l-2  pl-10 ${
+                                currentSlide === index ? "border-primary" : "border-slate-500"
+                            }`}>
                                 {/* Judul */}
                                 <h1
                                 className={`text-lg font-bold cursor-pointer ${
                                     currentSlide === index
-                                    ? "text-blue-500"
-                                    : "text-gray-500 hover:text-blue-400"
+                                    ? "text-primary"
+                                    : "text-gray-500 hover:text-primary-hover"
                                 }`}
                                 onClick={() => handleLogoClick(index)}
                                 >
@@ -103,7 +102,7 @@ const Feature = () => {
                             onClick={() => handleLogoClick(index)}
                             className={`w-10 h-10 rounded-full flex items-center justify-center ${
                                 currentSlide === index
-                                ? "bg-blue-500 text-white"
+                                ? "bg-primary text-white"
                                 : "bg-gray-300 text-black"
                             }`}
                             >
