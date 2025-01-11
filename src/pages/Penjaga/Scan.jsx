@@ -1,35 +1,39 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { QrReader } from 'react-qr-reader';
 import { supabase } from '../../services/lib/supabaseClient';
 import { toast, ToastContainer } from 'react-toastify'; 
+import { UserAuth } from '../../components/context/AuthContext';
+import useSession from '../../hooks/useSession';
 import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const Scan = () => {
     const [data, setData] = useState(''); // Menyimpan hasil scan barcode
     const [error, setError] = useState(null); // Menyimpan error (jika ada)
     const [status, setStatus] = useState(''); // Status penyimpanan ke Supabase
     const guardId = useRef(null);
+    const lastScannedData = useRef(null); // Tambahan untuk mencegah duplikasi
     const toastShownRef = useRef(true); 
     const toastVisibleRef = useRef(false);
+    const navigate = useNavigate();
 
-    // Ambil ID guard dari sesi login
+
+    const { decryptSession } = UserAuth();
+    const [userData, setUserData] = useState(null);
+    useSession(decryptSession, setUserData);
+
     useEffect(() => {
-        const fetchGuardId = async () => {
-            const { data, error } = await supabase.auth.getSession();
-            if (error) {
-                console.error("Error fetching session:", error);
-            } else if (data?.session?.user?.id) {
-                guardId.current = data.session.user.id;
-            } else {
-                console.warn("No active session found.");
-            }
-        };
-        fetchGuardId();
-    }, []);
+        if (userData) {
+            guardId.current = userData.id;
+        }
+    }, [userData]);
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log(guardId.current)
-    }, [guardId.current])
+    }, [guardId])
+
 
     const checkIfBarcodeExists = async (scannedData) => {
         const { data, error } = await supabase
@@ -37,7 +41,7 @@ const Scan = () => {
             .select('vi_id, guard_id')
             .eq('vi_id', scannedData)
             .eq('guard_id', guardId.current)
-            .single(); 
+            .single()
 
         if (error) {
             console.error("Error checking barcode:", error);
@@ -77,6 +81,8 @@ const Scan = () => {
         // Jika barcode belum ada atau belum terhubung, simpan ke database
         setStatus('Menyimpan data...');
         try {
+            console.log("save",guardId.current)
+            console.log("save2",scannedData)
             const { error } = await supabase
                 .from('connections')
                 .insert([
@@ -104,6 +110,8 @@ const Scan = () => {
                     });
                 } 
             }
+
+            navigate("/guard/monitoring")
         } catch (err) {
             console.error(err);
             setStatus('Gagal menyimpan data.');
@@ -121,21 +129,35 @@ const Scan = () => {
                 }
             }
         }
+
+        // Reset lastScannedData setelah beberapa waktu (opsional)
+        setTimeout(() => {
+            lastScannedData.current = null;
+        }, 1000); // Reset setelah 5 detik
+
     };
 
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
             <h1 className="text-2xl font-bold mb-4">Scan Barcode</h1>
-            
             <div className="w-80 h-80 bg-white shadow-lg rounded-lg">
                 <QrReader
                     constraints={{ facingMode: "environment" }} // Menggunakan kamera belakang
                     onResult={(result, error) => {
                         if (result) {
                             const scannedData = result.text;
+                            // Periksa apakah barcode sudah diproses
+                            if (lastScannedData.current === scannedData) {
+                                console.log("Barcode sudah diproses.");
+                                return;
+                            }
+                            lastScannedData.current = scannedData;
+                            console.log(scannedData);
                             setData(scannedData); 
                             saveToSupabase(scannedData); 
                         }
+
+
                         if (error) {
                             toastShownRef.current = true;
                             setError('Tidak dapat membaca barcode. Pastikan kamera menghadap barcode.');

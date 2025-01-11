@@ -1,20 +1,20 @@
-import { createContext, useEffect, useState, useContext } from "react";
+import { createContext, useContext, useEffect } from "react";
 import { supabase } from "../../services/lib/supabaseClient";
 import Cookies from "js-cookie";
 import bcrypt from "bcryptjs";
+import CryptoJS from "crypto-js";
 
 const AuthContext = createContext();
 
-export const AuthContextProvider = ({ children }) => {
-    const [session, setSession] = useState(null);
+// Kunci rahasia untuk enkripsi/dekripsi
+const SECRET_KEY = "pejuterbang"; // Ganti dengan kunci rahasia yang aman
 
-    // Register
+export const AuthContextProvider = ({ children }) => {
+    // Fungsi untuk mendaftarkan pengguna baru
     const registerNewUser = async (fullName, email, password, role, phone, language) => {
         try {
-            // Hash password before saving to database
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            // Insert user data into the 'users' table
             const { data, error } = await supabase.from("users").insert([
                 {
                     fullName: fullName,
@@ -38,13 +38,12 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
-    // Login
+    // Fungsi untuk login
     const login = async (email, password) => {
         try {
-            // Fetch user data by email
             const { data, error } = await supabase
                 .from("users")
-                .select("*")
+                .select("id, fullName, role, password")
                 .eq("email", email)
                 .single();
 
@@ -53,22 +52,25 @@ export const AuthContextProvider = ({ children }) => {
                 return { success: false, error: "User not found" };
             }
 
-            // Validate password
             const isPasswordValid = await bcrypt.compare(password, data.password);
             if (!isPasswordValid) {
                 return { success: false, error: "Invalid password" };
             }
 
-            // Create session data and save to cookies
+            // Data yang akan disimpan dalam cookies
             const sessionData = {
                 id: data.id,
-                email: data.email,
-                fullname: data.fullName,
+                fullName: data.fullName,
                 role: data.role,
             };
 
-            Cookies.set("userSession", JSON.stringify(sessionData), { expires: 1, secure: true });
-            setSession(sessionData);
+            // Encrypt session data before saving to cookies
+            const encryptedData = CryptoJS.AES.encrypt(
+                JSON.stringify(sessionData),
+                SECRET_KEY
+            ).toString();
+
+            Cookies.set("userSession", encryptedData, { expires: 1, secure: true });
 
             return { success: true, data: sessionData };
         } catch (error) {
@@ -77,27 +79,41 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
-    // Log Out
+    // Fungsi untuk logout
     const logOut = async () => {
         try {
             Cookies.remove("userSession");
-            setSession(null);
         } catch (error) {
             console.error("Error during logout: ", error);
         }
     };
 
-    useEffect(() => {
+    // Fungsi untuk mendekripsi sesi dari cookies
+    const decryptSession = () => {
         const savedSession = Cookies.get("userSession");
-
         if (savedSession) {
-            const parsedSession = JSON.parse(savedSession);
-            setSession(parsedSession);
+            try {
+                const bytes = CryptoJS.AES.decrypt(savedSession, SECRET_KEY);
+                return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+            } catch (error) {
+                console.error("Error decrypting session:", error);
+                return null;
+            }
         }
-    }, []);
+        return null;
+    };
+
+    // Fungsi untuk mendapatkan sesi dari cookies
+    const getSession = () => {
+        const savedSession = Cookies.get("userSession");
+        if (savedSession) {
+            return savedSession;
+        }
+        return false;
+    };
 
     return (
-        <AuthContext.Provider value={{ session, login, registerNewUser, logOut }}>
+        <AuthContext.Provider value={{ login, registerNewUser, logOut, decryptSession, getSession }}>
             {children}
         </AuthContext.Provider>
     );

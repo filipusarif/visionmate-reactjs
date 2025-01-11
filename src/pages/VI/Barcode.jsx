@@ -1,31 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../../services/lib/supabaseClient';
+import React, { useState } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
+import useSession from '../../hooks/useSession';
+import { UserAuth } from '../../components/context/AuthContext';
 
 const Barcode = () => {
-    const [userId, setUserId] = useState(null); 
-
-    // Ambil ID user dari sesi login
-    useEffect(() => {
-        const fetchUserId = async () => {
-            const { data, error } = await supabase.auth.getSession();
-            if (error) {
-                console.error("Error fetching session:", error);
-            } else if (data?.session?.user?.id) {
-                setUserId(data.session.user.id); // Set state dengan ID user
-            } else {
-                console.warn("No active session found.");
-            }
-        };
-        fetchUserId();
-    }, []);
+    const { decryptSession } = UserAuth();
+    const [userData, setUserData] = useState(null);
+    useSession(decryptSession, setUserData);
+    
 
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
             <h1 className="text-2xl font-bold mb-4">Generate Barcode</h1>
-            {userId ? (
+            {userData ? (
                 <QRCodeCanvas
-                    value={userId} // Berikan nilai string ke QRCodeCanvas
+                    value={userData.id.toString()} 
                     size={256}
                     level="H"
                     className="shadow-lg"

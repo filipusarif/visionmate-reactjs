@@ -1,37 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { UserAuth } from "../components/context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/fragments/navbar";
 import Hero from "../components/fragments/hero";
 
 const Homepage = () => {
-  const { session, logOut } = UserAuth();
+  const { decryptSession } = UserAuth(); // Gunakan decryptSession
+  const [session, setSession] = useState(null);
   const navigate = useNavigate();
 
-  console.log("homepage",session);
-
-  const handleLogOut = async (e) => {
-    e.preventDefault();
-    try {
-      await logOut();
-      navigate("/");
-    } catch (error) {
-      console.error(error);
+  useEffect(() => {
+    // Mendekripsi sesi dari cookies
+    const sessionData = decryptSession();
+    if (sessionData) {
+      setSession(sessionData);
     }
-  };
+  }, [decryptSession, navigate]);
 
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  
+  console.log("Homepage session:", session);
 
   return (
     <div className="bg-gray-50 w-screen min-h-screen">
       <Navbar session={session}/>
       <Hero />
+
       {/* Hero Section */}
       {/* <header className="container mx-auto px-4 py-16 flex flex-col-reverse lg:flex-row items-center">
         <div className="lg:w-1/2">

@@ -1,29 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { UserAuth } from "../components/context/AuthContext";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
-    const { session } = UserAuth();
+    const { decryptSession } = UserAuth();
+    const [userRole, setUserRole] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
-    if (session === null) {
+    useEffect(() => {
+        // Dekripsi sesi dan simpan role
+        const session = decryptSession();
+        if (session) {
+            setUserRole(session.role);
+        }
+        setIsLoading(false); // Set loading selesai
+    }, [decryptSession]);
+
+    if (isLoading) {
         return <div>Loading...</div>;
     }
 
-    if (!session) {
-        // Redirect ke login jika tidak ada sesi
-        return <Navigate to="/login" />;
-    }
-
-    const userRole = session.role;
-
-    console.log("TESTT",userRole);
     if (!userRole) {
-        console.error("User role is undefined");
-        return <Navigate to="/login" replace />; // Redirect jika role tidak ditemukan
+        console.error("User role is undefined or session is invalid.");
+        return <Navigate to="/login" replace />;
     }
 
     if (!allowedRoles.includes(userRole)) {
-        // Redirect ke halaman tidak diizinkan jika role tidak sesuai
+        console.warn("User does not have permission for this route.");
         return <Navigate to="/" replace />;
     }
 

@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import LocateUserAndRouteMonitoring from "../../elements/locateUser/monitoring";
-import { supabase } from "../../../services/lib/supabaseClient";
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
 
-const MapMonitoring = ({to, id}) => {
-        const [destination, setDestination] = useState([]);
+const MapMonitoring = ({to, id, connections, destination}) => {
+        const [destinationSearch, setDestinationSearch] = useState([]);
         const [placeName, setPlaceName] = useState("");
-        const [audioEnabled, setAudioEnabled] = useState(true);
         const [loading, setLoading] = useState(false);
-        const [connections, setConnections] = useState([]);
 
     
         useEffect(() => {
@@ -42,32 +39,14 @@ const MapMonitoring = ({to, id}) => {
                 }
     
                 const { lat, lon } = data[0];
-                setDestination([parseFloat(lat), parseFloat(lon)]);
+                setDestinationSearch([parseFloat(lat), parseFloat(lon)]);
             } catch (error) {
                 setLoading(false);
                 alert("Gagal mendapatkan lokasi. Coba lagi.");
             }
         };
 
-        // Mendapatkan VI_id yang terhubung
-        useEffect(() => {
-            const fetchConnections = async () => {
-                const { data, error } = await supabase
-                    .from("connections")
-                    .select("latitude, longitude, vi_id")
-                    .eq("guard_id", id);
-
-                if (error) {
-                    console.error("Error fetching connections:", error.message);
-                } else {
-                    setConnections(data);
-                }
-            };
-
-            if (id) {
-                fetchConnections();
-            }
-        }, [id]);
+        
 
     return (
         <div className="relative w-screen h-screen z-0">

@@ -28,7 +28,6 @@ const checkIfConnectionExists = async (id) => {
             console.error("Error checking connection:", error.message);
             return false;
         }
-        console.log(data)
         return data && data.length > 0;
     } catch (error) {
         console.error("Unexpected error while checking connection:", error.message);
@@ -42,14 +41,14 @@ const updateDataLocation = async (id, lat, long) => {
         return;
     }
     const { error } = await supabase
-        .from("connections")
+        .from("users")
         .update({ latitude: lat, longitude: long })
-        .eq("vi_id", id) 
+        .eq("id", id) 
 
     if (error) {
         console.error("Data gagal diupdate:", error.message);
     } else {
-        console.log("Data berhasil diupdate untuk ID:");
+        console.log("Data berhasil diupdate untuk ID");
     }
 };
 
@@ -71,7 +70,6 @@ export default function LocateUserAndRoute({ destination, audioEnabled, id }) {
                 if (updateTimeoutRef.current) clearTimeout(updateTimeoutRef.current);
                 updateTimeoutRef.current = setTimeout(async () => {
                     const exists = await checkIfConnectionExists(id);
-                    console.log("ada",exists)
                     if (exists) {
                         await updateDataLocation(id, latitude, longitude);
                     }
