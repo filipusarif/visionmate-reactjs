@@ -28,7 +28,6 @@ const checkIfConnectionExists = async (id) => {
             console.error("Error checking connection:", error.message);
             return false;
         }
-        console.log(data)
         return data && data.length > 0;
     } catch (error) {
         console.error("Unexpected error while checking connection:", error.message);
@@ -54,10 +53,6 @@ const updateDataLocation = async (id, lat, long) => {
 };
 
 
-
-
-
-
 export default function LocateUserAndRouteMonitoring({ destination, audioEnabled, id, connections}) {
     const map = useMap();
     const routingControlRef = useRef(null);
@@ -66,74 +61,44 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
     const updateTimeoutRef = useRef(null);
     const [markers, setMarkers] = useState([]);
 
-    useEffect(() => {
-        console.log("con", connections)
-    }, [connections])
-
     const handleMarkerClick = (lat, lng) => {
         if (!routingControlRef.current) {
             // Jika routing control belum ada, buat kontrol baru
             routingControlRef.current = L.Routing.control({
                 waypoints: [
-                    L.latLng(userPosition.lat, userPosition.lng), // Titik awal
-                    L.latLng(lat, lng), // Titik tujuan
+                    L.latLng(userPosition.lat, userPosition.lng), 
+                    L.latLng(lat, lng), //titik tujuan
                 ],
                 router: L.Routing.osrmv1({
                     serviceUrl: "https://router.project-osrm.org/route/v1",
-                    profile: "walking", // Menggunakan profil "walking"
+                    profile: "walking", 
                 }),
-                routeWhileDragging: true, // Izinkan pengguna menyeret rute
+                routeWhileDragging: true, 
                 lineOptions: {
-                    styles: [{ color: "blue", weight: 4 }], // Gaya rute
+                    styles: [{ color: "blue", weight: 4 }], 
                 },
-                addWaypoints: false, // Nonaktifkan penambahan waypoints manual
+                addWaypoints: false, 
                 
             }).addTo(map);
         } else {
-            // Jika routing control sudah ada, update titik tujuan
+            
             routingControlRef.current.setWaypoints([
-                L.latLng(userPosition.lat, userPosition.lng), // Posisi pengguna
-                L.latLng(lat, lng), // Titik tujuan
+                L.latLng(userPosition.lat, userPosition.lng), 
+                L.latLng(lat, lng), 
             ]);
         }
     };
 
-    // Fetch user name for each connection
-    const getUserName = async (vi_id) => {
-        try {
-            const { data, error } = await supabase
-                .from("users") // Mengambil data dari tabel auth.users
-                .select("fullName") // Sertakan kolom raw_user_meta_data
-                .eq("id", vi_id);
-    
-            if (error) {
-                console.error("Error fetching user name:", error.message);
-                return null;
-            }
-    
-            if (data && data.length > 0) {
-                const metaData = data[0].raw_user_meta_data;
-                const userName = metaData && metaData.name ? metaData.name : "Unknown User"; // Pastikan properti yang diambil sesuai dengan struktur JSON
-                return userName;
-            }
-    
-            return "Unknown User";
-        } catch (error) {
-            console.error("Unexpected error while fetching user name:", error.message);
-            return null;
-        }
-    };
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            // Cari elemen DOM yang dibuat oleh Leaflet Routing Machine
             const instructions = document.querySelector(".leaflet-routing-container");
             if (instructions) {
-                instructions.style.display = "none"; // Sembunyikan elemen instruksi
+                instructions.style.display = "none"; 
             }
-        }, 500); // Periksa setiap 500ms untuk memastikan elemen hilang
+        }, 500); 
     
-        return () => clearInterval(intervalId); // Bersihkan interval saat komponen di-unmount
+        return () => clearInterval(intervalId); 
     }, []);
     
 
@@ -148,7 +113,6 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
                 if (updateTimeoutRef.current) clearTimeout(updateTimeoutRef.current);
                 updateTimeoutRef.current = setTimeout(async () => {
                     const exists = await checkIfConnectionExists(id);
-                    console.log("ada",exists)
                     if (exists) {
                         await updateDataLocation(id, latitude, longitude);
                     }
@@ -167,7 +131,7 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
                         }),
                         routeWhileDragging: false,
                         lineOptions: {
-                            styles: [{ color: "green", weight: 4 }],
+                            styles: [{ color: "blue", weight: 4 }],
                         },
                         addWaypoints: false,
                     })
@@ -232,14 +196,10 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
         
             const newMarkers = [];
             for (const connection of connections) {
-                // const userName = connection.vi_id; // Anda bisa mengganti dengan nama user sebenarnya
-                const userName = getUserName(connection.vi_id); // Anda bisa mengganti dengan 
-                // nama user sebenarnya
-                console.log(userName);
-                const marker = L.marker([connection.latitude, connection.longitude])
+                const marker = L.marker([connection.users.latitude, connection.users.longitude])
                     .addTo(map)
-                    .bindTooltip(`<strong>${userName}</strong>`, { permanent: true, direction:"top" })
-                    .on("click", () => handleMarkerClick(connection.latitude, connection.longitude)); // Tambahkan event klik
+                    .bindTooltip(`<strong>${connection.users.fullName}</strong>`, { permanent: true, direction:"top" })
+                    .on("click", () => handleMarkerClick(connection.users.latitude, connection.users.longitude)); // Tambahkan event klik
         
                 newMarkers.push(marker);
             }
@@ -248,19 +208,16 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
         };
         
 
-        // Set up an interval to fetch and update markers setiap 3 detik
         const intervalId = setInterval(() => {
             if (connections.length > 0) {
                 addConnectionMarkers();
             }
-        }, 3000); // 3000ms = 3 detik
+        }, 3000); 
 
-        // Cleanup interval ketika komponen di-unmount
         return () => {
             clearInterval(intervalId);
         };
     }, [connections, map, markers]);
-
 
     return null;
 }

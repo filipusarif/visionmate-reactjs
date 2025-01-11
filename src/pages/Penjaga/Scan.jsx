@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { QrReader } from 'react-qr-reader';
 import { supabase } from '../../services/lib/supabaseClient';
 import { toast, ToastContainer } from 'react-toastify'; 
+import { UserAuth } from '../../components/context/AuthContext';
+import useSession from '../../hooks/useSession';
 import 'react-toastify/dist/ReactToastify.css';
-import Cookies from 'js-cookie';
+
 
 
 const Scan = () => {
@@ -11,23 +14,25 @@ const Scan = () => {
     const [error, setError] = useState(null); // Menyimpan error (jika ada)
     const [status, setStatus] = useState(''); // Status penyimpanan ke Supabase
     const guardId = useRef(null);
+    const lastScannedData = useRef(null); // Tambahan untuk mencegah duplikasi
     const toastShownRef = useRef(true); 
     const toastVisibleRef = useRef(false);
+    const navigate = useNavigate();
 
-    // Ambil ID guard dari sesi login
+
+    const { decryptSession } = UserAuth();
+    const [userData, setUserData] = useState(null);
+    useSession(decryptSession, setUserData);
+
     useEffect(() => {
-        const savedSession = Cookies.get("userSession");
-        if (savedSession) {
-            try {
-                const parsedSession = JSON.parse(savedSession);
-                guardId.current = parsedSession.id
-            } catch (error) {
-                console.error("Error parsing session cookies:", error);
-            }
-        } else {
-            console.warn("No session cookies found.");
+        if (userData) {
+            guardId.current = userData.id;
         }
-    }, []);
+    }, [userData]);
+
+    useEffect(() => {
+        console.log(guardId.current)
+    }, [guardId])
 
 
     const checkIfBarcodeExists = async (scannedData) => {
@@ -36,6 +41,7 @@ const Scan = () => {
             .select('vi_id, guard_id')
             .eq('vi_id', scannedData)
             .eq('guard_id', guardId.current)
+            .single()
 
         if (error) {
             console.error("Error checking barcode:", error);
@@ -104,6 +110,8 @@ const Scan = () => {
                     });
                 } 
             }
+
+            navigate("/guard/monitoring")
         } catch (err) {
             console.error(err);
             setStatus('Gagal menyimpan data.');
@@ -121,6 +129,12 @@ const Scan = () => {
                 }
             }
         }
+
+        // Reset lastScannedData setelah beberapa waktu (opsional)
+        setTimeout(() => {
+            lastScannedData.current = null;
+        }, 1000); // Reset setelah 5 detik
+
     };
 
     return (
@@ -132,10 +146,18 @@ const Scan = () => {
                     onResult={(result, error) => {
                         if (result) {
                             const scannedData = result.text;
+                            // Periksa apakah barcode sudah diproses
+                            if (lastScannedData.current === scannedData) {
+                                console.log("Barcode sudah diproses.");
+                                return;
+                            }
+                            lastScannedData.current = scannedData;
                             console.log(scannedData);
                             setData(scannedData); 
                             saveToSupabase(scannedData); 
                         }
+
+
                         if (error) {
                             toastShownRef.current = true;
                             setError('Tidak dapat membaca barcode. Pastikan kamera menghadap barcode.');

@@ -1,46 +1,59 @@
-import { useRef, useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import MapMonitoring from "../../components/fragments/mapmonitoring";
 import MonitoringContent from "../../components/fragments/monitoringcontent";
+import useSession from "../../hooks/useSession";
+import { UserAuth } from "../../components/context/AuthContext";
 import { supabase } from "../../services/lib/supabaseClient";
-import Cookies from 'js-cookie';
 
 
 const Monitoring = () => {
-    const [guardId, setGuardId] = useState(null);
+    const { decryptSession } = UserAuth();
+    const [userData, setUserData] = useState(null);
+    const [connections, setConnections] = useState([]);
+    const [destination, setDestination] = useState([]);
 
-    // Ambil ID user dari sesi login
-    useEffect(() => {
-        const savedSession = Cookies.get("userSession");
-        if (savedSession) {
-            try {
-                const parsedSession = JSON.parse(savedSession);
-                setGuardId(parsedSession.id); 
-            } catch (error) {
-                console.error("Error parsing session cookies:", error);
-            }
-        } else {
-            console.warn("No session cookies found.");
-        }
-    }, []);
+    useSession(decryptSession, setUserData);
 
+    const handleDestination = (data) => {
+        setDestination(data);
+        
+    }
+
+
+    // Mendapatkan VI_id yang terhubung
     useEffect(() => {
-            const savedSession = Cookies.get("userSession");
-            if (savedSession) {
-                try {
-                    const parsedSession = JSON.parse(savedSession);
-                    setGuardId(parsedSession.id);
-                } catch (error) {
-                    console.error("Error parsing session cookies:", error);
-                }
-            } else {
-                console.warn("No session cookies found.");
-            }
-        }, []);
+        const fetchConnections = async () => {
+            if (userData && userData.id) {
+                const { data, error } = await supabase
+                    .from("connections")
+                    .select(`
+                        vi_id,
+                        users:vi_id (fullName, phone, latitude, longitude, photo, destination, duration, status)
+                    `)
+                    .eq("guard_id", userData.id);
     
+                if (error) {
+                    console.error("Error fetching connections:", error.message);
+                } else {
+                    setConnections(data);
+                }
+            }
+        };
+    
+        fetchConnections();
+    }, [userData]);
+    
+
     return (
         <section className="flex md:flex-row flex-col-reverse w-screen h-screen relative">
-            <MonitoringContent id={guardId}/>
-            <MapMonitoring to={null} id={guardId}/>
+            {userData ? (
+                <>
+                    <MonitoringContent setDestination={handleDestination} id={userData.id} connections={connections}/>
+                    <MapMonitoring to={null} id={userData.id} connections={connections} destination={destination}/>
+                </>
+            ) : (
+                <p>Loading...</p>
+            )}
         </section>
     )
 }

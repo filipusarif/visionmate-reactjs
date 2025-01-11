@@ -1,34 +1,7 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../../../services/lib/supabaseClient";
 
+const MonitoringContent = ({ id, connections, setDestination }) => {
 
-const MonitoringContent = ({ id }) => {
-
-    const [connectionss, setConnections] = useState([]);
-
-    useEffect(() => {
-        const fetchConnections = async () => {
-            const { data, error } = await supabase
-                .from("connections")
-                .select("latitude, longitude, vi_id")
-                .eq("guard_id", id);
-
-            if (error) {
-                console.error("Error fetching connections:", error.message);
-            } else {
-                setConnections(data);
-            }
-        };
-        console.log("id", id)
-
-        if (id) {
-            fetchConnections();
-        }
-    }, [id]);
-
-    useEffect(() => {
-        console.log("content",connectionss)
-    },[connectionss])
 
     return (
         <section className="md:w-[35vw] md:h-screen w-screen h-[50%] p-5 flex flex-col gap-3">
@@ -76,28 +49,29 @@ const MonitoringContent = ({ id }) => {
 
             {/* Connections List */}
             <div className="flex flex-col gap-4">
-                {connectionss.map((connection) => (
+                {connections.map((connection) => (
                     <div
-                        key={connection.vi_id}
-                        className="flex items-center gap-4 p-4 bg-white shadow rounded-lg"
+                        key={connection.users.vi_id}
+                        className="flex items-center gap-4 p-4 bg-white shadow rounded-lg cursor-pointer"
+                        onClick={() => setDestination([connection.users.latitude, connection.users.longitude])}
                     >
                         {/* Profile Picture */}
                         <img
-                            src={connection.profile_url || "/placeholder-profile.jpg"}
-                            alt={connection.vi_name}
+                            src={connection.users.photo || "/placeholder-profile.jpg"}
+                            alt={connection.users.fullName}
                             className="w-12 h-12 rounded-full object-cover"
                         />
                         {/* Name and Status */}
                         <div className="flex-1">
-                            <h3 className="font-medium text-gray-800">{connection.vi_id}</h3>
+                            <h3 className="font-medium text-gray-800">{connection.users.fullName}</h3>
                             <p className="text-sm text-gray-500">
-                                Waktu berjalan: {connection.duration} Menit
+                                Waktu berjalan: {connection.users.duration} Menit
                             </p>
                         </div>
                         {/* Active Status Indicator */}
                         <div
                             className={`w-3 h-3 rounded-full ${
-                                connection.active_status ? "bg-green-500" : "bg-gray-300"
+                                connection.users.status ? "bg-green-500" : "bg-gray-300"
                             }`}
                         ></div>
                     </div>

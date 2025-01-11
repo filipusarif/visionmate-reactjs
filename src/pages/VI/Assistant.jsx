@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import MapComponent from "../../components/fragments/map";
 import Camera from "../../components/fragments/camera";
 import MateContent from "../../components/fragments/matecontent";
-import { supabase } from "../../services/lib/supabaseClient";
-import Cookies from 'js-cookie';
+import useSession from "../../hooks/useSession";
+import { UserAuth } from "../../components/context/AuthContext";
 
 
 const Assistant = () => {
@@ -15,27 +15,10 @@ const Assistant = () => {
     const closeTimer = useRef(null);
     const recognitionRef = useRef(null);
     const [ map, setMap ] = useState("");
-    const [userId, setUserId] = useState(null);
 
-
-    // Ambil ID user dari sesi login
-    useEffect(() => {
-        const savedSession = Cookies.get("userSession");
-        if (savedSession) {
-            try {
-                const parsedSession = JSON.parse(savedSession);
-                setUserId(parsedSession.id); 
-            } catch (error) {
-                console.error("Error parsing session cookies:", error);
-            }
-        } else {
-            console.warn("No session cookies found.");
-        }
-    }, []);
-
-    useEffect(() => {
-        console.log("id", userId)
-    }, [userId])
+    const { decryptSession } = UserAuth();
+    const [userData, setUserData] = useState(null);
+    useSession(decryptSession, setUserData);
     
     // Initialize Speech Recognition
     useEffect(() => {
@@ -103,9 +86,7 @@ const Assistant = () => {
 
     // Fungsi untuk menerima data dari child
     const handleDataFromChild = (data) => {
-        // setDataFromChild(data);
         setCameraResponse(data);
-        console.log('Data dari Child:', data);
     };
 
     const handleDataMap = (data) =>{
@@ -126,17 +107,24 @@ const Assistant = () => {
             onTouchStart={handleMouseDown}
             onTouchEnd={handleMouseUp}
         >
-            <MapComponent to={map} id={userId}/>
-            <Camera setCameraResponse={handleDataFromChild} /> {/* Kirim handler ke Camera */}
-            <MateContent message={transcript} responseTxt={cameraResponse} setMap={handleDataMap}/> {/* Kirim response ke MateContent */}
-            {showPopup && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-white p-4 rounded shadow w-[40%] h-[30%] flex justify-center items-center flex-col">
-                        <p>Halo Mate, Ada apa?</p>
-                        <p>{isListening && "Mendengarkan..."}</p>
-                    </div>
-                </div>
+            {userData ? (
+                <>
+                    <MapComponent to={map} id={userData.id}/>
+                    <Camera setCameraResponse={handleDataFromChild} /> {/* Kirim handler ke Camera */}
+                    <MateContent message={transcript} responseTxt={cameraResponse} setMap={handleDataMap}/> {/* Kirim response ke MateContent */}
+                    {showPopup && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                            <div className="bg-white p-4 rounded shadow w-[40%] h-[30%] flex justify-center items-center flex-col">
+                                <p>Halo Mate, Ada apa?</p>
+                                <p>{isListening && "Mendengarkan..."}</p>
+                            </div>
+                        </div>
+                    )}
+                </>
+            ) : (
+                <p>Loading...</p>
             )}
+            
         </section>
     );
 };

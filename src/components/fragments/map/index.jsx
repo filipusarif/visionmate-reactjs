@@ -12,10 +12,6 @@ const MapComponent = ({ to, id }) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        console.log("id diterima", id)
-    },[id])
-
-    useEffect(() => {
         if (to) {
             setPlaceName(to);
         }
