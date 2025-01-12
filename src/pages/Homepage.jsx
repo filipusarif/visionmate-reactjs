@@ -7,6 +7,8 @@ import Feature from "../components/fragments/feature";
 import Pricing from "../components/fragments/pricing";
 import Demo from "../components/fragments/demo";
 import Feedback from "../components/fragments/feedback";
+import FAQ from "../components/fragments/faq";
+import Footer from "../components/fragments/footer";
 
 const Homepage = () => {
   const { decryptSession } = UserAuth(); // Gunakan decryptSession
@@ -29,6 +31,8 @@ const Homepage = () => {
       <Pricing />
       <Demo />
       <Feedback />
+      <FAQ />
+      <Footer />
     </div>
   );
 };
