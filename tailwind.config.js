@@ -23,7 +23,7 @@ export default {
       transparent: 'transparent',
       current: 'currentColor',
       primary: '#5B56FB',
-      secondary: '#2563EB',
+      secondary: '#196EF3',
       'complementary': '#334155',
       'background':'#FFFFFF',
       'primary-hover':'#534FDE',

@@ -48,7 +48,7 @@ export default function Pricing(){
         </section>
         <section className="w-screen min-h-screen container mx-auto flex justify-center items-center md:px-32">
         {prices.map((price, index) => (
-            <PricingCard key={index} classes={""} plan={price} />
+            <PricingCard key={index} plan={price} />
         ))}
         </section>
         </>

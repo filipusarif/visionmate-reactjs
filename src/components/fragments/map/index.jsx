@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
 
 
-const MapComponent = ({ to, id }) => {
+const MapComponent = ({ to, id, children }) => {
     const [destination, setDestination] = useState([]);
     const [placeName, setPlaceName] = useState("");
     const [audioEnabled, setAudioEnabled] = useState(true);
@@ -54,14 +54,7 @@ const MapComponent = ({ to, id }) => {
                     <div className="spinner" />
                 </div>
             )}
-            {/* <div className="absolute top-4 left-4 z-20">
-                <button
-                    onClick={() => setAudioEnabled(!audioEnabled)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded"
-                >
-                    {audioEnabled ? "Matikan Suara" : "Aktifkan Suara"}
-                </button>
-            </div> */}
+            {children}
             <MapContainer
                 center={[-6.983056, 110.4186]}
                 zoom={13}

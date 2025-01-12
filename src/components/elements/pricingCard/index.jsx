@@ -1,6 +1,5 @@
-import { useEffect } from "react"
 
-export default function PricingCard({ classes, plan  }){
+export default function PricingCard({  plan  }){
 
     return (
         <>

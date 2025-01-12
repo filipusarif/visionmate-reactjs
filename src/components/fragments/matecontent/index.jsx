@@ -160,10 +160,10 @@ export default function MateContent({ message, responseTxt, setMap }) {
   };
 
   return (
-    <div className="md:w-[30vw] md:h-screen w-screen h-[50%] p-5 flex flex-col gap-3">
-      <h1 className="text-2xl mb-4">Hello Chat</h1>
+    <div className="md:w-[30vw] border-t-8 border-secondary md:h-screen w-screen h-[30rem] p-4 flex flex-col gap-3">
+      <h1 className="text-2xl mb-4">Chat Mate</h1>
 
-      <div className="chat-box p-4 border rounded bg-gray-50 basis-5/6 overflow-y-auto mb-4">
+      <div className="chat-box p-2  rounded  basis-5/6 overflow-y-auto mb-4">
         {messages.map((msg, index) => (
           <div
             key={index}
@@ -171,12 +171,15 @@ export default function MateContent({ message, responseTxt, setMap }) {
               msg.sender === "user" ? "text-right" : "text-left"
             }`}
           >
+            {msg.sender =="ai" ?? (
+              <img src="" alt="" />
+            )}
             <div
               className={`inline-block ${
                 msg.sender === "user"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 text-black"
-              } p-2 rounded-lg my-2`}
+                  ? "bg-secondary text-white rounded-br-xl"
+                  : "bg-gray-200 text-black rounded-bl-xl"
+              } p-2 rounded-full my-2`}
             >
               <p>
                 {typeof msg.text === "string"
@@ -195,7 +198,7 @@ export default function MateContent({ message, responseTxt, setMap }) {
         )}
       </div>
 
-      <div className="flex flex-col gap-4 basis-1/6">
+      {/* <div className="flex flex-col gap-4 basis-1/6">
         <form onSubmit={handleSubmitType} className="flex items-center gap-3">
           <input
             type="text"
@@ -206,12 +209,12 @@ export default function MateContent({ message, responseTxt, setMap }) {
           />
           <button
             type="submit"
-            className="p-2 bg-blue-500 basis-1/6 text-white rounded"
+            className="p-2 bg-secondary basis-1/6 text-white rounded"
           >
             Submit
           </button>
         </form>
-      </div>
+      </div> */}
     </div>
   );
 }

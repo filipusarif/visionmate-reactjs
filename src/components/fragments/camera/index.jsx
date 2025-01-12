@@ -8,7 +8,7 @@ export default function Camera({ setCameraResponse }) {
 
     const constraints = {
         video: {
-            facingMode: isFrontCamera ? "user" : "environment",
+            facingMode: isFrontCamera ? "environment" : "user",
         },
     };
 
@@ -77,8 +77,8 @@ export default function Camera({ setCameraResponse }) {
     }, [setCameraResponse]);
 
     return (
-        <div className="absolute z-50 w-fit h-fit md:right-5 md:bottom-7 ">
-            <video ref={videoRef} autoPlay playsInline className="rounded-md h-[150px] " ></video>
+        <div className="absolute z-50 w-fit h-fit bottom-4 left-4 md:right-5 md:bottom-7 md:left-auto">
+            <video ref={videoRef} autoPlay playsInline className="rounded-md h-[5rem] md:h-[150px] " ></video>
             <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
             {/* <button onClick={switchCamera} className="absolute -bottom-11 left-4 bg-blue-500 text-white p-2 rounded">
                 Switch Camera

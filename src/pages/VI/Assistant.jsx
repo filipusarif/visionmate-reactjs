@@ -112,9 +112,11 @@ const Assistant = () => {
             >
                 {userData ? (
                     <>
-                        <MapComponent to={map} id={userData.id}/>
-                        <Camera setCameraResponse={handleDataFromChild} /> {/* Kirim handler ke Camera */}
-                        <MateContent message={transcript} responseTxt={cameraResponse} setMap={handleDataMap}/> {/* Kirim response ke MateContent */}
+                        <MapComponent to={map} id={userData.id}> 
+                            <Camera setCameraResponse={handleDataFromChild} />
+                        </MapComponent>
+                        <MateContent message={transcript} responseTxt={cameraResponse} setMap={handleDataMap} /> 
+                        
                         {showPopup && (
                             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                                 <div className="bg-white p-4 rounded shadow w-[40%] h-[30%] flex justify-center items-center flex-col">
