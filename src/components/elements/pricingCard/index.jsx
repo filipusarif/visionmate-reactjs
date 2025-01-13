@@ -4,7 +4,7 @@ export default function PricingCard({  plan  }){
     return (
         <>
             <div
-            className={`flex flex-col items-center text-center border rounded-lg p-6 ${
+            className={`flex w-full flex-col items-center text-center border rounded-lg p-6 ${
                 plan.popular
                 ? "bg-blue-50 border-secondary shadow-lg scale-105 w-[40%]"
                 : "bg-white border-gray-200 w-[30%]"

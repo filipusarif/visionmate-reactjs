@@ -3,12 +3,12 @@ import { Link } from "react-router-dom"
 export default function Demo(){
     return (    
         <>
-        <section className="w-screen h-[70vh] bg-[#F4F8FB] flex gap-16 items-center container mx-auto py-10">
-            <main className="w-1/2 h-full flex flex-col justify-center items-start gap-5">
+        <section className="w-screen min-h-[70vh] bg-[#F4F8FB] flex lg:flex-row flex-col-reverse gap-16 items-center container mx-auto py-10">
+            <main className="lg:w-1/2 w-full h-full flex flex-col justify-center items-start gap-5">
                 <h1 className="font-extrabold text-5xl">Demo Video</h1>
                 <p className="font-normal text-lg leading-8">Kami berkomitmen mendukung pengguna tunanetra berpenghasilan rendah dengan menyediakan layanan berkualitas tinggi dengan biaya terjangkau. Visi kami adalah memperluas aksesibilitas bagi mereka yang membutuhkan, sekaligus menginspirasi pengguna lain untuk mencapai potensi terbaik mereka.</p>
             </main>
-            <div className="w-1/2 h-full relative flex justify-center items-center">
+            <div className="lg:w-1/2 w-full h-full relative flex justify-center items-center">
             <video
                 src="assets/videos/demo.mkv"
                 className="h-[80%] object-cover rounded-lg shadow-lg shadow-dark-white"
@@ -18,12 +18,12 @@ export default function Demo(){
             ></video>
         </div>
         </section>
-        <section className="w-screen h-[50vh] overflow-hidden relative flex justify-center items-center gap-5 flex-col bg-primary text-background">
-            <img className="absolute right-0 bottom-0" src="assets/images/Ellipsekanan.svg" alt="" />
-            <img className="absolute left-0 -bottom-80" src="assets/images/Ellipsekiri.svg" alt="" />
-            <h1 className="font-extrabold text-4xl">Mulai Perjalanan Anda Bersama Kami!</h1>
-            <p className="text-xl font-light">Turpis purus, imperdiet integer amet, eu.</p>
-            <Link className="font-bold text-lg py-3 px-7 bg-dark text-background rounded-lg">Daftar Sekarang</Link>
+        <section className="w-screen h-[30vh] md:h-[50vh] overflow-hidden relative flex justify-center items-center gap-3  md:gap-5 flex-col bg-primary text-background">
+            <img className="absolute right-0 bottom-0 z-0" src="assets/images/Ellipsekanan.svg" alt="" />
+            <img className="absolute left-0 w-[70%] lg:w-auto  -bottom-80 lg:-bottom-50 z-0" src="assets/images/Ellipsekiri.svg" alt="" />
+            <h1 className="font-extrabold text-xl md:text-4xl z-10 ">Mulai Perjalanan Anda Bersama Kami!</h1>
+            <p className=" text-lg md:text-xl font-light z-10">Turpis purus, imperdiet integer amet, eu.</p>
+            <Link className="font-bold text-lg py-3 px-7 bg-dark z-10 text-background rounded-lg">Daftar Sekarang</Link>
         </section>
         </>
     )

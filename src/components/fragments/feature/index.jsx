@@ -38,7 +38,7 @@ const Feature = () => {
 
     return (
         <>
-            <section className="bg-[#F4F8FB] h-[60vh] w-screen flex gap-10 justify-center items-center container mx-auto">
+            <section className="bg-[#F4F8FB] min-h-[60vh] py-10 w-screen flex flex-col lg:flex-row gap-16 lg:gap-10 justify-center items-center container mx-auto">
                 <Card image={"assets/images/feat/2.svg"} title={"Navigasi"} text={"Navigasi kami memastikan panduan akurat dan nyaman."} color={"bg-[#D1FAE5]"}/>
                 <Card image={"assets/images/feat/3.svg"} title={"Pendeteksi Rintangan"} text={"Mengidentifikasi objek yang menghalangi jalan bagi pengguna."} color={"bg-[#CFFAFE]"}/>
                 <Card image={"assets/images/feat/1.svg"} title={"Sinyal Bantuan"} text={"Mengirim pesan darurat ke pendamping saat membutuhkan bantuan."} color={"bg-[#DBEAFE]"}/>
@@ -46,16 +46,16 @@ const Feature = () => {
             </section>
             <section className="w-screen min-h-screen flex flex-col gap-16 justify-center items-center py-20 container mx-auto">
                 <div className="flex text-center flex-col gap-2">
-                    <h1 className="text-[56px] font-extrabold">Intergrasi Kecerdasan Buatan</h1>
-                    <p className="text-lg font-normal">Sistem kami telah menerapkan kecerdasan buatan untuk membantu user dalam pengguna</p>
+                    <h1 className="text-2xl lg:text-[56px] font-extrabold">Intergrasi Kecerdasan Buatan</h1>
+                    <p className="text-md lg:text-lg font-normal">Sistem kami telah menerapkan kecerdasan buatan untuk membantu user dalam pengguna</p>
                 </div>
-                <main className="flex justify-center items-center w-full h-full gap-10">
-                    <div className="w-1/2 relative h-fit flex justify-center items-center">
-                        <div className="absolute w-[30rem] h-[30rem] rounded-full border-8 border-danger"/>
-                        <div className="absolute w-[25rem] h-[25rem] rounded-full border-2 border-danger"/>
+                <main className="flex flex-col lg:flex-row justify-center items-center w-full h-full gap-10">
+                    <div className="w-full lg:w-1/2 relative h-fit flex justify-center items-center">
+                        <div className="absolute hidden lg:block w-[30rem] h-[30rem] rounded-full border-8 border-danger"/>
+                        <div className="absolute hidden lg:block w-[25rem] h-[25rem] rounded-full border-2 border-danger"/>
                         <video
                         src="assets/videos/baammsss.mp4"
-                        className="h-[50rem] z-10 object-cover rounded-lg border-8 border-slate-500 shadow-xl"
+                        className=" w-full lg:w-auto lg:h-[50rem] z-10 object-cover rounded-lg border-8 border-slate-500 shadow-xl"
                         autoPlay
                         loop
                         muted

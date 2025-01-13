@@ -31,9 +31,9 @@ const FAQ = () => {
     };
 
     return (
-        <div className="max-w-2xl mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold text-center mb-6">Answers to your questions</h2>
-        <div className="space-y-4">
+        <div className="container mx-auto px-4 py-20">
+        <h2 className="text-2xl  font-bold text-center mb-6">Answers to your questions</h2>
+        <div className="space-y-4 w-full md:w-[80%] mx-auto ">
             {faqs.map((faq, index) => (
             <div
                 key={index}
@@ -41,13 +41,13 @@ const FAQ = () => {
             >
                 <button
                 onClick={() => toggleFAQ(index)}
-                className="flex justify-between items-center w-full text-left text-gray-800 font-medium text-lg"
+                className="flex justify-between items-center w-full text-left text-secondary font-medium text-lg"
                 >
                 {faq.question}
                 <span
                     className={`transform transition-transform duration-300 ${openIndex === index ? "rotate-180" : "rotate-0"}`}
                 >
-                    &#9660;
+                    <img src="assets/images/arrow-down.svg" alt="" className="w-[50px] md:w-auto"/>
                 </span>
                 </button>
                 <div
