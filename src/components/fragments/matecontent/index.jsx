@@ -7,6 +7,23 @@ export default function MateContent({ message, responseTxt, setMap }) {
   const [messages, setMessages] = useState([]);
   const isFirstRender = useRef(true);
 
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+
+      // Pesan sapaan awal
+      const initialMessage = "Halo mate, kamu di halaman assisten! mau pergi?";
+      setMessages([{ sender: "ai", text: initialMessage }]);
+
+      // Text-to-Speech untuk pesan awal
+      const synth = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(initialMessage);
+      utterance.lang = "id-ID";
+      synth.speak(utterance);
+    }
+  }, []); // Dipanggil sekali saat komponen dirender
+
   useEffect(() => {
     if (message) {
       handleSubmitVoice(message);
@@ -160,26 +177,27 @@ export default function MateContent({ message, responseTxt, setMap }) {
   };
 
   return (
-    <div className="md:w-[30vw] border-t-8 border-secondary md:h-screen w-screen h-[30rem] p-4 flex flex-col gap-3">
+    <div className="md:w-[30vw]  relative z-10 border-secondary shadow-xl border-t-[25px] md:h-screen w-screen min-h-[20rem] max-h-[20rm] p-4 flex flex-col gap-3 rounded-t-xl ">
+      <div className="w-[20%] left-[40%] h-[5px] bg-background absolute -top-3.5 rounded-full z-50" />
       <h1 className="text-2xl mb-4">Chat Mate</h1>
-
       <div className="chat-box p-2  rounded  basis-5/6 overflow-y-auto mb-4">
         {messages.map((msg, index) => (
           <div
             key={index}
             className={`chat-message ${
-              msg.sender === "user" ? "text-right" : "text-left"
+              msg.sender === "user" ? "text-right" : "text-left flex gap-3 items-center"
             }`}
           >
-            {msg.sender =="ai" ?? (
-              <img src="" alt="" />
+            {msg.sender !== "user" && (
+            <img src="assets/images/profile.svg" alt="" />
             )}
+            
             <div
               className={`inline-block ${
                 msg.sender === "user"
-                  ? "bg-secondary text-white rounded-br-xl"
-                  : "bg-gray-200 text-black rounded-bl-xl"
-              } p-2 rounded-full my-2`}
+                  ? "bg-secondary text-white rounded-br-none"
+                  : "bg-gray-200 text-black rounded-bl-none"
+              } p-2 rounded-3xl my-2`}
             >
               <p>
                 {typeof msg.text === "string"
