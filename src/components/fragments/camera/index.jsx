@@ -53,7 +53,7 @@ export default function Camera({ setCameraResponse }) {
                     formData.append("api_key", import.meta.env.VITE_NEVA_API_KEY);
 
                     try {
-                        const response = await fetch(import.meta.env.VITE_API_URL+"/detectnev/", {
+                        const response = await fetch(import.meta.env.VITE_API_URL+"/detectneva/", {
                             method: "POST",
                             body: formData,
                         });
