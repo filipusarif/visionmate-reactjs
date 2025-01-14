@@ -53,14 +53,16 @@ const Register = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col md:flex-row items-center bg-gray-50">
+        <div className="h-screen w-screen overflow-hidden flex flex-col md:flex-row items-center bg-gray-50">
             {/* Form Section */}
-            <form onSubmit={handleRegister} className="flex-1 px-8 py-12 space-y-6">
-                <div className="text-center mb-4">
-                    <img src="/src/assets/images/Logo.svg" alt="VisionMate" className="w-16 mx-auto" />
+            <div className="container mx-auto">
+
+            <form onSubmit={handleRegister} className="flex-1 px-8 py-12 space-y-6 w-full md:w-[65%] z-50">
+                <Link to="/" className="text-center mb-4">
+                    <img src="assets/images/auth/Logo.svg" alt="VisionMate" className="w-16 mx-auto" />
                     <h2 className="text-2xl font-bold text-blue-600">VisionMate</h2>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                </Link>
+                <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
                     <div className="flex flex-col">
                         <label htmlFor="fullName" className="text-gray-700 text-sm mb-1">Nama Lengkap</label>
                         <input
@@ -81,7 +83,7 @@ const Register = () => {
                             placeholder="Alamat Email"
                             required
                             className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-                        />
+                            />
                     </div>
                     <div className="flex flex-col">
                         <label htmlFor="phone" className="text-gray-700 text-sm mb-1">Nomor Telepon</label>
@@ -127,7 +129,7 @@ const Register = () => {
                             placeholder="Konfirmasi Password"
                             required
                             className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-                        />
+                            />
                     </div>
                 </div>
                 <div className="text-sm font-medium text-gray-700 mt-4">Silahkan pilih peran Anda:</div>
@@ -140,7 +142,7 @@ const Register = () => {
                             checked={role === 'VI'}
                             onChange={() => setRole('VI')}
                             className="mr-2"
-                        />
+                            />
                         VI
                     </label>
                     <label className="flex items-center">
@@ -164,6 +166,12 @@ const Register = () => {
                     />
                     <span className="text-sm text-gray-700">Dengan mencentang tombol disamping, anda telah menyetujui syarat dan ketentuan.</span>
                 </div>
+                <p className="text-sm text-gray-600 mb-6">
+                    Sudah Memiliki akun?{' '}
+                    <Link to="/login" className="text-blue-500 hover:underline">
+                        Masuk
+                    </Link>
+                </p>
                 <button
                     type="submit"
                     disabled={loading}
@@ -173,14 +181,12 @@ const Register = () => {
                 </button>
                 {error && <p className='text-red-700 text-center pt-4'>{error}</p>}
             </form>
-
-            {/* Illustration Section */}
-            <div className="flex-1 justify-center items-center overflow-y-hidden">
-                <img src="/src/assets/images/Rectangle 3.svg" alt="Element 1" className="absolute top-0 right-0 z-0" />
-                <img src="/src/assets/images/Rectangle 2.svg" alt="Element 1" className="absolute top-0 right-0 max-h-sm z-1" />
-                <img src="/src/assets/images/Rectangle 1.svg" alt="Element 1" className="absolute top-0 right-0 max-h-sm z-2" />
-                <img src="/src/assets/images/Rectangle 4.svg" alt="Element 1" className="absolute bottom-0 right-0 z-3" />
+            
             </div>
+            <img src="assets/images/auth/Group 2683.svg" alt="" className='absolute right-40 bottom-64 z-20 hidden md:block '/>
+                <img src="assets/images/auth/Group 2682.svg" alt="" className='absolute right-14 bottom-16 z-20 w-[19rem] hidden md:block '/>
+                <img src="assets/images/auth/Group 2654.svg" alt="" className='absolute -right-20 hidden md:block md:w-[30rem] lg:w-[40rem]  xl:w-[50rem]  h-screen z-10' />
+            <img src="assets/images/auth/Group 1.svg" alt="" className='z-20 absolute right-8 bg-background p-[15px] rounded-full hidden md:block ' />
         </div>
     );
 };
