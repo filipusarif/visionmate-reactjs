@@ -2,35 +2,33 @@ import PricingCard from "../../elements/pricingCard";
 
 const prices = [
     {
-        name: "Basic",
-        price: "80.000",
+        name: "Silver",
+        price: "Gratis",
         popular: false,
         features: [
-                "Consequat ex proident",
-                "Consequat ex proident",
-                "Consequat ex proident",
+                "Akses semua fitur",
+                "Tongkat penglihatan",
+                "Layanan prioritas",
         ],
     },
     {
-        name: "Essential",
-        price: "140.000",
+        name: "Diamond",
+        price: "159.999",
         popular: true,
         features: [
-                "Consequat ex proident",
-                "Consequat ex proident",
-                "Consequat ex proident",
-                "Consequat ex proident",
-                "Consequat ex proident",
+                "Akses semua fitur",
+                "Tongkat penglihatan",
+                "Layanan prioritas",
         ],
     },
     {
-        name: "Premium",
-        price: "100.000",
+        name: "Gold",
+        price: "129.999",
         popular: false,
         features: [
-                "Consequat ex proident",
-                "Consequat ex proident",
-                "Consequat ex proident",
+                "Akses semua fitur",
+                "Tongkat penglihatan",
+                "Layanan prioritas",
         ],
     },
     
@@ -45,7 +43,7 @@ export default function Pricing(){
                 <div className="absolute h-[30rem] z-0 w-[30rem]  lg:w-[40rem] lg:h-[40rem] border-2 border-background rounded-full opacity-50"/>
                 <div className="container w-full flex  flex-col justify-center items-center">
                 <h1 className="text-4xl lg:text-5xl text-background font-extrabold">Harga Terjangkau!</h1>
-                <p className="text-lg text-center text-background opacity-85 font-normal">Ut aliquip anim laboris deserunt do cillum id amet aute veniam do do.</p>
+                <p className="text-lg text-center text-background opacity-85 font-normal">Bantu Kemandirian, Tanpa Menguras Banyak Anggaran</p>
                 </div>
             </section>
             <section className="w-screen min-h-screen py-14 container mx-auto gap-5 lg:gap-0 flex flex-col lg:flex-row justify-center items-center lg:px-32">

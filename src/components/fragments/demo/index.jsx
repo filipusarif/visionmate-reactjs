@@ -22,7 +22,7 @@ export default function Demo(){
             <img className="absolute right-0 bottom-0 z-0" src="assets/images/Ellipsekanan.svg" alt="" />
             <img className="absolute left-0 w-[70%] lg:w-auto  -bottom-80 lg:-bottom-50 z-0" src="assets/images/Ellipsekiri.svg" alt="" />
             <h1 className="font-extrabold text-xl md:text-4xl z-10 ">Mulai Perjalanan Anda Bersama Kami!</h1>
-            <p className=" text-lg md:text-xl font-light z-10">Turpis purus, imperdiet integer amet, eu.</p>
+            <p className=" text-lg md:text-xl font-light z-10">Segera daftarkan diri anda di VisionMate</p>
             <Link className="font-bold text-lg py-3 px-7 bg-dark z-10 text-background rounded-lg">Daftar Sekarang</Link>
         </section>
         </>
