@@ -6,6 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { UserAuth } from '../../components/context/AuthContext';
 import useSession from '../../hooks/useSession';
 import 'react-toastify/dist/ReactToastify.css';
+import Navbar from '../../components/fragments/navbar';
 
 
 
@@ -138,6 +139,8 @@ const Scan = () => {
     };
 
     return (
+        <>
+        <Navbar session={userData} mode={"guard"} />
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
             <h1 className="text-2xl font-bold mb-4">Scan Barcode</h1>
             <div className="w-80 h-80 bg-white shadow-lg rounded-lg">
@@ -157,7 +160,6 @@ const Scan = () => {
                             saveToSupabase(scannedData); 
                         }
 
-
                         if (error) {
                             toastShownRef.current = true;
                             setError('Tidak dapat membaca barcode. Pastikan kamera menghadap barcode.');
@@ -168,19 +170,25 @@ const Scan = () => {
             </div>
 
             <div className="mt-4">
-                {data ? (
+                { error ? (
+                    <p className="text-red-600">{error}</p>
+                ) : (
+                    <p className="text-gray-600">Arahkan kamera ke barcode untuk memulai scan.</p>
+                )}
+                {/* {data ? (
                     <p className="text-green-600">Data hasil scan: {data}</p>
                 ) : error ? (
                     <p className="text-red-600">{error}</p>
                 ) : (
                     <p className="text-gray-600">Arahkan kamera ke barcode untuk memulai scan.</p>
-                )}
+                )} */}
             </div>
 
             {status && <p className="mt-2 text-blue-600">{status}</p>}
 
             <ToastContainer />
         </div>
+        </>
     );
 };
 

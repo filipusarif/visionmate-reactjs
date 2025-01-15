@@ -177,7 +177,7 @@ export default function MateContent({ message, responseTxt, setMap }) {
   };
 
   return (
-    <div className="md:w-[30vw]  relative z-10 border-secondary shadow-xl border-t-[25px] md:h-screen w-screen min-h-[20rem] max-h-[20rm] p-4 flex flex-col gap-3 rounded-t-xl ">
+    <div className="lg:w-[40vw] lg:pt-10 lg:p-10 relative z-10 border-secondary shadow-xl border-t-[25px] lg:h-screen w-screen min-h-[20rem] max-h-[20rm] p-4 flex flex-col gap-3 rounded-t-xl ">
       <div className="w-[20%] left-[40%] h-[5px] bg-background absolute -top-3.5 rounded-full z-50" />
       <h1 className="text-2xl mb-4">Chat Mate</h1>
       <div className="chat-box p-2  rounded  basis-5/6 overflow-y-auto mb-4">
