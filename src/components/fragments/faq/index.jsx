@@ -3,24 +3,24 @@ import React, { useState } from "react";
 const FAQ = () => {
     const faqs = [
         {
-        question: "Enim sodales consequat adipiscing facilisis massa venenatis, non lorem lobortis?",
-        answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at tincidunt lacus, et ultrices sapien.",
+        question: "Bagaimana cara kerja tongkat penglihatan",
+        answer: "Tongkat penglihatan dilengkapi dengan sensor yang mampu mendeteksi objek di depan pengguna. Sensor tersebut terhubung dengan device pengguna yang nantinya akan mengidentifikasi objek dan memberikan informasi kepada pengguna secara audio.",
         },
         {
-        question: "Venenatis nulla sagittis nunc, lobortis nec sollicitudin neque, dolor?",
-        answer: "Proin a lacinia felis. Pellentesque vehicula libero non velit laoreet, sed fermentum augue ultricies.",
+        question: "Apakah ada batasan mengenai objek apa saja yang dapat dideteksi dari tongkat penglihatan?",
+        answer: "Tidak ada batasan! Sensor yang kami miliki mampu mendeteksi beragam objek yang berada di depan pengguna tanpa adanya masalah.",
         },
         {
-        question: "Varius ultricies molestie tellus fermentum, viverra ipsum scelerisque etiam lorem?",
-        answer: "Fusce sit amet nibh et sapien tincidunt dignissim. Sed a leo hendrerit, pellentesque tortor sed, suscipit nunc.",
+        question: "Seberapa jauh tongkat tersebut dapat mendeteksi objek di depannya?",
+        answer: "Tongkat ini dapat mendeteksi objek dengan jarak maksimal hingga 1 meter  di depan pengguna.",
         },
         {
-        question: "Nulla etiam vitae, at sagittis, nibh ultrices mattis feugiat faucibus?",
-        answer: "Integer volutpat nulla ac sapien efficitur, quis tincidunt est consequat.",
+        question: "Apakah tongkat ini aman terhadap air, terutama air hujan?",
+        answer: "Sayangnya, tongkat kami tidak dirancang untuk tahan terhadap air. Oleh sebab itu, kami menyarankan untuk menghindari paparan langsung antara tongkat dengan air, terutama air hujan.",
         },
         {
-        question: "Sagittis consectetur gravida nec turpis eros, id sit et, dictum?",
-        answer: "Maecenas aliquet eros in quam sodales, sed tincidunt ligula dictum.",
+        question: "Bagaimana jika saya mengalami masalah ketika melakukan pembelian?",
+        answer: "Anda dapat dengan segera menghubungi kami melalui Kontak yang sudah tersedia dibawah.",
         },
     ];
 
@@ -32,7 +32,7 @@ const FAQ = () => {
 
     return (
         <div className="container mx-auto px-4 py-20">
-        <h2 className="text-2xl  font-bold text-center mb-6">Answers to your questions</h2>
+        <h2 className="text-2xl  font-bold text-center mb-6">Pertanyaan yang sering diajukan</h2>
         <div className="space-y-4 w-full md:w-[80%] mx-auto ">
             {faqs.map((faq, index) => (
             <div

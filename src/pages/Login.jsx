@@ -13,10 +13,6 @@ const Login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        if (!agreed) {
-            setError("Anda harus menyetujui syarat dan ketentuan.");
-            return;
-        }
 
         const form = e.target;
         const email = form.email.value;
@@ -77,15 +73,6 @@ const Login = () => {
                         />
                     </div>
                 </div>
-                    <div className="flex items-center mt-4">
-                        <input
-                            type="checkbox"
-                            checked={agreed}
-                            onChange={() => setAgreed(!agreed)}
-                            className="mr-2"
-                        />
-                        <span className='text-sm text-gray-700'>I agree to the terms and conditions</span>
-                    </div>
                     <div className="flex items-center">
                         <input
                             type="checkbox"
@@ -93,7 +80,7 @@ const Login = () => {
                             onChange={() => setSaveInfo(!saveInfo)}
                             className="mr-2"
                         />
-                        <span>Save my information</span>
+                        <span>Simpan Informasi Saya!</span>
                     </div>
                     <p className="text-sm text-gray-600 mb-6">
                     Belum Punya akun?{' '}
