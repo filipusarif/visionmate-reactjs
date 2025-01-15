@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from '../../context/AuthContext';
 import { supabase } from '../../../services/lib/supabaseClient';
 
-const Navbar = ({ session }) => {
+const Navbar = ({ session, mode }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [userData, setUserData] = useState([]);
@@ -64,7 +64,7 @@ const Navbar = ({ session }) => {
 
 
     return (
-    <nav className="fixed w-full z-50 bg-background font-medium border-gray-200 py-2.5 dark:bg-gray-900">
+    <nav className={`fixed ${mode === "home" ? "block" : "hidden lg:block"} w-full z-50 bg-background font-medium border-gray-200 py-2.5 dark:bg-gray-900`}>
         <div className='container mx-auto'>
         <div className="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto">
             <a href="/" className="flex items-center">
@@ -100,7 +100,7 @@ const Navbar = ({ session }) => {
                                         onClick={handleLogOut}
                                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 w-full text-left"
                                     >
-                                        Logout
+                                        Keluar
                                 </button>
                                 </li>
                             </ul>
@@ -132,17 +132,14 @@ const Navbar = ({ session }) => {
                     </svg>
                 </button>
             </div>
-            <div  className={`items-center justify-between w-full lg:flex lg:w-auto lg:order-1 ${isOpen ? 'block' : 'hidden'}`} id="mobile-menu-2">
+            {mode === "home" && (
+                <div  className={`items-center justify-between w-full lg:flex lg:w-auto lg:order-1 ${isOpen ? 'block' : 'hidden'}`} id="mobile-menu-2">
                 <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-4 lg:mt-0">
                     <li>
                         <Link to="/"
                             className="block py-2 pl-3 pr-4 text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white"
                             aria-current="page">Beranda</Link>
                     </li>
-                    {/* <li>
-                        <Link to="/#feature"
-                            className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Fitur</Link>
-                    </li> */}
                     <li>
                         <Link to="/#price"
                             className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Harga</Link>
@@ -155,12 +152,80 @@ const Navbar = ({ session }) => {
                         <Link to="/#demo"
                             className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Tentang Kami</Link>
                     </li>
-                    <li className='block md:hidden'>
-                        <Link to="/register"
-                            className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Daftar Sekarang</Link>
-                    </li>
+                    {session ? ( 
+                        <li className='block md:hidden'>
+                            <button onClick={handleLogOut}
+                                className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">keluar</button>
+                        </li>
+                    ) : (
+                        <li className='block md:hidden'>
+                            <Link to="/register"
+                                className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Daftar Sekarang</Link>
+                        </li>
+                    )}
                 </ul>
             </div>
+            )}
+            {mode === "vi" && (
+                <div  className={`items-center justify-between w-full lg:flex lg:w-auto lg:order-1 ${isOpen ? 'block' : 'hidden'}`} id="mobile-menu-2">
+                <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-4 lg:mt-0">
+                    <li>
+                        <Link to="/"
+                            className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Branda</Link>
+                    </li>
+                    <li>
+                        <Link to="/vi"
+                            className="block py-2 pl-3 pr-4 text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white"
+                            aria-current="page">Asisten</Link>
+                    </li>
+                    <li>
+                        <Link to="/vi/barcode"
+                            className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">profile</Link>
+                    </li>
+                    {session ? ( 
+                        <li className='block md:hidden'>
+                            <button onClick={handleLogOut}
+                                className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">keluar</button>
+                        </li>
+                    ) : (
+                        <li className='block md:hidden'>
+                            <Link to="/register"
+                                className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Daftar Sekarang</Link>
+                        </li>
+                    )}
+                </ul>
+            </div>
+            )}
+            {mode === "guard" && (
+                <div  className={`items-center justify-between w-full lg:flex lg:w-auto lg:order-1 ${isOpen ? 'block' : 'hidden'}`} id="mobile-menu-2">
+                <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-4 lg:mt-0">
+                    <li>
+                        <Link to="/"
+                            className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Branda</Link>
+                    </li>
+                    <li>
+                        <Link to="/guard"
+                            className="block py-2 pl-3 pr-4 text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white"
+                            aria-current="page">Monitoring</Link>
+                    </li>
+                    <li>
+                        <Link to="/guard/scan"
+                            className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Hubungkan VI</Link>
+                    </li>
+                    {session ? ( 
+                        <li className='block md:hidden'>
+                            <button onClick={handleLogOut}
+                                className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">keluar</button>
+                        </li>
+                    ) : (
+                        <li className='block md:hidden'>
+                            <Link to="/register"
+                                className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Daftar Sekarang</Link>
+                        </li>
+                    )}
+                </ul>
+            </div>
+            )}
         </div>
         </div>
     </nav>

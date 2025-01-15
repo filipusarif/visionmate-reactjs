@@ -4,7 +4,7 @@ const MonitoringContent = ({ id, connections, setDestination }) => {
 
 
     return (
-        <section className="md:w-[35vw] md:h-screen w-screen h-[50%] p-5 flex flex-col gap-3">
+        <section className="md:w-[35vw] md:h-screen w-screen h-[50%] p-5 lg:pt-20 flex flex-col gap-3">
             {/* Search Bar and Filters */}
             <div className="flex items-center justify-between mb-4">
                 <div className="relative w-full">

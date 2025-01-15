@@ -54,7 +54,7 @@ export const router = createBrowserRouter([
         path: "/guard",
         element: (
             <ProtectedRoute allowedRoles={["Guard"]}>
-                <GuardPage />
+                <Monitoring />
             </ProtectedRoute>
         ),
         errorElement: (
@@ -66,17 +66,6 @@ export const router = createBrowserRouter([
         element: (
             <ProtectedRoute allowedRoles={["Guard"]}>
                 <Scan />
-            </ProtectedRoute>
-        ),
-        errorElement: (
-            <Notfound />
-        ),
-    },
-    {
-        path: "/guard/monitoring",
-        element: (
-            <ProtectedRoute allowedRoles={["Guard"]}>
-                <Monitoring />
             </ProtectedRoute>
         ),
         errorElement: (

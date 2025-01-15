@@ -4,7 +4,7 @@ import LocateUserAndRouteMonitoring from "../../elements/locateUser/monitoring";
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
 
-const MapMonitoring = ({to, id, connections, destination}) => {
+const MapMonitoring = ({to, id, connections, destination, photo}) => {
         const [destinationSearch, setDestinationSearch] = useState([]);
         const [placeName, setPlaceName] = useState("");
         const [loading, setLoading] = useState(false);
@@ -46,7 +46,9 @@ const MapMonitoring = ({to, id, connections, destination}) => {
             }
         };
 
-        
+        useEffect(() => {
+            console.log("hp p",photo)
+        },[photo])
 
     return (
         <div className="relative w-screen h-screen z-0">
@@ -66,7 +68,7 @@ const MapMonitoring = ({to, id, connections, destination}) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="&copy; OpenStreetMap contributors"
                     />
-                <LocateUserAndRouteMonitoring destination={destination} audioEnabled={false}  id={id} connections={connections} />
+                <LocateUserAndRouteMonitoring destination={destination} photo={photo} audioEnabled={false}  id={id} connections={connections} />
             </MapContainer>
             </div>
         </div>

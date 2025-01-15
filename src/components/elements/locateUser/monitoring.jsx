@@ -53,7 +53,7 @@ const updateDataLocation = async (id, lat, long) => {
 };
 
 
-export default function LocateUserAndRouteMonitoring({ destination, audioEnabled, id, connections}) {
+export default function LocateUserAndRouteMonitoring({ destination, audioEnabled, id, connections, photo}) {
     const map = useMap();
     const routingControlRef = useRef(null);
     const [userPosition, setUserPosition] = useState(null);
@@ -87,6 +87,12 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
                 L.latLng(lat, lng), 
             ]);
         }
+
+         // Hapus marker sebelumnya yang ada pada map jika ada
+        markers.forEach(marker => {
+            map.removeLayer(marker); 
+        });
+
     };
 
 
@@ -180,8 +186,18 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
     }, [map, destination, audioEnabled, lastInstruction, id]);
 
     useEffect(() => {
+        console.log("hp",photo)
+    },[photo])
+
+    useEffect(() => {
         if (userPosition) {
-            const userMarker = L.marker([userPosition.lat, userPosition.lng]).addTo(map);
+            const userMarkerIcon = L.icon({
+                iconUrl: "hhtps", 
+                iconSize: [32, 32], // Ukuran marker
+                iconAnchor: [16, 32], // Titik anchor
+                popupAnchor: [0, -32], // Lokasi pop-up
+            });
+            const userMarker = L.marker([userPosition.lat, userPosition.lng], { icon: userMarkerIcon }).addTo(map);
 
             return () => {
                 map.removeLayer(userMarker);
@@ -196,9 +212,17 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
         
             const newMarkers = [];
             for (const connection of connections) {
-                const marker = L.marker([connection.users.latitude, connection.users.longitude])
+                const userMarkerIcon = L.icon({
+                    iconUrl: connection.users.photo, 
+                    iconSize: [40, 40], // Ukuran marker
+                    iconAnchor: [16, 32], // Titik anchor
+                    popupAnchor: [0, -32], // Lokasi pop-up
+                    className: 'rounded-full border-secondary border-2' ,
+                });
+
+                const marker = L.marker([connection.users.latitude, connection.users.longitude], { icon: userMarkerIcon })
                     .addTo(map)
-                    .bindTooltip(`<strong>${connection.users.fullName}</strong>`, { permanent: true, direction:"top" })
+                    .bindTooltip(`<strong>${connection.users.fullName}</strong>`, { permanent: true, direction:"top",offset: [0, -32]  })
                     .on("click", () => handleMarkerClick(connection.users.latitude, connection.users.longitude)); // Tambahkan event klik
         
                 newMarkers.push(marker);

@@ -52,12 +52,54 @@ const updateDataLocation = async (id, lat, long) => {
     }
 };
 
-export default function LocateUserAndRoute({ destination, audioEnabled, id }) {
+export default function LocateUserAndRoute({ destination, audioEnabled, id, setStep, setDistance}) {
     const map = useMap();
     const routingControlRef = useRef(null);
     const [userPosition, setUserPosition] = useState(null);
     const [lastInstruction, setLastInstruction] = useState(null);
     const updateTimeoutRef = useRef(null);
+    // Fungsi untuk menerjemahkan instruksi
+function translateInstruction(instruction) {
+    if (!instruction) return "";
+
+    console.log(instruction);
+    // Daftar pola instruksi dan terjemahannya
+    const patterns = [
+        { regex: /^Head west on (.+)$/, translation: "Mengarah ke barat $1" },
+        { regex: /^Head north on (.+)$/, translation: "Mengarah ke utara $1" },
+        { regex: /^Head east on (.+)$/, translation: "Mengarah ke timur $1" },
+        { regex: /^Head south on (.+)$/, translation: "Mengarah ke selatan $1" },
+        { regex: /^Turn left onto (.+)$/, translation: "Belok kiri menuju $1" },
+        { regex: /^Turn right onto (.+)$/, translation: "Belok kanan menuju $1" },
+        { regex: /^Continue onto (.+)$/, translation: "Lanjut lurus di $1" },
+        { regex: /^Make a slight left onto (.+)$/, translation: "Belok sedikit ke kiri $1" },
+        { regex: /^Make a slight right onto (.+)$/, translation: "Belok sedikit ke kanan $1" },
+        { regex: /^Take the (.+) exit$/, translation: "Ambil keluar $1" },
+        { regex: /^You have arrived at your destination, on the left (.+)$/, translation: "Kamu telah sampai ke tujuan, tujuan di sebelah kiri $1" },
+        { regex: /^You have arrived at your destination, on the right (.+)$/, translation: "Kamu telah sampai ke tujuan, tujuan di sebelah kanan $1" },
+    ];
+
+    // Mencocokkan dan menerjemahkan berdasarkan pola
+    for (const { regex, translation } of patterns) {
+        const match = instruction.match(regex);
+        if (match) {
+            return instruction.replace(regex, translation);
+        }
+    }
+
+    return instruction; // Jika tidak ada yang cocok, gunakan instruksi asli
+}
+
+useEffect(() => {
+    const intervalId = setInterval(() => {
+        const instructions = document.querySelector(".leaflet-routing-container");
+        if (instructions) {
+            instructions.style.display = "none"; 
+        }
+    }, 500); 
+
+    return () => clearInterval(intervalId); 
+}, []);
 
     useEffect(() => {
         const watchId = navigator.geolocation.watchPosition(
@@ -100,9 +142,12 @@ export default function LocateUserAndRoute({ destination, audioEnabled, id }) {
                                 instruction.text !== lastInstruction &&
                                 audioEnabled
                             ) {
-                                setLastInstruction(instruction.text);
+                                const translatedText = translateInstruction(instruction.text);
+                                setLastInstruction(translatedText);
+                                setStep(translatedText);
+                                setDistance(instruction)
                                 speak(
-                                    `${instruction.distance} meter lagi, ${instruction.text}`
+                                    `${instruction.distance} meter lagi, ${translatedText}`
                                 );
                             }
                         })

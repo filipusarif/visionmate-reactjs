@@ -4,6 +4,7 @@ import MonitoringContent from "../../components/fragments/monitoringcontent";
 import useSession from "../../hooks/useSession";
 import { UserAuth } from "../../components/context/AuthContext";
 import { supabase } from "../../services/lib/supabaseClient";
+import Navbar from "../../components/fragments/navbar";
 
 
 const Monitoring = () => {
@@ -48,8 +49,9 @@ const Monitoring = () => {
         <section className="flex md:flex-row flex-col-reverse w-screen h-screen relative">
             {userData ? (
                 <>
-                    <MonitoringContent setDestination={handleDestination} id={userData.id} connections={connections}/>
-                    <MapMonitoring to={null} id={userData.id} connections={connections} destination={destination}/>
+                    <Navbar session={userData} mode="guard"/>
+                    <MonitoringContent setDestination={handleDestination} id={userData.id}  connections={connections}/>
+                    <MapMonitoring to={null} id={userData.id} connections={connections}  destination={destination}/>
                 </>
             ) : (
                 <p>Loading...</p>
