@@ -10,7 +10,7 @@ export default function Demo(){
             </main>
             <div className="lg:w-1/2 w-full h-full relative flex justify-center items-center">
             <video
-                src="assets/videos/demo.mkv"
+                src="assets/videos/demo.mp4"
                 className="h-[80%] object-cover rounded-lg shadow-lg shadow-dark-white"
                 autoPlay
                 loop

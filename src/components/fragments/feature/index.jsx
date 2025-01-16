@@ -54,7 +54,7 @@ const Feature = () => {
                         <div className="absolute hidden lg:block w-[30rem] h-[30rem] rounded-full border-8 border-danger"/>
                         <div className="absolute hidden lg:block w-[25rem] h-[25rem] rounded-full border-2 border-danger"/>
                         <video
-                        src="assets/videos/baammsss.mp4"
+                        src="assets/videos/malas.mp4"
                         className=" w-full lg:w-auto lg:h-[50rem] z-10 object-cover rounded-lg border-8 border-slate-500 shadow-xl"
                         autoPlay
                         loop

@@ -53,7 +53,7 @@ const Register = () => {
     };
 
     return (
-        <div className="h-screen w-screen overflow-hidden flex flex-col md:flex-row items-center bg-gray-50">
+        <div className="h-fit lg:h-screen w-screen overflow-hidden flex flex-col md:flex-row items-center bg-gray-50">
             {/* Form Section */}
             <div className="container mx-auto">
 
