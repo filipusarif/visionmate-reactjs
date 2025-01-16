@@ -13,6 +13,20 @@ export const AuthContextProvider = ({ children }) => {
     // Fungsi untuk mendaftarkan pengguna baru
     const registerNewUser = async (fullName, email, password, role, phone, language) => {
         try {
+            const { data: existingUser, error: checkError } = await supabase
+            .from("users")
+            .select("email")
+            .eq("email", email)
+            .single();
+
+            if (checkError && checkError.code !== "PGRST116") { 
+                console.error("Error checking existing email: ", checkError);
+                return { success: false, error: "Error checking email availability" };
+            }
+
+            if (existingUser) {
+                return { success: false, error: "Email is already registered" };
+            }
             const hashedPassword = await bcrypt.hash(password, 10);
 
             const { data, error } = await supabase.from("users").insert([

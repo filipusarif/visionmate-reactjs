@@ -5,7 +5,6 @@ import { UserAuth } from '../components/context/AuthContext';
 const Login = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-    const [agreed, setAgreed] = useState(false);
     const [saveInfo, setSaveInfo] = useState(true);
 
     const { login } = UserAuth();
@@ -15,8 +14,20 @@ const Login = () => {
         e.preventDefault();
 
         const form = e.target;
-        const email = form.email.value;
+        const email = form.email.value.trim();
         const password = form.password.value;
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Format email sederhana
+        if (!emailRegex.test(email)) {
+            setError("Alamat email tidak valid.");
+            return;
+        }
+
+        if (password.length < 8) {
+            setError("Password harus terdiri dari minimal 8 karakter.");
+            return;
+        }
+
         setLoading(true);
 
         try {
@@ -25,7 +36,6 @@ const Login = () => {
             if (result.success) {
                 console.log("Login result:", result);
                 const userRole = result.data.role; // Assume role is returned in result.data
-
                 if (userRole === 'VI') {
                     navigate('/vi');
                 } else if (userRole === 'Guard') {
@@ -33,6 +43,8 @@ const Login = () => {
                 } else {
                     setError("Anda tidak memiliki izin.");
                 }
+            } else {
+                setError("Login gagal. Periksa kembali email dan password Anda.");
             }
         } catch (error) {
             setError("An error occurred");

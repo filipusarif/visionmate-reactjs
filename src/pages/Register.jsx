@@ -13,6 +13,7 @@ const Register = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        setError("");
         if (!agreed) {
             setError("You must agree to the terms and conditions.");
             return;
@@ -20,7 +21,7 @@ const Register = () => {
 
         const form = e.target;
         const fullName = form.fullName.value;
-        const email = form.email.value;
+        const email = form.email.value.trim();
         const phone = form.phone.value;
         const password = form.password.value;
         const confirmPassword = form.confirmPassword.value;
@@ -39,11 +40,20 @@ const Register = () => {
             return;
         }
 
+        const phoneRegex = /^[0-9]+$/; // Hanya angka diperbolehkan
+        if (!phoneRegex.test(phone)) {
+            setError("Nomor telepon hanya boleh mengandung angka.");
+            setLoading(false);
+            return;
+        }
+
         try {
             const result = await registerNewUser(fullName, email, password, role, phone, language);
 
             if (result.success) {
-                navigate('/login');
+                navigate("/login"); 
+            } else {
+                setError("Email sudah ada.");
             }
         } catch (error) {
             setError("An error occurred", error);
@@ -92,6 +102,9 @@ const Register = () => {
                             id="phone"
                             type="tel"
                             placeholder="Nomor Telepon"
+                            pattern="^[0-9]{12}$" 
+                            maxLength="12" 
+                            title="Nomor telepon harus berupa angka dan terdiri dari 12 digit."
                             required
                             className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                         />
