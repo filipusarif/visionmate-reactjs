@@ -9,6 +9,10 @@ export default function PricingCard({  plan  }){
                 ? "bg-blue-50 border-secondary shadow-lg scale-105 w-[40%]"
                 : "bg-white border-gray-200 w-[30%]"
             }`}
+            data-aos={plan.aos}
+            data-aos-easing="ease-in-out"
+            data-aos-duration="800"
+            data-aos-offset="100"
             >
             {plan.popular && (
                 <div className="text-white bg-secondary rounded-full px-3 py-1 mb-4 text-sm font-medium">

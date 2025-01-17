@@ -9,12 +9,23 @@ import Demo from "../components/fragments/demo";
 import Feedback from "../components/fragments/feedback";
 import FAQ from "../components/fragments/faq";
 import Footer from "../components/fragments/footer";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const Homepage = () => {
   const { decryptSession } = UserAuth(); // Gunakan decryptSession
   const [session, setSession] = useState(null);
   const navigate = useNavigate();
   const isFirstRender = useRef(true);
+  
+  useEffect(() => {
+    AOS.init({
+    offset: 200,
+    duration: 600,
+    easing: 'ease-in-sine',
+    delay: 100,
+    });
+    }, []);
 
   useEffect(() => {
     // Mendekripsi sesi dari cookies

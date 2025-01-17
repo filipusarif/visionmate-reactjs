@@ -10,6 +10,7 @@ const prices = [
                 "Tongkat penglihatan",
                 "Layanan prioritas",
         ],
+        aos: "slide-right",
     },
     {
         name: "Diamond",
@@ -20,6 +21,7 @@ const prices = [
                 "Tongkat penglihatan",
                 "Layanan prioritas",
         ],
+        aos: "slide-up",
     },
     {
         name: "Gold",
@@ -30,6 +32,7 @@ const prices = [
                 "Tongkat penglihatan",
                 "Layanan prioritas",
         ],
+        aos: "slide-left",
     },
     
 ];
@@ -37,7 +40,7 @@ const prices = [
 export default function Pricing(){
     return (
         <>
-            <section id="price" className="relative w-screen h-[50vh] bg-primary overflow-hidden flex flex-col gap-5 justify-center items-center">
+            <section id="price" className="relative w-screen overflow-x-hidden h-[50vh] bg-primary overflow-hidden flex flex-col gap-5 justify-center items-center">
                 <div className="absolute h-[30rem] z-0 w-[40rem]  lg:w-[60rem] lg:h-[60rem] border-2 border-background rounded-full opacity-10"/>
                 <div className="absolute h-[30rem] z-0 w-[35rem]  lg:w-[50rem] lg:h-[50rem] border-2 border-background rounded-full opacity-30"/>
                 <div className="absolute h-[30rem] z-0 w-[30rem]  lg:w-[40rem] lg:h-[40rem] border-2 border-background rounded-full opacity-50"/>
@@ -46,7 +49,7 @@ export default function Pricing(){
                 <p className="text-lg text-center text-background opacity-85 font-normal">Bantu Kemandirian, Tanpa Menguras Banyak Anggaran</p>
                 </div>
             </section>
-            <section className="w-screen min-h-screen py-14 container mx-auto gap-5 lg:gap-0 flex flex-col lg:flex-row justify-center items-center lg:px-32">
+            <section className="w-screen overflow-x-hidden min-h-screen py-14 container mx-auto gap-5 lg:gap-0 flex flex-col lg:flex-row justify-center items-center lg:px-32">
             {prices.map((price, index) => (
                 <PricingCard key={index} plan={price} />
             ))}

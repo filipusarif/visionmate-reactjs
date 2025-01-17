@@ -35,6 +35,35 @@ export default {
       'purpleAbout':'#9F2AD6',
       'blueAbout':'#2A5AD6',
     },
+    keyframes: {
+      item1: {
+        '0%': { transform: 'translateX(250px)  ' },
+        '15%': { transform: 'translateX(0px) ' },
+        '90%': { transform: 'translateX(0px) ' },
+        '100%': { transform: 'translateX(260px)  ' },
+      },
+      item2: {
+        '0%': { transform: 'translateX(260px)  ' },
+        '15%': { transform: 'translateX(260px)  ' },
+        '30%': { transform: 'translateX(0px) ' },
+        '90%': { transform: 'translateX(0px) ' },
+        '100%': { transform: 'translateX(260px)  ' },
+      },
+      item3: {
+        '0%': { transform: 'translateX(-260px)  ' },
+        '30%': { transform: 'translateX(-260px)  ' },
+        '45%': { transform: 'translateX(0px) ' },
+        '90%': { transform: 'translateX(0px) ' },
+        '100%': { transform: 'translateX(-260px)  ' },
+      },
+      item4: {
+        '0%': { transform: 'translateX(-260px)  ' },
+        '45%': { transform: 'translateX(-260px)  ' },
+        '60%': { transform: 'translateX(0px) ' },
+        '90%': { transform: 'translateX(0px) ' },
+        '100%': { transform: 'translateX(-260px)  ' },
+      },
+    }, 
     
   },
   

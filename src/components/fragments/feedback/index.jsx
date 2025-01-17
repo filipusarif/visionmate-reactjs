@@ -45,11 +45,15 @@ const Carousel = () => {
     }, []);
 
     return (
-        <div className="flex h-screen lg:h-[70vh] items-center justify-center py-10 bg-[#F1F5F9]">
+        <div className="flex h-screen w-screen overflow-x-hidden lg:h-[70vh] items-center justify-center py-10 bg-[#F1F5F9]">
             <div className="container mx-auto lg:px-28 lg:py-10">
                     <div className="relative w-full lg:px-16 lg:pt-10">
                         {/* Ulasan konten */}
-                        <div className="flex gap-5 lg:gap-0 items-center flex-col lg:flex-row">
+                        <div className="flex gap-5 lg:gap-0 items-center flex-col lg:flex-row"
+                        data-aos="slide-up"
+                        data-aos-easing="ease-in-out"
+                        data-aos-duration="800"
+                        data-aos-offset="100">
                             <div className="w-[80%] lg:w-1/2">
                                 <img
                                 src={reviews[currentIndex].image}
