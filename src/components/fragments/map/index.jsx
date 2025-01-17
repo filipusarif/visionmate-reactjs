@@ -71,7 +71,7 @@ const MapComponent = ({ to, id, children }) => {
             )}
 
             {distance && distance.direction && distance.distance && (
-                <div className="z-10 absolute gap-4 lg:gap-2 px-5 top-0 left-0 bg-background h-[5rem] flex justify-center items-center lg:top-20 lg:left-5 w-full lg:w-[40%] lg:rounded-md ">
+                <div className="z-10 absolute gap-4 lg:gap-2 px-5 top-10 left-0 bg-background h-[5rem] flex justify-center items-center lg:top-20 lg:left-5 w-full lg:w-[40%] lg:rounded-md ">
                     {distance.direction === "W" && (
                         <img src="assets/images/arrow/up.svg" alt="" className="basis-1/6 "/>
                     )}

@@ -7,6 +7,7 @@ import { UserAuth } from '../../components/context/AuthContext';
 import useSession from '../../hooks/useSession';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../../components/fragments/navbar';
+import LoadingPage from '../LoadingPage';
 
 
 
@@ -140,6 +141,8 @@ const Scan = () => {
 
     return (
         <>
+        {userData ? (
+            <>
         <Navbar session={userData} mode={"guard"} />
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
             <h1 className="text-2xl font-bold mb-4">Scan Barcode</h1>
@@ -171,23 +174,27 @@ const Scan = () => {
 
             <div className="mt-4">
                 { error ? (
-                    <p className="text-red-600">{error}</p>
+                    <p className="text-red-600 text-center">{error}</p>
                 ) : (
-                    <p className="text-gray-600">Arahkan kamera ke barcode untuk memulai scan.</p>
+                    <p className="text-gray-600 text-center">Arahkan kamera ke barcode untuk memulai scan.</p>
                 )}
                 {/* {data ? (
                     <p className="text-green-600">Data hasil scan: {data}</p>
-                ) : error ? (
-                    <p className="text-red-600">{error}</p>
-                ) : (
-                    <p className="text-gray-600">Arahkan kamera ke barcode untuk memulai scan.</p>
-                )} */}
+                    ) : error ? (
+                        <p className="text-red-600">{error}</p>
+                        ) : (
+                            <p className="text-gray-600">Arahkan kamera ke barcode untuk memulai scan.</p>
+                            )} */}
             </div>
 
             {status && <p className="mt-2 text-blue-600">{status}</p>}
 
             <ToastContainer />
         </div>
+        </>
+        ):(
+            <LoadingPage />
+        )}
         </>
     );
 };

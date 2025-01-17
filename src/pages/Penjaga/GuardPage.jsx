@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../../components/context/AuthContext";
 import useSession from "../../hooks/useSession";
+import LoadingPage from "../LoadingPage";
 
 const GuardPage = () => {
     const { decryptSession, logOut } = UserAuth();
@@ -19,7 +20,9 @@ const GuardPage = () => {
     };
 
     return (
-        <div>
+        <>
+        {userData ? (
+            <div>
             <h1>Guard Page</h1>
             {userData && (
                 <>
@@ -32,6 +35,10 @@ const GuardPage = () => {
             <Link to="/guard/monitoring">Monitoring</Link>
             <button onClick={handleLogOut}>LOGOUT</button>
         </div>
+        ):(
+            <LoadingPage />
+        )}
+        </>
     );
 };
 

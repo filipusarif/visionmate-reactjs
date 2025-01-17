@@ -6,7 +6,7 @@ const MonitoringContent = ({ id, connections, setDestination }) => {
     return (
         <section className="md:w-[35vw] md:h-screen w-screen h-[50%] p-5 lg:pt-20 flex flex-col gap-3">
             {/* Search Bar and Filters */}
-            <div className="flex items-center justify-between mb-4">
+            {/* <div className="flex items-center justify-between mb-4">
                 <div className="relative w-full">
                     <input
                         type="text"
@@ -45,7 +45,8 @@ const MonitoringContent = ({ id, connections, setDestination }) => {
                     </svg>
                     Filters
                 </button>
-            </div>
+            </div> */}
+            <h1 className="text-xl font-medium ">Monitoring Saudara Kamu</h1>
 
             {/* Connections List */}
             <div className="flex flex-col gap-4">

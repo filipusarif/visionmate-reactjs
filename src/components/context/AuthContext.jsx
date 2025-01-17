@@ -85,6 +85,7 @@ export const AuthContextProvider = ({ children }) => {
             ).toString();
 
             Cookies.set("userSession", encryptedData, { expires: 1, secure: true });
+            Cookies.set("firstLogin", true, { expires: 1, secure: true });
 
             return { success: true, data: sessionData };
         } catch (error) {
@@ -97,6 +98,7 @@ export const AuthContextProvider = ({ children }) => {
     const logOut = async () => {
         try {
             Cookies.remove("userSession");
+            Cookies.remove("firstLogin");
         } catch (error) {
             console.error("Error during logout: ", error);
         }

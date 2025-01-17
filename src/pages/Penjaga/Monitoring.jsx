@@ -5,6 +5,7 @@ import useSession from "../../hooks/useSession";
 import { UserAuth } from "../../components/context/AuthContext";
 import { supabase } from "../../services/lib/supabaseClient";
 import Navbar from "../../components/fragments/navbar";
+import LoadingPage from "../LoadingPage";
 
 
 const Monitoring = () => {
@@ -54,7 +55,7 @@ const Monitoring = () => {
                     <MapMonitoring to={null} id={userData.id} connections={connections}  destination={destination}/>
                 </>
             ) : (
-                <p>Loading...</p>
+                <LoadingPage />
             )}
         </section>
     )
