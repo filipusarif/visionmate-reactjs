@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from '../../context/AuthContext';
 import { supabase } from '../../../services/lib/supabaseClient';
+import { Link as ScrollLink } from 'react-scroll';
+
 
 const Navbar = ({ session, mode }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -136,21 +138,21 @@ const Navbar = ({ session, mode }) => {
                 <div  className={`items-center justify-between w-full lg:flex lg:w-auto lg:order-1 ${isOpen ? 'block' : 'hidden'}`} id="mobile-menu-2">
                 <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-4 lg:mt-0">
                     <li>
-                        <Link to="/"
-                            className="block py-2 pl-3 pr-4 text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white"
-                            aria-current="page">Beranda</Link>
+                        <ScrollLink to="hero" smooth={true} duration={500} 
+                            className="block cursor-pointer py-2 pl-3 pr-4 text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white"
+                            aria-current="page">Beranda</ScrollLink>
                     </li>
                     <li>
-                        <Link to="/#price"
-                            className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Harga</Link>
+                        <ScrollLink to="price" smooth={true} duration={500} 
+                            className="block cursor-pointer py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Harga</ScrollLink>
                     </li>
                     <li>
-                        <Link to="/#harga"
-                            className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Demo</Link>
+                        <ScrollLink to="demo" smooth={true} duration={500} 
+                            className="block cursor-pointer py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Demo</ScrollLink>
                     </li>
                     <li>
-                        <Link to="/#demo"
-                            className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Tentang Kami</Link>
+                        <ScrollLink to="feedback" smooth={true} duration={500}
+                            className="block cursor-pointer py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Ulasan Kami</ScrollLink>
                     </li>
                     {session ? ( 
                         <li className='block md:hidden'>

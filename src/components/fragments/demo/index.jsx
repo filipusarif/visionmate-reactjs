@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 export default function Demo(){
     return (    
         <>
-        <section className="w-screen overflow-x-hidden min-h-[70vh] bg-[#F4F8FB] flex lg:flex-row flex-col-reverse gap-16 items-center container mx-auto py-10">
+        <section className="w-screen overflow-x-hidden min-h-[70vh] bg-[#F4F8FB] flex lg:flex-row flex-col-reverse gap-16 items-center container mx-auto py-10" id="demo">
             <main className="lg:w-1/2 w-full h-full flex flex-col justify-center items-start gap-5"
             data-aos="slide-right"
             data-aos-easing="ease-in-out"

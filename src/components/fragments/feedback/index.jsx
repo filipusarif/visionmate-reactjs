@@ -45,7 +45,7 @@ const Carousel = () => {
     }, []);
 
     return (
-        <div className="flex h-screen w-screen overflow-x-hidden lg:h-[70vh] items-center justify-center py-10 bg-[#F1F5F9]">
+        <div id="feedback" className="flex h-screen w-screen overflow-x-hidden lg:h-[70vh] items-center justify-center py-10 bg-[#F1F5F9]">
             <div className="container mx-auto lg:px-28 lg:py-10">
                     <div className="relative w-full lg:px-16 lg:pt-10">
                         {/* Ulasan konten */}
