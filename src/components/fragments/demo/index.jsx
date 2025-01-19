@@ -18,7 +18,7 @@ export default function Demo(){
             data-aos-duration="800"
             data-aos-offset="100">
             <video
-                src="assets/videos/demo.mp4"
+                src="/assets/videos/demo.mp4"
                 className="h-[80%] object-cover rounded-lg shadow-lg shadow-dark-white"
                 autoPlay
                 loop
@@ -27,8 +27,8 @@ export default function Demo(){
         </div>
         </section>
         <section className="w-screen overflow-x-hidden h-[30vh] md:h-[50vh] overflow-hidden relative flex justify-center items-center gap-3  md:gap-5 flex-col bg-primary text-background">
-            <img className="absolute right-0 bottom-0 z-0" src="assets/images/Ellipsekanan.svg" alt="" />
-            <img className="absolute left-0 w-[70%] lg:w-auto  -bottom-80 lg:-bottom-50 z-0" src="assets/images/Ellipsekiri.svg" alt="" />
+            <img className="absolute right-0 bottom-0 z-0" src="/assets/images/Ellipsekanan.svg" alt="" />
+            <img className="absolute left-0 w-[70%] lg:w-auto  -bottom-80 lg:-bottom-50 z-0" src="/assets/images/Ellipsekiri.svg" alt="" />
             <h1 className="font-extrabold text-xl md:text-4xl z-10 ">Mulai Perjalanan Anda Bersama Kami!</h1>
             <p className=" text-lg md:text-xl font-light z-10">Segera daftarkan diri anda di VisionMate</p>
             <Link to={"/register"} className="font-bold text-lg py-3 px-7 bg-dark z-10 text-background rounded-lg">Daftar Sekarang</Link>

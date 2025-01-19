@@ -91,7 +91,7 @@ const Carousel = () => {
                                 onClick={handlePrev}
                                 className="p-2"
                                 >
-                                <img src="assets/images/next.svg" alt="" />
+                                <img src="/assets/images/next.svg" alt="" />
                             </button>
                             </div>
                             <div className="absolute top-1/2 transform -translate-y-1/2 -right-5 lg:-right-2">
@@ -99,7 +99,7 @@ const Carousel = () => {
                                 onClick={handleNext}
                                 className="p-2"
                             >
-                                <img src="assets/images/next.svg" alt="" className="transform -scale-x-100"/>
+                                <img src="/assets/images/next.svg" alt="" className="transform -scale-x-100"/>
                             </button>
                         </div>
 

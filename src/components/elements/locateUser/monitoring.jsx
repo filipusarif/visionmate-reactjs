@@ -52,14 +52,20 @@ const updateDataLocation = async (id, lat, long) => {
     }
 };
 
-
-export default function LocateUserAndRouteMonitoring({ destination, audioEnabled, id, connections, photo}) {
+export default function LocateUserAndRouteMonitoring({ destination, audioEnabled, id, connections}) {
     const map = useMap();
     const routingControlRef = useRef(null);
     const [userPosition, setUserPosition] = useState(null);
     const [lastInstruction, setLastInstruction] = useState(null);
     const updateTimeoutRef = useRef(null);
     const [markers, setMarkers] = useState([]);
+    const [photo, setPhoto] =useState(null);
+
+    const userIcon = L.icon({
+        iconUrl:"/assets/images/transparent.png", 
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+    });
 
     const handleMarkerClick = (lat, lng) => {
         if (!routingControlRef.current) {
@@ -78,6 +84,12 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
                     styles: [{ color: "blue", weight: 4 }], 
                 },
                 addWaypoints: false, 
+                createMarker: (i, waypoint, n) => {
+                    // Gunakan ikon kustom
+                    return L.marker(waypoint.latLng, {
+                        icon:  userIcon, // User marker atau tujuan marker
+                    });
+                },
                 
             }).addTo(map);
         } else {
@@ -124,6 +136,8 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
                     }
                 }, 1000);
 
+                
+
                 // Update routing control
                 if (!routingControlRef.current && destination.length === 2) {
                     routingControlRef.current = L.Routing.control({
@@ -140,6 +154,12 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
                             styles: [{ color: "blue", weight: 4 }],
                         },
                         addWaypoints: false,
+                        createMarker: (i, waypoint, n) => {
+                            // Gunakan ikon kustom
+                            return L.marker(waypoint.latLng, {
+                                icon: i === 0 ? userIcon : destinationIcon, // User marker atau tujuan marker
+                            });
+                        },
                     })
                         .on("routesfound", (e) => {
                             const route = e.routes[0];
@@ -192,18 +212,43 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
     useEffect(() => {
         if (userPosition) {
             const userMarkerIcon = L.icon({
-                iconUrl: "hhtps", 
+                iconUrl: photo[0].photo, 
                 iconSize: [32, 32], // Ukuran marker
                 iconAnchor: [16, 32], // Titik anchor
                 popupAnchor: [0, -32], // Lokasi pop-up
+                className: 'rounded-full border-secondary border-2' ,
             });
-            const userMarker = L.marker([userPosition.lat, userPosition.lng], { icon: userMarkerIcon }).addTo(map);
+            const userMarker = L.marker([userPosition.lat, userPosition.lng], { icon: userMarkerIcon })
+            .addTo(map)
+            .bindTooltip(`<strong>Saya</strong>`, { permanent: true, direction:"top",offset: [0, -32]  })
+            ;
 
             return () => {
                 map.removeLayer(userMarker);
             };
         }
     }, [userPosition, map]);
+
+    useEffect(() => {
+        const fetchConnections = async () => {
+            const { data, error } = await supabase
+                .from("users")
+                .select(`
+                    photo
+                `)
+                .eq("id", id);
+
+            if (error) {
+                console.error("Error fetching connections:", error.message);
+            } else {
+                console.log("data   ",data)
+                setPhoto(data);
+            }
+
+        };
+    
+        fetchConnections();
+    }, [id]);
 
     // Add markers for each connection
     useEffect(() => {

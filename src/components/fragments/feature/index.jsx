@@ -39,10 +39,10 @@ const Feature = () => {
     return (
         <>
             <section className="bg-[#F4F8FB] min-h-[60vh] py-10 w-screen overflow-hidden flex flex-col lg:flex-row gap-16 lg:gap-10 justify-center items-center container mx-auto">
-                <Card image={"assets/images/feat/2.svg"} title={"Navigasi"} text={"Navigasi kami memastikan panduan akurat dan nyaman."} color={"bg-[#D1FAE5]"}/>
-                <Card image={"assets/images/feat/3.svg"} title={"Pendeteksi Rintangan"} text={"Mengidentifikasi objek yang menghalangi jalan bagi pengguna."} color={"bg-[#CFFAFE]"}/>
-                <Card image={"assets/images/feat/1.svg"} title={"Sinyal Bantuan"} text={"Mengirim pesan darurat ke pendamping saat membutuhkan bantuan."} color={"bg-[#DBEAFE]"}/>
-                <Card image={"assets/images/feat/4.svg"} title={"Suara Interaktif"} text={"Berkomunikasi dengan pengguna melalui panduan suara untuk kemudahan fitur."} color={"bg-[#EDE9FE]"}/>
+                <Card image={"/assets/images/feat/2.svg"} title={"Navigasi"} text={"Navigasi kami memastikan panduan akurat dan nyaman."} color={"bg-[#D1FAE5]"}/>
+                <Card image={"/assets/images/feat/3.svg"} title={"Pendeteksi Rintangan"} text={"Mengidentifikasi objek yang menghalangi jalan bagi pengguna."} color={"bg-[#CFFAFE]"}/>
+                <Card image={"/assets/images/feat/1.svg"} title={"Sinyal Bantuan"} text={"Mengirim pesan darurat ke pendamping saat membutuhkan bantuan."} color={"bg-[#DBEAFE]"}/>
+                <Card image={"/assets/images/feat/4.svg"} title={"Suara Interaktif"} text={"Berkomunikasi dengan pengguna melalui panduan suara untuk kemudahan fitur."} color={"bg-[#EDE9FE]"}/>
             </section>
             <section className="w-screen overflow-x-hidden min-h-screen flex flex-col gap-16 justify-center items-center py-20 container mx-auto">
                 <div className="flex text-center flex-col gap-2">
@@ -66,7 +66,7 @@ const Feature = () => {
                         <div className="absolute hidden lg:block w-[30rem] h-[30rem] rounded-full border-8 border-danger"/>
                         <div className="absolute hidden lg:block w-[25rem] h-[25rem] rounded-full border-2 border-danger"/>
                         <video
-                        src="assets/videos/malas.mp4"
+                        src="/assets/videos/malas.mp4"
                         className=" w-full lg:w-auto lg:h-[50rem] z-10 object-cover rounded-lg border-8 border-slate-500 shadow-xl"
                         autoPlay
                         loop

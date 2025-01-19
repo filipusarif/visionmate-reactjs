@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { UserAuth } from '../../context/AuthContext';
 import { supabase } from '../../../services/lib/supabaseClient';
 import { Link as ScrollLink } from 'react-scroll';
@@ -11,6 +11,9 @@ const Navbar = ({ session, mode }) => {
     const [userData, setUserData] = useState([]);
     const navigate = useNavigate();
     const { logOut } = UserAuth();
+
+    const location = useLocation();
+
     
     useEffect(() => {
         const fetchUserData = async () => {
@@ -70,7 +73,7 @@ const Navbar = ({ session, mode }) => {
         <div className='container mx-auto'>
         <div className="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto">
             <a href="/" className="flex items-center">
-                <img src="assets/images/logo.png" className="h-6 mr-3 sm:h-10" alt="Logo" />
+                <img src="/assets/images/logo.png" className="h-6 mr-3 sm:h-10" alt="Logo" />
                 <span className="self-center text-xl -ml-2 font-bold whitespace-nowrap dark:text-white">VisionMate</span>
             </a>
             <div className="flex items-center lg:order-2">
@@ -115,7 +118,7 @@ const Navbar = ({ session, mode }) => {
                         <Link to="/login"
                             className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Masuk</Link>
                         <Link to="/register"
-                            className="text-white hidden md:flex gap-1 items-center bg-primary hover:bg-primary-hover focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-primary-hobg-primary-hover">Daftar Sekarang <img src="assets/images/arrow-right.svg" alt="" /></Link>
+                            className="text-white hidden md:flex gap-1 items-center bg-primary hover:bg-primary-hover focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-primary-hobg-primary-hover">Daftar Sekarang <img src="/assets/images/arrow-right.svg" alt="" /></Link>
                     </div>
                 )}
                 <button data-collapse-toggle="mobile-menu-2" type="button"
@@ -173,16 +176,30 @@ const Navbar = ({ session, mode }) => {
                 <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-4 lg:mt-0">
                     <li>
                         <Link to="/"
-                            className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Branda</Link>
+                            className={`block py-2 pl-3 pr-4 ${
+                                location.pathname === "/" 
+                                    ? "text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white" 
+                                    : "text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                            }`}
+                            >Branda</Link>
                     </li>
                     <li>
                         <Link to="/vi"
-                            className="block py-2 pl-3 pr-4 text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white"
+                            className={`block py-2 pl-3 pr-4 ${
+                                location.pathname === "/vi" 
+                                    ? "text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white" 
+                                    : "text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                            }`}
                             aria-current="page">Asisten</Link>
                     </li>
                     <li>
-                        <Link to="/vi/barcode"
-                            className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">profile</Link>
+                        <Link to="/vi/profile"
+                            className={`block py-2 pl-3 pr-4 ${
+                                location.pathname === "/vi/profile" 
+                                    ? "text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white" 
+                                    : "text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                            }`}
+                        >profile</Link>
                     </li>
                     {session ? ( 
                         <li className='block md:hidden'>
@@ -203,16 +220,29 @@ const Navbar = ({ session, mode }) => {
                 <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-4 lg:mt-0">
                     <li>
                         <Link to="/"
-                            className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Branda</Link>
+                            className={`block py-2 pl-3 pr-4 ${
+                                location.pathname === "/" 
+                                    ? "text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white" 
+                                    : "text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                            }`}
+                            >Branda</Link>
                     </li>
                     <li>
                         <Link to="/guard"
-                            className="block py-2 pl-3 pr-4 text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white"
+                            className={`block py-2 pl-3 pr-4 ${
+                                location.pathname === "/guard" 
+                                    ? "text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white" 
+                                    : "text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                            }`}
                             aria-current="page">Monitoring</Link>
                     </li>
                     <li>
                         <Link to="/guard/scan"
-                            className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Hubungkan VI</Link>
+                            className={`block py-2 pl-3 pr-4 ${
+                                location.pathname === "/guard/scan" 
+                                    ? "text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white" 
+                                    : "text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                            }`}>Hubungkan VI</Link>
                     </li>
                     {session ? ( 
                         <li className='block md:hidden'>

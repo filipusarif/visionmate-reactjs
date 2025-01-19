@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useMap } from "react-leaflet";
+import { useMap, useMapEvent } from "react-leaflet";
 import { supabase } from "../../../services/lib/supabaseClient";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -52,54 +52,73 @@ const updateDataLocation = async (id, lat, long) => {
     }
 };
 
+const getData = async (id) => {
+    try {
+        const { data, error } = await supabase
+            .from("users")
+            .select("photo")
+            .eq("id", id);
+
+        if (error) {
+            console.error("Error checking connection:", error.message);
+            return false;
+        }
+        return data[0].photo;
+    } catch (error) {
+        console.error("Unexpected error while checking connection:", error.message);
+        return false;
+    }
+}
+
 export default function LocateUserAndRoute({ destination, audioEnabled, id, setStep, setDistance}) {
     const map = useMap();
     const routingControlRef = useRef(null);
     const [userPosition, setUserPosition] = useState(null);
     const [lastInstruction, setLastInstruction] = useState(null);
     const updateTimeoutRef = useRef(null);
+    const [photo, setPhoto] =useState(null);
     // Fungsi untuk menerjemahkan instruksi
-function translateInstruction(instruction) {
-    if (!instruction) return "";
+    function translateInstruction(instruction) {
+        if (!instruction) return "";
 
-    console.log(instruction);
-    // Daftar pola instruksi dan terjemahannya
-    const patterns = [
-        { regex: /^Head west on (.+)$/, translation: "Mengarah ke barat $1" },
-        { regex: /^Head north on (.+)$/, translation: "Mengarah ke utara $1" },
-        { regex: /^Head east on (.+)$/, translation: "Mengarah ke timur $1" },
-        { regex: /^Head south on (.+)$/, translation: "Mengarah ke selatan $1" },
-        { regex: /^Turn left onto (.+)$/, translation: "Belok kiri menuju $1" },
-        { regex: /^Turn right onto (.+)$/, translation: "Belok kanan menuju $1" },
-        { regex: /^Continue onto (.+)$/, translation: "Lanjut lurus di $1" },
-        { regex: /^Make a slight left onto (.+)$/, translation: "Belok sedikit ke kiri $1" },
-        { regex: /^Make a slight right onto (.+)$/, translation: "Belok sedikit ke kanan $1" },
-        { regex: /^Take the (.+) exit$/, translation: "Ambil keluar $1" },
-        { regex: /^You have arrived at your destination, on the left (.+)$/, translation: "Kamu telah sampai ke tujuan, tujuan di sebelah kiri $1" },
-        { regex: /^You have arrived at your destination, on the right (.+)$/, translation: "Kamu telah sampai ke tujuan, tujuan di sebelah kanan $1" },
-    ];
+        console.log(instruction);
+        // Daftar pola instruksi dan terjemahannya
+        const patterns = [
+            { regex: /^Head west on (.+)$/, translation: "Mengarah ke barat $1" },
+            { regex: /^Head north on (.+)$/, translation: "Mengarah ke utara $1" },
+            { regex: /^Head east on (.+)$/, translation: "Mengarah ke timur $1" },
+            { regex: /^Head south on (.+)$/, translation: "Mengarah ke selatan $1" },
+            { regex: /^Turn left onto (.+)$/, translation: "Belok kiri menuju $1" },
+            { regex: /^Turn right onto (.+)$/, translation: "Belok kanan menuju $1" },
+            { regex: /^Continue onto (.+)$/, translation: "Lanjut lurus di $1" },
+            { regex: /^Make a slight left onto (.+)$/, translation: "Belok sedikit ke kiri $1" },
+            { regex: /^Make a slight right onto (.+)$/, translation: "Belok sedikit ke kanan $1" },
+            { regex: /^Take the (.+) exit$/, translation: "Ambil keluar $1" },
+            { regex: /^You have arrived at your destination, on the left (.+)$/, translation: "Kamu telah sampai ke tujuan, tujuan di sebelah kiri $1" },
+            { regex: /^You have arrived at your destination, on the right (.+)$/, translation: "Kamu telah sampai ke tujuan, tujuan di sebelah kanan $1" },
+        ];
 
-    // Mencocokkan dan menerjemahkan berdasarkan pola
-    for (const { regex, translation } of patterns) {
-        const match = instruction.match(regex);
-        if (match) {
-            return instruction.replace(regex, translation);
+        // Mencocokkan dan menerjemahkan berdasarkan pola
+        for (const { regex, translation } of patterns) {
+            const match = instruction.match(regex);
+            if (match) {
+                return instruction.replace(regex, translation);
+            }
         }
+
+        return instruction; // Jika tidak ada yang cocok, gunakan instruksi asli
     }
 
-    return instruction; // Jika tidak ada yang cocok, gunakan instruksi asli
-}
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            const instructions = document.querySelector(".leaflet-routing-container");
+            if (instructions) {
+                instructions.style.display = "none"; 
+            }
+        }, 500); 
 
-useEffect(() => {
-    const intervalId = setInterval(() => {
-        const instructions = document.querySelector(".leaflet-routing-container");
-        if (instructions) {
-            instructions.style.display = "none"; 
-        }
-    }, 500); 
-
-    return () => clearInterval(intervalId); 
-}, []);
+        return () => clearInterval(intervalId); 
+    }, []);
 
     useEffect(() => {
         const watchId = navigator.geolocation.watchPosition(
@@ -117,6 +136,19 @@ useEffect(() => {
                     }
                 }, 1000);
 
+                // Buat ikon kustom untuk user dan tujuan
+                const userIcon = L.icon({
+                    iconUrl:"/assets/images/transparent.png", 
+                    iconSize: [40, 40],
+                    iconAnchor: [20, 40],
+                });
+
+                const destinationIcon = L.icon({
+                    iconUrl: "/assets/images/logo.png", // Gambar tujuan
+                    iconSize: [40, 40],
+                    iconAnchor: [20, 40],
+                });
+
                 // Update routing control
                 if (!routingControlRef.current && destination.length === 2) {
                     routingControlRef.current = L.Routing.control({
@@ -133,6 +165,12 @@ useEffect(() => {
                             styles: [{ color: "green", weight: 4 }],
                         },
                         addWaypoints: false,
+                        createMarker: (i, waypoint, n) => {
+                            // Gunakan ikon kustom
+                            return L.marker(waypoint.latLng, {
+                                icon: i === 0 ? userIcon : destinationIcon, // User marker atau tujuan marker
+                            });
+                        },
                     })
                         .on("routesfound", (e) => {
                             const route = e.routes[0];
@@ -182,8 +220,37 @@ useEffect(() => {
     }, [map, destination, audioEnabled, lastInstruction, id]);
 
     useEffect(() => {
+        const fetchConnections = async () => {
+            const { data, error } = await supabase
+                .from("users")
+                .select(`
+                    photo
+                `)
+                .eq("id", id);
+
+            if (error) {
+                console.error("Error fetching connections:", error.message);
+            } else {
+                console.log("data   ",data)
+                setPhoto(data);
+            }
+
+        };
+    
+        fetchConnections();
+    }, [id]);
+
+    useEffect(() => {
         if (userPosition) {
-            const userMarker = L.marker([userPosition.lat, userPosition.lng]).addTo(map);
+            const userMarkerIcon = L.icon({
+                iconUrl:  photo[0].photo, 
+                // iconUrl: photo[0].photo | "kosong", 
+                iconSize: [40, 40], // Ukuran marker
+                iconAnchor: [16, 32], // Titik anchor
+                popupAnchor: [0, -32], // Lokasi pop-up
+                className: 'rounded-full border-secondary border-2' ,
+            });
+            const userMarker = L.marker([userPosition.lat, userPosition.lng],{icon: userMarkerIcon}).addTo(map);
 
             return () => {
                 map.removeLayer(userMarker);

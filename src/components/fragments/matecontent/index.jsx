@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import chat from "../../../services/api/chat";
 
 export default function MateContent({ message, responseTxt, setMap }) {
   const [responseText, setResponseText] = useState(null);
@@ -67,22 +68,7 @@ export default function MateContent({ message, responseTxt, setMap }) {
     ]);
 
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL+"/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: textToSend,
-          api_key: import.meta.env.VITE_NVIDIA_API_KEY,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch response from the API.");
-      }
-
-      const data = await response.json();
+      const data = await chat(textToSend);
       const { action, value } = data;
 
       executeAction(action, value);
@@ -107,64 +93,64 @@ export default function MateContent({ message, responseTxt, setMap }) {
     }
   };
 
-  const handleSubmitType = async (e) => {
-    e.preventDefault();
-    const textToSend = inputValue;
-    console.log(textToSend);
+  // const handleSubmitType = async (e) => {
+  //   e.preventDefault();
+  //   const textToSend = inputValue;
+  //   console.log(textToSend);
 
-    if (!textToSend) {
-      alert("Please enter a question.");
-      return;
-    }
+  //   if (!textToSend) {
+  //     alert("Please enter a question.");
+  //     return;
+  //   }
 
-    setLoading(true);
-    setResponseText(null);
+  //   setLoading(true);
+  //   setResponseText(null);
 
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { sender: "user", text: textToSend },
-    ]);
+  //   setMessages((prevMessages) => [
+  //     ...prevMessages,
+  //     { sender: "user", text: textToSend },
+  //   ]);
 
-    try {
-      const response = await fetch(import.meta.env.VITE_API_URL+"/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: textToSend,
-          api_key: import.meta.env.VITE_NVIDIA_API_KEY,
-        }),
-      });
+  //   try {
+  //     const response = await fetch(import.meta.env.VITE_API_URL+"/chat", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         message: textToSend,
+  //         api_key: import.meta.env.VITE_NVIDIA_API_KEY,
+  //       }),
+  //     });
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch response from the API.");
-      }
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch response from the API.");
+  //     }
 
-      const data = await response.json();
-      const { action, value } = data;
+  //     const data = await response.json();
+  //     const { action, value } = data;
 
-      executeAction(action, value);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: "ai", text: value || "No action received." },
-      ]);
+  //     executeAction(action, value);
+  //     setMessages((prevMessages) => [
+  //       ...prevMessages,
+  //       { sender: "ai", text: value || "No action received." },
+  //     ]);
       
-      // Text-to-Speech
-      const synth = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(value || "No action received.");
-      utterance.lang = "id-ID";
-      synth.speak(utterance);
-    } catch (error) {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: "ai", text: "Failed to fetch response from the API." },
-      ]);
-    } finally {
-      setLoading(false);
-      setInputValue("");
-    }
-  };
+  //     // Text-to-Speech
+  //     const synth = window.speechSynthesis;
+  //     const utterance = new SpeechSynthesisUtterance(value || "No action received.");
+  //     utterance.lang = "id-ID";
+  //     synth.speak(utterance);
+  //   } catch (error) {
+  //     setMessages((prevMessages) => [
+  //       ...prevMessages,
+  //       { sender: "ai", text: "Failed to fetch response from the API." },
+  //     ]);
+  //   } finally {
+  //     setLoading(false);
+  //     setInputValue("");
+  //   }
+  // };
 
   const executeAction = (action, value) => {
     if (action === "switch") {
@@ -189,7 +175,7 @@ export default function MateContent({ message, responseTxt, setMap }) {
             }`}
           >
             {msg.sender !== "user" && (
-            <img src="assets/images/profile.svg" alt="" />
+            <img src="/assets/images/profile.svg" alt="" />
             )}
             
             <div

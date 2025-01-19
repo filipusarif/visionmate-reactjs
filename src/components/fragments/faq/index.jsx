@@ -47,7 +47,7 @@ const FAQ = () => {
                 <span
                     className={`transform transition-transform duration-300 ${openIndex === index ? "rotate-180" : "rotate-0"}`}
                 >
-                    <img src="assets/images/arrow-down.svg" alt="" className="w-[50px] md:w-auto"/>
+                    <img src="/assets/images/arrow-down.svg" alt="" className="w-[50px] md:w-auto"/>
                 </span>
                 </button>
                 <div

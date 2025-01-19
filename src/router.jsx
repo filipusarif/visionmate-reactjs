@@ -29,7 +29,7 @@ export const router = createBrowserRouter([
         ),
     },
     {
-        path: "/vi/barcode",
+        path: "/vi/profile",
         element: (
             <ProtectedRoute allowedRoles={["VI"]}>
                 <Barcode />
@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
         ),
     },
     {
-        path: "/vi/editprofile",
+        path: "/vi/profile/edit",
         element: (
             <ProtectedRoute allowedRoles={["VI"]}>
                 <EditProfile/>

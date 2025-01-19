@@ -49,7 +49,7 @@ export default function Pricing(){
                 <p className="text-lg text-center text-background opacity-85 font-normal">Bantu Kemandirian, Tanpa Menguras Banyak Anggaran</p>
                 </div>
             </section>
-            <section className="w-screen overflow-x-hidden min-h-screen py-14 container mx-auto gap-5 lg:gap-0 flex flex-col lg:flex-row justify-center items-center lg:px-32">
+            <section className="w-screen overflow-hidden min-h-screen py-14 container mx-auto gap-5 lg:gap-0 flex flex-col lg:flex-row justify-center items-center lg:px-32">
             {prices.map((price, index) => (
                 <PricingCard key={index} plan={price} />
             ))}

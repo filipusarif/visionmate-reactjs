@@ -86,6 +86,7 @@ const Assistant = () => {
 
     const handleMouseDown = () => {
         pressTimer.current = setTimeout(() => {
+            window.speechSynthesis.cancel();
             setShowPopup(true);
         }, 1500);
     };
@@ -175,7 +176,7 @@ const Assistant = () => {
                                 <div className="w-[20%] left-[40%] h-[5px] bg-background absolute -top-3.5 rounded-full z-50" />
                                 <p className="text-lg font-medium">Halo Mate, Ada apa?</p>
                                 <img
-                                    src="assets/images/assistant/mic.svg"
+                                    src="/assets/images/assistant/mic.svg"
                                     className="p-5 bg-secondary rounded-full shadow-xl"
                                     alt=""
                                 />
@@ -189,7 +190,7 @@ const Assistant = () => {
                                 {/* <div className="w-[20%] left-[40%] h-[5px] bg-background absolute -top-3.5 rounded-full z-50" /> */}
                                 <p className="text-lg font-medium">Halo Mate, Ada apa?</p>
                                 <img
-                                    src="assets/images/assistant/mic.svg"
+                                    src="/assets/images/assistant/mic.svg"
                                     className="p-5 bg-secondary rounded-full shadow-xl"
                                     alt=""
                                 />

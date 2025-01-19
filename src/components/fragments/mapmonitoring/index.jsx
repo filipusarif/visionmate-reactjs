@@ -3,8 +3,9 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import LocateUserAndRouteMonitoring from "../../elements/locateUser/monitoring";
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
+import Loading from "../../elements/loading";
 
-const MapMonitoring = ({to, id, connections, destination, photo}) => {
+const MapMonitoring = ({to, id, connections, destination}) => {
         const [destinationSearch, setDestinationSearch] = useState([]);
         const [placeName, setPlaceName] = useState("");
         const [loading, setLoading] = useState(false);
@@ -46,16 +47,17 @@ const MapMonitoring = ({to, id, connections, destination, photo}) => {
             }
         };
 
-        useEffect(() => {
-            console.log("hp p",photo)
-        },[photo])
+        // useEffect(() => {
+        //     console.log("hp p",photo)
+        // },[photo])
 
     return (
         <div className="relative w-screen h-screen z-0">
             {loading && (
-                <div className="absolute top-0 right-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-10">
-                    <div className="spinner" />
-                </div>
+                // <div className="absolute top-0 right-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-10">
+                //     <div className="spinner" />
+                // </div>
+                <Loading />
             )}
             <div className="relative w-full h-full">
             <MapContainer
@@ -68,7 +70,7 @@ const MapMonitoring = ({to, id, connections, destination, photo}) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="&copy; OpenStreetMap contributors"
                     />
-                <LocateUserAndRouteMonitoring destination={destination} photo={photo} audioEnabled={false}  id={id} connections={connections} />
+                <LocateUserAndRouteMonitoring destination={destination} audioEnabled={false}  id={id} connections={connections} />
             </MapContainer>
             </div>
         </div>

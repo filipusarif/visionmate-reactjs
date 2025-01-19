@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { UserAuth } from "../components/context/AuthContext";
+import LoadingPage from "../pages/LoadingPage";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
     const { decryptSession } = UserAuth();
@@ -17,7 +18,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     }, [decryptSession]);
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <LoadingPage />;
     }
 
     if (!userRole) {

@@ -3,6 +3,7 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import LocateUserAndRoute from "../../elements/locateUser";
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
+import Loading from "../../elements/loading";
 
 
 const MapComponent = ({ to, id, children }) => {
@@ -65,24 +66,25 @@ const MapComponent = ({ to, id, children }) => {
     return (
         <div className="relative w-screen h-screen z-0">
             {loading && (
-                <div className="absolute top-0 right-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-10">
-                    <div className="spinner" />
-                </div>
+                // <div className="absolute top-0 right-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-10">
+                //     <div className="spinner" />
+                // </div>
+                <Loading />
             )}
 
             {distance && distance.direction && distance.distance && (
                 <div className="z-10 absolute gap-4 lg:gap-2 px-5 top-10 left-0 bg-background h-[5rem] flex justify-center items-center lg:top-20 lg:left-5 w-full lg:w-[40%] lg:rounded-md ">
                     {distance.direction === "W" && (
-                        <img src="assets/images/arrow/up.svg" alt="" className="basis-1/6 "/>
+                        <img src="/assets/images/arrow/up.svg" alt="" className="basis-1/6 "/>
                     )}
                     {distance.direction === "N" && (
-                        <img src="assets/images/arrow/up.svg" alt="" className="basis-1/6 "/>
+                        <img src="/assets/images/arrow/up.svg" alt="" className="basis-1/6 "/>
                     )}
                     {distance.direction === "E" && (
-                        <img src="assets/images/arrow/up.svg" alt="" className="basis-1/6 "/>
+                        <img src="/assets/images/arrow/up.svg" alt="" className="basis-1/6 "/>
                     )}
                     {distance.direction === "S" && (
-                        <img src="assets/images/arrow/up.svg" alt="" className="basis-1/6 "/>
+                        <img src="/assets/images/arrow/up.svg" alt="" className="basis-1/6 "/>
                     )}
                     <div className="flex flex-col items-start justify-center basis-5/6 ">
                         <h1 className="text-lg lg:text-md">{distance.distance} meter</h1>
