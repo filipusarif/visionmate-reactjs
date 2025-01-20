@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import chat from "../../../services/api/chat";
 
-export default function MateContent({ message, responseTxt, setMap }) {
+export default function MateContent({ message, responseTxt, setMap, sensor }) {
   const [responseText, setResponseText] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [destination, setDestination] = useState("-");
+  const [sensorTriggered, setSensorTriggered] = useState(false);
   const isFirstRender = useRef(true);
 
 
@@ -31,6 +32,28 @@ export default function MateContent({ message, responseTxt, setMap }) {
       handleSubmitVoice(message);
     }
   }, [message]);
+
+  useEffect(() => {
+    if (!sensor) return;
+
+    if (sensor < 100 && !sensorTriggered) {
+      setSensorTriggered(true);
+      window.speechSynthesis.cancel();
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: "ai", text: "Didepan kamu ada object, dari tongkat" },
+      ]);
+
+      // Text-to-Speech
+      const synth = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance("Didepan kamu ada object, dari tongkat");
+      utterance.lang = "id-ID";
+      synth.speak(utterance);
+    } else if (sensor >= 100) {
+      setSensorTriggered(false); // Reset trigger saat sensor >= 100
+    }
+  }, [sensor, sensorTriggered]);
 
   useEffect(() => {
     if (!responseTxt) return;

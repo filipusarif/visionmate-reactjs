@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import Footer from "../components/fragments/footer";
 import Back from "../components/elements/back";
 import Navbar from "../components/fragments/navbar";
+import chat from "../services/api/chat";
+import Popup from "../components/elements/popup";
 
 
 export default function Profile(){
@@ -33,6 +35,13 @@ export default function Profile(){
             }
         }, []); 
 
+        // ================ popup control ===================
+            const [showPopup, setShowPopup] = useState(false);
+            const [transcript, setTranscript] = useState("");
+            const [isListening, setIsListening] = useState(false);
+            const pressTimer = useRef(null);
+            const closeTimer = useRef(null);
+            const recognitionRef = useRef(null);
 
     const [data, setData] = useState(null);
 
@@ -119,14 +128,117 @@ export default function Profile(){
             fetchGuards();
         }, [userData]);
 
+
+        // ================================= Popup Modal Controll ===================================
+    const handleMouseDown = () => {
+        if(userData?.role === "VI"){
+        pressTimer.current = setTimeout(() => {
+            window.speechSynthesis.cancel();
+            setShowPopup(true);
+        }, 1500);
+        }
+    };
+
+    const handleMouseUp = () => {
+        if(userData?.role === "VI"){
+        clearTimeout(pressTimer.current);
+
+        if (showPopup) {
+            closeTimer.current = setTimeout(() => {
+                setShowPopup(false);
+            }, 100);
+        }
+        }
+    };
+
+    useEffect(() => {
+            if (showPopup) {
+                const utterance = new SpeechSynthesisUtterance("Halo Mate, mau pindah halaman?");
+                utterance.lang = "id-ID";
+                utterance.onend = () => {
+                    if (recognitionRef.current) {
+                        recognitionRef.current.start();
+                        setIsListening(true);
+                    }
+                };
+                window.speechSynthesis.speak(utterance);
+            } else {
+                if (recognitionRef.current && isListening) {
+                    recognitionRef.current.stop();
+                    setIsListening(false);
+                }
+            }
+        }, [showPopup]);
+
+        useEffect(() => {
+                if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    recognitionRef.current = new SpeechRecognition();
+                    recognitionRef.current.continuous = false;
+                    recognitionRef.current.interimResults = false;
+                    recognitionRef.current.lang = "id-ID";
+        
+                    recognitionRef.current.onresult = (event) => {
+                        const result = event.results[0][0].transcript;
+                        setTranscript(result);
+                        console.log("Recognized speech:", result);
+                    };
+        
+                    recognitionRef.current.onerror = (event) => {
+                        console.error("Speech recognition error:", event.error);
+                    };
+                } else {
+                    console.error("Speech Recognition API is not supported in this browser.");
+                }
+            }, []);
+
+        useEffect(() => {
+            handleSubmitVoice(transcript);
+        },[transcript]);
+
+        const executeAction = (action, value) => {
+            if (action === "switch") {
+            window.location.href = value;
+            } else if (action === "go") {
+            setMap(value);
+            } else if (action === "control") {
+            console.log(`Control interval set to: ${value} ms`);
+            }
+        };
+
+
+        const handleSubmitVoice = async (inputMessage) => {
+            const textToSend = inputMessage || inputValue;
+            console.log(textToSend);
+        
+            if (!textToSend) {
+            alert("Please enter a question.");
+            return;
+            }
+        
+            try {
+            const data = await chat(textToSend);
+            const { action, value } = data;
+            executeAction(action, value);
+            } catch (error) {
+            console.log(error)
+            }
+        };
+
     
         return (
             <>
                 {data ? (
-                    <>
+                    <div className='bg-gray-50 w-screen relative overflow-hidden' 
+                    onMouseDown={handleMouseDown}
+                    onMouseUp={handleMouseUp}
+                    onMouseLeave={handleMouseUp}
+                    onTouchStart={handleMouseDown}
+                    onTouchEnd={handleMouseUp}>
                         <Navbar session={userData} mode="vi" />
                         <NavbarMobile />
-                        <section className="w-screen min-h-screen overflow-hidden flex flex-col gap-6 lg:mt-16 bg-background">
+                        <section className="w-screen min-h-screen overflow-hidden flex flex-col gap-6 lg:mt-16 bg-background"
+                        >
                             <div className="bg-secondary pb-10 lg:pt-10 rounded-b-3xl ">
                                 <div className="container mx-auto flex flex-col gap-8">
                                 <Back title={"PROFILE"}  to={"/vi"}/>
@@ -197,7 +309,9 @@ export default function Profile(){
                         {/* <div className="hidden lg:block">
                             <Footer />
                         </div> */}
-                    </>
+                        <Popup text="Halo Mate, mau pindah halaman?" showPopup={showPopup} isListening={isListening} />
+                        
+                    </div>
                 ) : (
                     <LoadingPage />
                 )}

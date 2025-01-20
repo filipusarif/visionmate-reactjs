@@ -9,6 +9,7 @@ import Cookies from "js-cookie";
 import LoadingPage from "../LoadingPage";
 import NavbarMobile from "../../components/fragments/navbarmobile";
 import Popup from '../../components/elements/popup';
+import { supabase } from "../../services/lib/supabaseClient";
 
 
 const Assistant = () => {
@@ -22,6 +23,7 @@ const Assistant = () => {
     const recognitionRef = useRef(null);
     const [map, setMap] = useState("");
     const [countdown, setCountdown] = useState(35); 
+    const [sensor, setSensor] = useState(null);
 
     const { decryptSession } = UserAuth();
     const [userData, setUserData] = useState(null);
@@ -32,6 +34,36 @@ const Assistant = () => {
     },[])
 
     
+    useEffect(() => {
+        const fetchLatestResponse = async () => {
+            if (userData?.id) {
+                try {
+                    const { data, error } = await supabase
+                        .from('sensors')
+                        .select(`
+                            distance
+                        `)
+                        .eq('id', 1)
+                        .single();
+    
+                    if (error) throw error;
+                    setSensor(data.distance);
+                    console.log(data.distance)
+                } catch (error) {
+                    console.error("Error fetching latest response:", error);
+                }
+            }
+        };
+    
+        // Buat interval untuk polling
+        const intervalId = setInterval(() => {
+            fetchLatestResponse();
+        }, 1000);
+    
+        // Bersihkan interval saat komponen di-unmount
+        return () => clearInterval(intervalId);
+    }, [userData]);
+
     useEffect(() => {
         // Periksa apakah ini login pertama
         const firstLogin = Cookies.get("firstLogin");
@@ -168,6 +200,7 @@ const Assistant = () => {
                             message={transcript}
                             responseTxt={cameraResponse}
                             setMap={handleDataMap}
+                            sensor={sensor}
                         />
                         <NavbarMobile />
                         <Popup text="Halo Mate, ada apa?" showPopup={showPopup} isListening={isListening} />
