@@ -53,7 +53,7 @@ export default function Camera({ setCameraResponse }) {
                     formData.append("api_key", import.meta.env.VITE_NEVA_API_KEY);
 
                     try {
-                        const response = await fetch(import.meta.env.VITE_API_URL+"/detectnev/", {
+                        const response = await fetch(import.meta.env.VITE_API_URL+"/detectneva/", {
                             method: "POST",
                             body: formData,
                         });
@@ -77,7 +77,7 @@ export default function Camera({ setCameraResponse }) {
     }, [setCameraResponse]);
 
     return (
-        <div className="absolute z-50 w-fit h-fit bottom-4 left-4 md:right-5 md:bottom-7 md:left-auto">
+        <div className="absolute z-50 w-fit h-fit bottom-8 left-4 md:right-5 md:bottom-7 md:left-auto">
             <video ref={videoRef} autoPlay playsInline className="rounded-md h-[5rem] md:h-[150px] " ></video>
             <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
             {/* <button onClick={switchCamera} className="absolute -bottom-11 left-4 bg-blue-500 text-white p-2 rounded">

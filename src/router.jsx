@@ -10,6 +10,8 @@ import Barcode from "./pages/VI/Barcode";
 import Scan from "./pages/Penjaga/Scan";
 import Monitoring from "./pages/Penjaga/Monitoring";
 import EditProfile from "./pages/EditProfile";
+import SOS from "./pages/VI/Sos";
+import Profile from "./pages/Profile";
 
 
 export const router = createBrowserRouter([
@@ -29,10 +31,32 @@ export const router = createBrowserRouter([
         ),
     },
     {
-        path: "/vi/profile",
+        path: "/vi/barcode",
         element: (
             <ProtectedRoute allowedRoles={["VI"]}>
                 <Barcode />
+            </ProtectedRoute>
+        ),
+        errorElement: (
+            <Notfound />
+        ),
+    },
+    {
+        path: "/vi/sos",
+        element: (
+            <ProtectedRoute allowedRoles={["VI"]}>
+                <SOS />
+            </ProtectedRoute>
+        ),
+        errorElement: (
+            <Notfound />
+        ),
+    },
+    {
+        path: "/vi/profile",
+        element: (
+            <ProtectedRoute allowedRoles={["VI"]}>
+                <Profile />
             </ProtectedRoute>
         ),
         errorElement: (

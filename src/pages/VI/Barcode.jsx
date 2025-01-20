@@ -6,12 +6,39 @@ import Navbar from '../../components/fragments/navbar';
 import LoadingPage from '../LoadingPage';
 import Popup from '../../components/elements/popup';
 import chat from '../../services/api/chat';
+import NavbarMobile from '../../components/fragments/navbarmobile';
+import { supabase } from '../../services/lib/supabaseClient';
+import { Link } from 'react-router-dom';
 
 const Barcode = () => {
     const { decryptSession } = UserAuth();
     const [userData, setUserData] = useState(null);
     useSession(decryptSession, setUserData);
     const isFirstRender = useRef(true);
+
+    const [photo, setPhoto] = useState(null);
+
+    useEffect(() => {
+            const fetchUserData = async () => {
+                if (userData?.id) {
+                    try {
+                        const { data, error } = await supabase
+                            .from("users")
+                            .select("photo, fullName")
+                            .eq("id", userData.id)
+                            .single();
+    
+                        if (error) throw error;
+                        console.log(data)
+                        setPhoto(data);
+                    } catch (error) {
+                        console.error("Error fetching user data:", error);
+                    }
+                }
+            };
+    
+            fetchUserData();
+        }, [userData]);
 
     // ================ popup control ===================
     const [showPopup, setShowPopup] = useState(false);
@@ -30,10 +57,11 @@ const Barcode = () => {
 
     useEffect(() => {
         if (isFirstRender.current) {
+            window.speechSynthesis.cancel();
             isFirstRender.current = false;
         
             // Pesan sapaan awal
-            const initialMessage = "Halo mate, kamu di halaman profil! scan barcode kamu untuk terhubung dengan penjaga";
+            const initialMessage = "Halo mate, kamu di halaman barcode! scan barcode kamu untuk terhubung dengan penjaga";
         
             // Text-to-Speech untuk pesan awal
             const synth = window.speechSynthesis;
@@ -148,21 +176,35 @@ const Barcode = () => {
         onTouchStart={handleMouseDown}
         onTouchEnd={handleMouseUp}>
             <Navbar session={userData} mode="vi" />
-            <div className="flex flex-col items-center justify-center h-screen bg-gray-100" 
+            <div className='w-full flex justify-between lg:hidden items-center relative top-0 container pt-5 bg-background'>
+                <Link to={"/vi"}>
+                    <img src="/assets/images/back.svg" alt="" />
+                </Link>
+                <h1 className='font-bold'>QR CODE</h1>
+                <span></span>
+            </div>
+            <div className="flex flex-col lg:pt-32 items-center justify-center h-screen bg-background" 
             >
-                <h1 className="text-2xl font-bold mb-4">Barcode Saya</h1>
-                {userData ? (
-                    <QRCodeCanvas
-                    value={userData.id.toString()} 
-                    size={256}
-                    level="H"
-                    className="shadow-lg"
-                    />
+                {userData  ? (
+                    <div className='w-[90%] lg:w-[40%] -translate-y-10  bg-gradient-to-r from-blue-800 to-blue-500 relative flex justify-center gap-5 items-center pt-16 rounded-xl p-10 flex-col'>
+                        <img src={ photo?.photo } alt="" className='w-[7rem] bg-blue-800 h-[7rem] -top-14 rounded-full absolute border-4 border-secondary ' />
+                        <div className='flex w-full items-center flex-col gap-0'>
+                        <h1 className="text-2xl font-bold text-dark ">{photo?.fullName}</h1>
+                        <p className="text-xl text-dark ">VISUAL IMPAIRMENT</p>
+                        </div>
+                        <QRCodeCanvas
+                        value={userData.id.toString()} 
+                        size={256}
+                        level="H"
+                        className="shadow-lg"
+                        />
+                    </div>
                 ) : (
                     <LoadingPage />
                 )}
                 <p className="mt-4 text-gray-600">Scan barcode ini untuk menghubungkan ke penjaga.</p>
             </div>
+            <NavbarMobile />
             <Popup text="Halo Mate, mau pindah halaman?" showPopup={showPopup} isListening={isListening} />
         </div>
     );

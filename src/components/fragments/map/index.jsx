@@ -66,14 +66,14 @@ const MapComponent = ({ to, id, children }) => {
     return (
         <div className="relative w-screen h-screen z-0">
             {loading && (
-                // <div className="absolute top-0 right-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-10">
-                //     <div className="spinner" />
-                // </div>
-                <Loading />
+                <div className="absolute top-0 right-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-10">
+                    <div className="spinner" />
+                </div>
+                // <Loading />
             )}
 
             {distance && distance.direction && distance.distance && (
-                <div className="z-10 absolute gap-4 lg:gap-2 px-5 top-10 left-0 bg-background h-[5rem] flex justify-center items-center lg:top-20 lg:left-5 w-full lg:w-[40%] lg:rounded-md ">
+                <div className="z-10 absolute -translate-x-1/2 left-1/2 gap-2 rounded-xl px-2 border-[1px] border-dark lg:gap-2 top-5 bg-background min-h-[5rem] flex justify-center items-center lg:top-20 lg:left-52 w-[90%] lg:w-[40%] lg:rounded-md ">
                     {distance.direction === "W" && (
                         <img src="/assets/images/arrow/up.svg" alt="" className="basis-1/6 "/>
                     )}
@@ -92,6 +92,14 @@ const MapComponent = ({ to, id, children }) => {
                     </div>
                 </div>
             )}
+
+            {!distance && (
+                <div className="absolute z-10 top-5 lg:top-20 lg:w-[30%] lg:left-44 -translate-x-1/2 left-1/2 flex items-center justify-center rounded-full border-[1px] border-non-active gap-3 px-5 py-2 bg-white w-[70%]">
+                    <img src="/assets/images/assistant/mic2.svg" alt="" />
+                    <p>Kamu mau pergi kemana?</p>
+                </div>
+            )}
+
             {children}
             <MapContainer
                 center={[-6.983056, 110.4186]}
