@@ -10,6 +10,7 @@ import Barcode from "./pages/VI/Barcode";
 import Scan from "./pages/Penjaga/Scan";
 import Monitoring from "./pages/Penjaga/Monitoring";
 import EditProfile from "./pages/EditProfile";
+import RedirectIfAuthenticated from "./middleware/RedirectIfAuthenticated";
 import SOS from "./pages/VI/Sos";
 import Profile from "./pages/Profile";
 
@@ -17,8 +18,22 @@ import Profile from "./pages/Profile";
 export const router = createBrowserRouter([
     {path: "/", element: <Homepage />},
     {path: "*", element: <Notfound />},
-    {path: "/login", element: <Login /> },
-    {path: "/register", element: <Register />},
+    {
+        path: "/login", 
+        element: (
+            <RedirectIfAuthenticated>
+                <Login /> 
+            </RedirectIfAuthenticated>
+        )
+    },
+    {
+        path: "/register", 
+        element: (
+            <RedirectIfAuthenticated>
+                <Register /> 
+            </RedirectIfAuthenticated>
+        )
+    },
     {
         path: "/vi",
         element: (
