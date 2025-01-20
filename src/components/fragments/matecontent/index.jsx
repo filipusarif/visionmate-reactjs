@@ -6,6 +6,7 @@ export default function MateContent({ message, responseTxt, setMap }) {
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
+  const [destination, setDestination] = useState("-");
   const isFirstRender = useRef(true);
 
 
@@ -156,6 +157,7 @@ export default function MateContent({ message, responseTxt, setMap }) {
     if (action === "switch") {
       window.location.href = value;
     } else if (action === "go") {
+      setDestination(value);
       setMap(value);
     } else if (action === "control") {
       console.log(`Control interval set to: ${value} ms`);
@@ -163,62 +165,69 @@ export default function MateContent({ message, responseTxt, setMap }) {
   };
 
   return (
-    <div className="lg:w-[40vw] lg:pt-10 lg:p-10 relative z-10 border-secondary shadow-xl border-t-[25px] lg:h-screen w-screen min-h-[20rem] max-h-[20rm] p-4 flex flex-col gap-3 rounded-t-xl ">
-      <div className="w-[20%] left-[40%] h-[5px] bg-background absolute -top-3.5 rounded-full z-50" />
-      <h1 className="text-2xl mb-4">Chat Mate</h1>
-      <div className="chat-box p-2  rounded  basis-5/6 overflow-y-auto mb-4">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`chat-message ${
-              msg.sender === "user" ? "text-right" : "text-left flex gap-3 items-center"
-            }`}
-          >
-            {msg.sender !== "user" && (
-            <img src="/assets/images/profile.svg" alt="" />
-            )}
-            
-            <div
-              className={`inline-block ${
-                msg.sender === "user"
-                  ? "bg-secondary text-white rounded-br-none"
-                  : "bg-gray-200 text-black rounded-bl-none"
-              } p-2 rounded-3xl my-2`}
-            >
-              <p>
-                {typeof msg.text === "string"
-                  ? msg.text
-                  : JSON.stringify(msg.text)}
-              </p>
-            </div>
-          </div>
-        ))}
-        {loading && (
-          <div className="chat-message text-left">
-            <div className="inline-block bg-gray-200 text-black p-2 rounded-lg my-2">
-              <p>Typing...</p>
-            </div>
-          </div>
-        )}
+    <div className="lg:w-[40vw] relative lg:pt-10 lg:p-3 z-10 lg:h-screen w-screen min-h-[25rem]">
+      <div className="w-full h-full flex lg:hidden items-start justify-start px-5 py-2 gap-2  rounded-t-xl bg-secondary absolute -top-4 left-0 z-10">
+        <img src="/assets/images/assistant/destination.svg" alt="" />
+        <p className=" text-background">Tujuan Destinasi </p>
+        <p className=" text-background">{destination}</p>
       </div>
+      <div className="flex flex-col w-full h-full gap-3  p-4 rounded-t-xl z-50 relative top-5 left-0 bg-background">
+        {/* <div className="w-[20%] left-[40%] h-[5px] bg-background absolute -top-3.5 rounded-full z-50" /> */}
+        <h1 className="text-2xl mb-4">Chat Mate</h1>
+        <div className="chat-box p-2 pb-20 rounded  basis-5/6 overflow-y-auto mb-4">
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={`chat-message ${
+                msg.sender === "user" ? "text-right" : "text-left flex gap-3 items-center"
+              }`}
+            >
+              {msg.sender !== "user" && (
+              <img src="/assets/images/profile.svg" alt="" />
+              )}
+              
+              <div
+                className={`inline-block ${
+                  msg.sender === "user"
+                    ? "bg-secondary text-white rounded-br-none"
+                    : "bg-gray-200 text-black rounded-bl-none"
+                } p-2 rounded-3xl my-2`}
+              >
+                <p>
+                  {typeof msg.text === "string"
+                    ? msg.text
+                    : JSON.stringify(msg.text)}
+                </p>
+              </div>
+            </div>
+          ))}
+          {loading && (
+            <div className="chat-message text-left">
+              <div className="inline-block bg-gray-200 text-black p-2 rounded-lg my-2">
+                <p>Typing...</p>
+              </div>
+            </div>
+          )}
+        </div>
 
-      {/* <div className="flex flex-col gap-4 basis-1/6">
-        <form onSubmit={handleSubmitType} className="flex items-center gap-3">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Enter your question"
-            className="p-2 border rounded basis-5/6"
-          />
-          <button
-            type="submit"
-            className="p-2 bg-secondary basis-1/6 text-white rounded"
-          >
-            Submit
-          </button>
-        </form>
-      </div> */}
+        {/* <div className="flex flex-col gap-4 basis-1/6">
+          <form onSubmit={handleSubmitType} className="flex items-center gap-3">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Enter your question"
+              className="p-2 border rounded basis-5/6"
+            />
+            <button
+              type="submit"
+              className="p-2 bg-secondary basis-1/6 text-white rounded"
+            >
+              Submit
+            </button>
+          </form>
+        </div> */}
+      </div>
     </div>
   );
 }

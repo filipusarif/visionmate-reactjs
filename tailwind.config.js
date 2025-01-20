@@ -31,7 +31,7 @@ export default {
       'dark':'#0F172A',
       'danger':'#EF4444',
       'dark-white':'#F5F5F5',
-      'brownAbout':'#D67D2A',
+      'not-active':'#3f3f3f',
       'purpleAbout':'#9F2AD6',
       'blueAbout':'#2A5AD6',
     },

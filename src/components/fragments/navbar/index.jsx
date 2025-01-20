@@ -69,7 +69,7 @@ const Navbar = ({ session, mode }) => {
 
 
     return (
-    <nav className={`fixed ${mode === "home" ? "block" : "block"} top-0 w-full z-50 bg-background font-medium border-gray-200 py-2.5 dark:bg-gray-900`}>
+    <nav className={`fixed ${mode === "home" ? "block":"hidden lg:block"}  top-0 w-full z-50 bg-background font-medium border-gray-200 py-2.5 dark:bg-gray-900`}>
         <div className='container mx-auto'>
         <div className="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto">
             <a href="/" className="flex items-center">
@@ -83,9 +83,11 @@ const Navbar = ({ session, mode }) => {
 
                 {session ? (
                     <div className='flex items-center gap-3'>
+                        {mode === "home" && (
                         <button
                         onClick={handleDashboardRedirect}    
-                        className="text-white bg-primary hover:bg-primary-hover focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-primary-hobg-primary-hover">Dashboard</button>
+                        className="text-white bg-primary hover:bg-primary-hover focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-primary-hobg-primary-hover flex items-center gap-2"><img src="/assets/images/home.svg" alt="" /> Dashboard</button>
+                        )}
                         <div className="relative">
                         <button
                             onClick={toggleDropdown}
@@ -103,9 +105,9 @@ const Navbar = ({ session, mode }) => {
                                 <li>
                                     <button
                                         onClick={handleLogOut}
-                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 w-full text-left"
+                                        className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 w-full text-left"
                                     >
-                                        Keluar
+                                        <img src="/assets/images/logout.svg" alt="" />Keluar
                                 </button>
                                 </li>
                             </ul>
@@ -199,7 +201,25 @@ const Navbar = ({ session, mode }) => {
                                     ? "text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white" 
                                     : "text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
                             }`}
-                        >profile</Link>
+                        >Profil</Link>
+                    </li>
+                    <li>
+                        <Link to="/vi/sos"
+                            className={`block py-2 pl-3 pr-4 ${
+                                location.pathname === "/vi/sos" 
+                                    ? "text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white" 
+                                    : "text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                            }`}
+                        >Sos</Link>
+                    </li>
+                    <li>
+                        <Link to="/vi/barcode"
+                            className={`block py-2 pl-3 pr-4 ${
+                                location.pathname === "/vi/barcode" 
+                                    ? "text-white bg-primary rounded lg:bg-transparent lg:text-primary lg:p-0 dark:text-white" 
+                                    : "text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                            }`}
+                        >Qr Code</Link>
                     </li>
                     {session ? ( 
                         <li className='block md:hidden'>
