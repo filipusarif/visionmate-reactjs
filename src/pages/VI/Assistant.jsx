@@ -31,7 +31,9 @@ const Assistant = () => {
 
     useEffect(() => {
         window.speechSynthesis.cancel();
+        
     },[])
+
 
     
     useEffect(() => {

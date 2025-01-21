@@ -59,7 +59,7 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
     const [lastInstruction, setLastInstruction] = useState(null);
     const updateTimeoutRef = useRef(null);
     const [markers, setMarkers] = useState([]);
-    const [photo, setPhoto] =useState(null);
+    const [photo, setPhoto] =useState([]);
 
     const userIcon = L.icon({
         iconUrl:"/assets/images/transparent.png", 
@@ -206,7 +206,7 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
     }, [map, destination, audioEnabled, lastInstruction, id]);
 
     useEffect(() => {
-        if (userPosition) {
+        if (userPosition && photo && photo.length > 0) {
             const userMarkerIcon = L.icon({
                 iconUrl: photo[0].photo, 
                 iconSize: [32, 32], // Ukuran marker

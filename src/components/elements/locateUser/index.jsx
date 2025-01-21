@@ -76,7 +76,7 @@ export default function LocateUserAndRoute({ destination, audioEnabled, id, setS
     const [userPosition, setUserPosition] = useState(null);
     const [lastInstruction, setLastInstruction] = useState(null);
     const updateTimeoutRef = useRef(null);
-    const [photo, setPhoto] =useState(null);
+    const [photo, setPhoto] =useState([]);
     // Fungsi untuk menerjemahkan instruksi
     function translateInstruction(instruction) {
         if (!instruction) return "";
@@ -241,7 +241,7 @@ export default function LocateUserAndRoute({ destination, audioEnabled, id, setS
     }, [id]);
 
     useEffect(() => {
-        if (userPosition) {
+        if (userPosition  && photo && photo.length > 0) {
             const userMarkerIcon = L.icon({
                 iconUrl:  photo[0].photo, 
                 // iconUrl: photo[0].photo | "kosong", 
