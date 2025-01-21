@@ -47,8 +47,8 @@ const Assistant = () => {
                         .single();
     
                     if (error) throw error;
-                    setSensor(data.distance);
-                    console.log(data.distance)
+                    setSensor(data?.distance);
+                    console.log(data?.distance)
                 } catch (error) {
                     console.error("Error fetching latest response:", error);
                 }
@@ -58,7 +58,7 @@ const Assistant = () => {
         // Buat interval untuk polling
         const intervalId = setInterval(() => {
             fetchLatestResponse();
-        }, 1000);
+        }, 2000);
     
         // Bersihkan interval saat komponen di-unmount
         return () => clearInterval(intervalId);

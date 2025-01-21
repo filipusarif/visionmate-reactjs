@@ -67,7 +67,6 @@ const Navbar = ({ session, mode }) => {
         }
     };
 
-
     return (
     <nav className={`fixed ${mode === "home" ? "block":"hidden lg:block"}  top-0 w-full z-50 bg-background font-medium border-gray-200 py-2.5 dark:bg-gray-900`}>
         <div className='container mx-auto'>

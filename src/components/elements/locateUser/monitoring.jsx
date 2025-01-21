@@ -206,10 +206,6 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
     }, [map, destination, audioEnabled, lastInstruction, id]);
 
     useEffect(() => {
-        console.log("hp",photo)
-    },[photo])
-
-    useEffect(() => {
         if (userPosition) {
             const userMarkerIcon = L.icon({
                 iconUrl: photo[0].photo, 
