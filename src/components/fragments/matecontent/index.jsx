@@ -188,15 +188,15 @@ export default function MateContent({ message, responseTxt, setMap, sensor }) {
   };
 
   return (
-    <div className="lg:w-[40vw] relative lg:pt-10 lg:p-3 z-10 lg:h-screen w-screen min-h-[25rem]">
+    <div className="lg:w-[40vw] relative lg:pt-10 lg:p-3 z-10 lg:h-screen w-screen min-h-[22rem]">
       <div className="w-full h-full flex lg:hidden items-start justify-start px-5 py-2 gap-2  rounded-t-xl bg-secondary absolute -top-4 left-0 z-10">
         <img src="/assets/images/assistant/destination.svg" alt="" />
         <p className=" text-background">Tujuan Destinasi </p>
         <p className=" text-background">{destination}</p>
       </div>
-      <div className="flex flex-col w-full h-full gap-3  p-4 rounded-t-xl z-50 relative top-5 left-0 bg-background">
+      <div className="flex flex-col w-full h-full gap-3 p-4 pt-2 rounded-t-xl z-50 relative top-5 left-0 bg-background">
         {/* <div className="w-[20%] left-[40%] h-[5px] bg-background absolute -top-3.5 rounded-full z-50" /> */}
-        <h1 className="text-2xl mb-4">Chat Mate</h1>
+        <p className="text-lg mb-0 font-bold text-non-active text-center">Hari ini</p>
         <div className="chat-box p-2 pb-20 rounded  basis-5/6 overflow-y-auto mb-4">
           {messages.map((msg, index) => (
             <div
@@ -212,9 +212,9 @@ export default function MateContent({ message, responseTxt, setMap, sensor }) {
               <div
                 className={`inline-block ${
                   msg.sender === "user"
-                    ? "bg-secondary text-white rounded-br-none"
-                    : "bg-gray-200 text-black rounded-bl-none"
-                } p-2 rounded-3xl my-2`}
+                    ? "bg-[#1E4FBC] text-white rounded-br-none"
+                    : "bg-[#0D2352] text-white rounded-bl-none"
+                } p-2 px-3 rounded-xl `}
               >
                 <p>
                   {typeof msg.text === "string"

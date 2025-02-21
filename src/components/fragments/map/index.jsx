@@ -94,9 +94,14 @@ const MapComponent = ({ to, id, children }) => {
             )}
 
             {!distance && (
-                <div className="absolute z-10 top-5 lg:top-20 lg:w-[30%] lg:left-44 -translate-x-1/2 left-1/2 flex items-center justify-center rounded-full border-[1px] border-non-active gap-3 px-5 py-2 bg-white w-[70%]">
-                    <img src="/assets/images/assistant/mic2.svg" alt="" />
-                    <p>Kamu mau pergi kemana?</p>
+                <div className="absolute z-10 top-4 lg:top-20 lg:w-[30%] lg:left-44 -translate-x-1/2 left-1/2 flex items-center justify-start rounded-xl  gap-5 px-5 py-2 bg-white w-[95%] shadow-lg">
+                    {/* <p>Kamu mau pergi kemana?</p> */}
+                    <img src="/assets/images/assistant/mic2.svg" className="w-[30px]" alt="" />
+                    <div className="flex flex-col justify-center items-start">
+                        <h1 className="text-xl font-bold">Halo, Budi!</h1>
+                        <p className="text-sm ">Mau pergi kemana hari ini?</p>
+                    </div>
+
                 </div>
             )}
 
