@@ -13,6 +13,7 @@ import EditProfile from "./pages/EditProfile";
 import RedirectIfAuthenticated from "./middleware/RedirectIfAuthenticated";
 import SOS from "./pages/VI/Sos";
 import Profile from "./pages/Profile";
+import AdminPage from "./pages/Admin/AdminPage";
 
 
 export const router = createBrowserRouter([
@@ -116,6 +117,17 @@ export const router = createBrowserRouter([
         element: (
             <ProtectedRoute allowedRoles={["Guard"]}>
                 <EditProfile/>
+            </ProtectedRoute>
+        ),
+        errorElement: (
+            <Notfound />
+        ),
+    },
+    {
+        path: "/admin",
+        element: (
+            <ProtectedRoute allowedRoles={["Admin"]}>
+                <AdminPage/>
             </ProtectedRoute>
         ),
         errorElement: (

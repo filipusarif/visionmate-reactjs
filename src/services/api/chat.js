@@ -1,4 +1,9 @@
+import { getAllApiKeys } from "../api/apiKey";
+
 const chat = async (textToSend) => {
+    const keys = await getAllApiKeys();
+    const apiKey = keys.VITE_NVIDIA_API_KEY;
+
     const response = await fetch(import.meta.env.VITE_API_URL+"/chat", {
         method: "POST",
         headers: {
@@ -6,7 +11,7 @@ const chat = async (textToSend) => {
         },
         body: JSON.stringify({
             message: textToSend,
-            api_key: import.meta.env.VITE_NVIDIA_API_KEY,
+            api_key: apiKey,
         }),
     });
 
