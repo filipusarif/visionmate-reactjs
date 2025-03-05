@@ -1,10 +1,12 @@
 import React, { useRef, useEffect, useState } from "react";
+import { getActiveNevaApiKey } from "../../../services/api/apiKey";
 
 export default function Camera({ setCameraResponse }) {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [isFrontCamera, setIsFrontCamera] = useState(true);
     const [error, setError] = useState(null);
+    const [apiKey, setApiKey] = useState("");
 
     const constraints = {
         video: {
@@ -13,6 +15,21 @@ export default function Camera({ setCameraResponse }) {
     };
 
     const switchCamera = () => setIsFrontCamera((prevState) => !prevState);
+
+    useEffect(() => {
+        const fetchApiKey = async () => {
+            try {
+                const keys = await getActiveNevaApiKey();
+                setApiKey(keys); 
+                console.log("Fetched API key:", keys);
+            } catch (error) {
+                console.error("Error fetching API key:", error);
+                setError("Failed to fetch API key.");
+            }
+        };
+
+        fetchApiKey();
+    }, []);
 
     useEffect(() => {
         const startCamera = async () => {
@@ -38,6 +55,8 @@ export default function Camera({ setCameraResponse }) {
 
     useEffect(() => {
         const captureImage = async () => {
+            if (!apiKey) return;
+
             if (canvasRef.current && videoRef.current) {
                 const canvas = canvasRef.current;
                 const video = videoRef.current;
@@ -50,7 +69,7 @@ export default function Camera({ setCameraResponse }) {
                 canvas.toBlob(async (blob) => {
                     const formData = new FormData();
                     formData.append("file", blob, "image.png");
-                    formData.append("api_key", import.meta.env.VITE_NEVA_API_KEY);
+                    formData.append("api_key", apiKey);
 
                     try {
                         const response = await fetch(import.meta.env.VITE_API_URL+"/detectneva/", {
