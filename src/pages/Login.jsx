@@ -40,6 +40,8 @@ const Login = () => {
                     navigate('/vi');
                 } else if (userRole === 'Guard') {
                     navigate('/guard');
+                } else if (userRole === 'Admin') {
+                    navigate('/admin');
                 } else {
                     setError("Anda tidak memiliki izin.");
                 }
