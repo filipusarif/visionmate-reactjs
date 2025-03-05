@@ -1,10 +1,15 @@
-import { getAllApiKeys } from "../api/apiKey";
+import { getActiveNvidiaApiKey } from "../api/apiKey";
 
 const chat = async (textToSend) => {
-    const keys = await getAllApiKeys();
-    const apiKey = keys.VITE_NVIDIA_API_KEY;
+    const keys = await getActiveNvidiaApiKey();
+    const apiKey = keys;
 
-    const response = await fetch(import.meta.env.VITE_API_URL+"/chat", {
+    console.log("Sending request to API with the following data:", {
+        message: textToSend,
+        api_key: apiKey,
+    });
+
+    const response = await fetch(import.meta.env.VITE_API_URL + "/chat", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -14,6 +19,8 @@ const chat = async (textToSend) => {
             api_key: apiKey,
         }),
     });
+
+    console.log("Received response from API:", response);
 
     if (!response.ok) {
         throw new Error("Failed to fetch response from the API.");

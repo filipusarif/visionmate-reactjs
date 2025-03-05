@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { getAllApiKeys } from "../../../services/api/apiKey";
+import { getActiveNevaApiKey } from "../../../services/api/apiKey";
 
 export default function Camera({ setCameraResponse }) {
     const videoRef = useRef(null);
@@ -19,8 +19,9 @@ export default function Camera({ setCameraResponse }) {
     useEffect(() => {
         const fetchApiKey = async () => {
             try {
-                const keys = await getAllApiKeys();
-                setApiKey(keys.VITE_NEVA_API_KEY); 
+                const keys = await getActiveNevaApiKey();
+                setApiKey(keys); 
+                console.log("Fetched API key:", keys);
             } catch (error) {
                 console.error("Error fetching API key:", error);
                 setError("Failed to fetch API key.");

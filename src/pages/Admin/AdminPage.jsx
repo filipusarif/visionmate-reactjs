@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllApiKeys, updateApiKey } from "../../services/api/apiKey";
+import { getAllApiKeys, insertApiKey, activateApiKey, deleteApiKey } from "../../services/api/apiKey"; 
 import { UserAuth } from "../../components/context/AuthContext";
 import useSession from "../../hooks/useSession";
 import Navbar from "../../components/fragments/navbar";
@@ -8,33 +8,77 @@ import LoadingPage from "../LoadingPage";
 const AdminPage = () => {
     const { decryptSession } = UserAuth();
     const [userData, setUserData] = useState(null);
-    const [apiKeys, setApiKeys] = useState({});
+    const [apiKeys, setApiKeys] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [editedKeys, setEditedKeys] = useState({});
+    const [nevaKey, setNevaKey] = useState("");
+    const [nvidiaKey, setNvidiaKey] = useState("");
 
     useSession(decryptSession, setUserData);
 
-    // Fetch API Key saat pertama kali halaman dibuka
     useEffect(() => {
-        const fetchKeys = async () => {
-            const keys = await getAllApiKeys();
-            setApiKeys(keys);
-            setEditedKeys(keys); // Menyimpan API Key untuk diedit
-            setLoading(false);
-        };
-
-        fetchKeys();
+        fetchApiKeys();
     }, []);
 
-    // Fungsi untuk update API Key di Supabase
-    const handleUpdate = async (keyName) => {
+    const fetchApiKeys = async () => {
         setLoading(true);
-        const newValue = editedKeys[keyName];
+        try {
+            const keys = await getAllApiKeys();
+            setApiKeys(keys);
+        } catch (error) {
+            alert("Gagal mengambil API Key.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        await updateApiKey(keyName, newValue);
-        
-        setApiKeys((prevKeys) => ({ ...prevKeys, [keyName]: newValue }));
-        setLoading(false);
+    const handleInsertNevaKey = async () => {
+        if (!nevaKey) {
+            alert("Nilai API Key Neva harus diisi!");
+            return;
+        }
+
+        try {
+            await insertApiKey("VITE_NEVA_API_KEY", nevaKey);
+            setNevaKey("");
+            fetchApiKeys();
+        } catch (error) {
+            alert("Gagal menambahkan API Key Neva.");
+        }
+    };
+
+    const handleInsertNvidiaKey = async () => {
+        if (!nvidiaKey) {
+            alert("Nilai API Key NVIDIA harus diisi!");
+            return;
+        }
+
+        try {
+            await insertApiKey("VITE_NVIDIA_API_KEY", nvidiaKey);
+            setNvidiaKey("");
+            fetchApiKeys();
+        } catch (error) {
+            alert("Gagal menambahkan API Key NVIDIA.");
+        }
+    };
+
+    const handleActivateKey = async (id, keyName) => {
+        try {
+            await activateApiKey(id, keyName);
+            fetchApiKeys();
+        } catch (error) {
+            alert("Gagal mengaktifkan API Key.");
+        }
+    };
+
+    const handleDeleteKey = async (id) => {
+        if (!window.confirm("Apakah Anda yakin ingin menghapus API Key ini?")) return;
+
+        try {
+            await deleteApiKey(id);
+            fetchApiKeys();
+        } catch (error) {
+            alert("Gagal menghapus API Key.");
+        }
     };
 
     return (
@@ -42,30 +86,87 @@ const AdminPage = () => {
             {userData ? (
                 <>
                     <Navbar session={userData} mode="admin" />
-                    <div className="flex flex-col justify-center items-center w-full">
+                    <div className="flex flex-col items-center w-full p-4 mt-16">
                         {loading ? (
                             <p>Loading API Keys...</p>
                         ) : (
-                            Object.entries(apiKeys).map(([keyName, value]) => (
-                                <div key={keyName} className="mb-4">
-                                    <label className="block font-medium">{keyName}: </label>
-                                    <input
-                                        type="text"
-                                        value={editedKeys[keyName]}
-                                        onChange={(e) => 
-                                            setEditedKeys({ ...editedKeys, [keyName]: e.target.value })
-                                        }
-                                        className="border p-2 rounded w-64"
-                                    />
-                                    <button 
-                                        onClick={() => handleUpdate(keyName)}
-                                        className="ml-2 bg-blue-500 text-white px-4 py-2 rounded"
-                                        disabled={loading}
-                                    >
-                                        Update
-                                    </button>
+                            <>
+                                <div className="flex flex-col gap-8">
+                                    {/* Input untuk Neva API Key */}
+                                    <div className="bg-white shadow-md p-6 rounded-lg w-96">
+                                        <h2 className="text-lg font-bold mb-2">Tambah VITE_NEVA_API_KEY</h2>
+                                        <input
+                                            type="text"
+                                            placeholder="Masukkan API Key Neva"
+                                            value={nevaKey}
+                                            onChange={(e) => setNevaKey(e.target.value)}
+                                            className="border p-2 rounded w-full mb-2"
+                                        />
+                                        <button
+                                            onClick={handleInsertNevaKey}
+                                            className="bg-green-500 text-white px-4 py-2 rounded w-full"
+                                        >
+                                            Tambah Neva Key
+                                        </button>
+                                    </div>
+
+                                    {/* Input untuk NVIDIA API Key */}
+                                    <div className="bg-white shadow-md p-6 rounded-lg w-96">
+                                        <h2 className="text-lg font-bold mb-2">Tambah VITE_NVIDIA_API_KEY</h2>
+                                        <input
+                                            type="text"
+                                            placeholder="Masukkan API Key NVIDIA"
+                                            value={nvidiaKey}
+                                            onChange={(e) => setNvidiaKey(e.target.value)}
+                                            className="border p-2 rounded w-full mb-2"
+                                        />
+                                        <button
+                                            onClick={handleInsertNvidiaKey}
+                                            className="bg-green-500 text-white px-4 py-2 rounded w-full"
+                                        >
+                                            Tambah NVIDIA Key
+                                        </button>
+                                    </div>
                                 </div>
-                            ))
+
+                                {/* Tabel API Keys */}
+                                <h2 className="text-xl font-bold mt-8 mb-4">Daftar API Key</h2>
+                                <table className="w-full max-w-2xl border-collapse border border-gray-300">
+                                    <thead>
+                                        <tr className="bg-gray-100">
+                                            <th className="border p-2">Nama API Key</th>
+                                            <th className="border p-2">Nilai API Key</th>
+                                            <th className="border p-2">Status</th>
+                                            <th className="border p-2">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {apiKeys.map(({ id, key_name, key_value, status }) => (
+                                            <tr key={id} className="hover:bg-gray-50 transition duration-200">
+                                                <td className="border p-3">{key_name}</td>
+                                                <td className="border p-3">{key_value}</td>
+                                                <td className="border p-3">{status ? "Aktif" : "Nonaktif"}</td>
+                                                <td className="border p-3 flex gap-2">
+                                                    {!status && (
+                                                        <button
+                                                            onClick={() => handleActivateKey(id, key_name)}
+                                                            className="bg-blue-500 text-white px-4 py-2 rounded"
+                                                        >
+                                                            Aktifkan
+                                                        </button>
+                                                    )}
+                                                    <button
+                                                        onClick={() => handleDeleteKey(id)}
+                                                        className="bg-red-500 text-white px-4 py-2 rounded"
+                                                    >
+                                                        Hapus
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </>
                         )}
                     </div>
                 </>
