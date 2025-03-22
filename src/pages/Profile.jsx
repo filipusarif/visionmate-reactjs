@@ -10,6 +10,9 @@ import Back from "../components/elements/back";
 import Navbar from "../components/fragments/navbar";
 import chat from "../services/api/chat";
 import Popup from "../components/elements/popup";
+import Sidebar, { SidebarItem } from "../components/fragments/sidebar";
+
+
 
 
 export default function Profile(){
@@ -229,15 +232,21 @@ export default function Profile(){
         return (
             <>
                 {data ? (
-                    <div className='bg-gray-50 w-screen relative overflow-hidden' 
+                    <div className='bg-gray-50 w-screen relative h-screen overflow-hidden lg:flex' 
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
                     onMouseLeave={handleMouseUp}
                     onTouchStart={handleMouseDown}
                     onTouchEnd={handleMouseUp}>
-                        <Navbar session={userData} mode="vi" />
+                        {/* <Navbar session={userData} mode="vi" /> */}
+                        <Sidebar session={userData}>
+                            <Link to={"/vi"}><SidebarItem text={"Assistant"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
+                            <Link to={"/vi/sos"}><SidebarItem text={"sos"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
+                            <Link to={"/vi/barcode"}><SidebarItem text={"barcode"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
+                            <Link to={"/vi/profile"}><SidebarItem text={"Profile"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
+                        </Sidebar>
                         <NavbarMobile />
-                        <section className="w-screen min-h-screen overflow-hidden flex flex-col gap-6 lg:mt-16 bg-background"
+                        <section className="w-screen min-h-screen overflow-y-scroll flex flex-col gap-6 bg-background"
                         >
                             <div className="bg-secondary pb-10 lg:pt-10 rounded-b-3xl ">
                                 <div className="container mx-auto flex flex-col gap-8">

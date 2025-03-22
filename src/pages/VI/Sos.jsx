@@ -10,6 +10,8 @@ import Popup from '../../components/elements/popup';
 import chat from '../../services/api/chat';
 import sosChat from '../../services/api/sos';
 import Navbar from '../../components/fragments/navbar';
+import Sidebar, { SidebarItem } from "../../components/fragments/sidebar";
+import { Link } from "react-router-dom";
 
 const SOS = () => {
     const { decryptSession } = UserAuth();
@@ -220,22 +222,27 @@ const SOS = () => {
             <>
             {data ? (
                 <div 
-                    className="bg-[#F8F9FF] min-h-screen w-screen overflow-hidden relative flex flex-col items-center" 
+                    className="bg-[#F8F9FF] min-h-screen w-screen h-screen overflow-hidden relative flex flex-col items-center lg:flex-row" 
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
                     onMouseLeave={handleMouseUp}
                     onTouchStart={handleMouseDown}
                     onTouchEnd={handleMouseUp}
                 >
-                    <Navbar session={userData} mode="vi" />
-
-                    <div className='container mx-auto px-4 md:px-8 lg:px-16 lg:mt-20'>
+                    {/* <Navbar session={userData} mode="vi" /> */}
+                    <Sidebar session={userData} >
+                        <Link to={"/vi"}><SidebarItem text={"Assistant"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
+                        <Link to={"/vi/sos"}><SidebarItem text={"sos"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
+                        <Link to={"/vi/barcode"}><SidebarItem text={"barcode"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
+                        <Link to={"/vi/profile"}><SidebarItem text={"Profile"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
+                    </Sidebar>
+                    <div className='container mx-auto px-4 pt-10 lg:pt-0 md:px-8 lg:px-16 lg:mt-0'>
         
                         <Back title={"SOS"} to={"/vi"} />
         
                         {/* Header */}
-                        <div className="w-full container mx-auto flex flex-col md:flex-row justify-between items-center bg-white rounded-lg shadow-sm p-4 mb-4 mt-4">
-                            <div className="flex items-center space-x-4">
+                        <div className="w-full container mx-auto flex flex-row md:flex-row justify-between items-center bg-white rounded-lg shadow-sm p-4 mb-4 mt-4">
+                            <div className="flex items-center space-x-4 w-full">
                                 <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
                                     <img src={data.photo} alt="Profile" className="w-10 h-10 rounded-full" />
                                 </div>
@@ -244,14 +251,14 @@ const SOS = () => {
                                     <p className="text-sm text-gray-500">{data.role === "VI" ? "Visual Impairment" : "Guard"}</p>
                                 </div>
                             </div>
-                            <div className='flex flex-col items-end justify-center mt-4 md:mt-0'>
+                            {/* <div className='flex flex-col items-end justify-center mt-4 md:mt-0 w-5/12'>
                                 <p className="font-bold text-gray-800">Universitas Dian</p>
                                 <p className="text-sm text-gray-500 cursor-pointer">Lokasi Anda</p>
-                            </div>
+                            </div> */}
                         </div>
         
                         {/* Main Content */}
-                        <div className="w-full container mx-auto bg-white rounded-lg shadow-sm p-6 text-center flex flex-col gap-5 items-center">
+                        <div className="w-full container mx-auto bg-transparent rounded-lg shadow-sm p-6 text-center flex flex-col gap-5 items-center">
                             <p className="font-bold text-lg text-gray-800">HALO MATE, APAKAH ANDA PERLU BANTUAN?</p>
         
                             {/* SOS Button */}

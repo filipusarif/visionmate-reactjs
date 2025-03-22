@@ -188,16 +188,16 @@ export default function MateContent({ message, responseTxt, setMap, sensor }) {
   };
 
   return (
-    <div className="lg:w-[40vw] relative lg:pt-10 lg:p-3 z-10 lg:h-screen w-screen min-h-[22rem]">
-      <div className="w-full h-full flex lg:hidden items-start justify-start px-5 py-2 gap-2  rounded-t-xl bg-secondary absolute -top-4 left-0 z-10">
+    <div className="lg:w-[45vw] relative lg:pt-0 lg:p-0 z-10 lg:max-h-screen w-screen min-h-[22rem] max-h-[22rem]">
+        {/* <p className="text-lg mb-0 pl-2 font-bold text-non-active text-center lg:text-start">Asistant Mate</p> */}
+      <div className="w-full h-full flex lg:hidden items-start justify-start px-5 py-2 gap-2  rounded-t-3xl bg-secondary absolute -top-4 left-0 z-10">
         <img src="/assets/images/assistant/destination.svg" alt="" />
         <p className=" text-background">Tujuan Destinasi </p>
         <p className=" text-background">{destination}</p>
       </div>
-      <div className="flex flex-col w-full h-full gap-3 p-4 pt-2 rounded-t-xl z-50 relative top-5 left-0 bg-background">
+      <div className="flex flex-col w-full h-full lg:h-full gap-3 p-4 lg:p-0 pt-2 lg:pt-0 rounded-t-3xl border-[1px] border-gray-500 lg:rounded-xl z-50 relative top-5 left-0 lg:top-0 bg-background">
         {/* <div className="w-[20%] left-[40%] h-[5px] bg-background absolute -top-3.5 rounded-full z-50" /> */}
-        <p className="text-lg mb-0 font-bold text-non-active text-center">Hari ini</p>
-        <div className="chat-box p-2 pb-20 rounded  basis-5/6 overflow-y-auto mb-4">
+        <div className="chat-box p-2 lg:px-4 pb-20 rounded  basis-5/6 overflow-y-auto mb-4">
           {messages.map((msg, index) => (
             <div
               key={index}
@@ -214,9 +214,9 @@ export default function MateContent({ message, responseTxt, setMap, sensor }) {
                   msg.sender === "user"
                     ? "bg-[#1E4FBC] text-white rounded-br-none"
                     : "bg-[#0D2352] text-white rounded-bl-none"
-                } p-2 px-3 rounded-xl `}
+                } p-2 px-3 rounded-xl mb-5`}
               >
-                <p>
+                <p className="lg:text-sm">
                   {typeof msg.text === "string"
                     ? msg.text
                     : JSON.stringify(msg.text)}

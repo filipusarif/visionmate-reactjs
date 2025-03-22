@@ -64,7 +64,7 @@ const MapComponent = ({ to, id, children }) => {
     }, [step])
 
     return (
-        <div className="relative w-screen h-screen z-0">
+        <div className="relative w-screen h-screen lg:h-full z-0">
             {loading && (
                 <div className="absolute top-0 right-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-10">
                     <div className="spinner" />
@@ -93,9 +93,9 @@ const MapComponent = ({ to, id, children }) => {
                 </div>
             )}
 
-            {!distance && (
-                <div className="absolute z-10 top-4 lg:top-20 lg:w-[30%] lg:left-44 -translate-x-1/2 left-1/2 flex items-center justify-start rounded-xl  gap-5 px-5 py-2 bg-white w-[95%] shadow-lg">
-                    {/* <p>Kamu mau pergi kemana?</p> */}
+            {/* {!distance && (
+                <div className="absolute z-10 top-4 lg:top-2 lg:w-[35%] lg:left-44 -translate-x-1/2 left-1/2 flex items-center justify-start rounded-xl  gap-5 px-5 py-2 bg-white w-[95%] shadow-lg">
+                    
                     <img src="/assets/images/assistant/mic2.svg" className="w-[30px]" alt="" />
                     <div className="flex flex-col justify-center items-start">
                         <h1 className="text-xl font-bold">Halo, Budi!</h1>
@@ -103,13 +103,13 @@ const MapComponent = ({ to, id, children }) => {
                     </div>
 
                 </div>
-            )}
+            )} */}
 
             {children}
             <MapContainer
                 center={[-6.983056, 110.4186]}
                 zoom={13}
-                style={{ width: "100%", height: "100%", zIndex: 0 }}
+                style={{ width: "100%", height: "100%", zIndex: 0, borderRadius:"10px" }}
             >
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

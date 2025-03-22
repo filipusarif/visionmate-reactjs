@@ -1,7 +1,7 @@
 export default function Popup({text, showPopup, isListening}) {
     return (
         <div
-        className={`absolute  inset-0 flex items-center px-5 lg:px-0 justify-center bg-black bg-opacity-20 z-50 
+        className={`absolute  inset-0 flex items-end lg:items-center px-0 justify-center bg-black bg-opacity-20 z-50 
             ${showPopup ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full"}
             transition-all duration-2000 ease-in-out`}
         >
@@ -19,21 +19,24 @@ export default function Popup({text, showPopup, isListening}) {
                     <p>...</p>
                 )}
             </div> */}
-            <div className="bg-white  gap-8 relative  p-5 rounded-xl shadow w-full lg:w-[30%] h-fit flex justify-center items-center flex-col">
-                <p className="text-lg font-medium">{text}</p>
+            <div className="bg-white  gap-12 relative  p-10  rounded-t-3xl lg:rounded-3xl shadow w-full lg:w-[30%] h-fit flex justify-center items-center flex-col min-h-[23rem] max-h-[23rem]">
+                <div className="w-[50px] h-[3px] rounded-full bg-non-active absolute top-3 block lg:hidden" />
                 <img
                     src="/assets/images/assistant/mic.svg"
-                    className="p-5 bg-secondary rounded-full shadow-xl"
+                    className="p-5 bg-secondary rounded-full shadow-xl mt-12 "
                     alt=""
                 />
-                <div className="absolute w-[9rem] h-[9rem] translate-y-0.5 border-[1px] border-non-active rounded-full z-0 opacity-60"/>
-                <div className="absolute w-[10rem] h-[10rem] translate-y-0.5 border-[1px] border-non-active rounded-full z-0 opacity-30"/>
-                <div className="absolute w-[11rem] h-[11rem] translate-y-0.5 border-[1px] border-non-active rounded-full z-0 opacity-15"/>
-                {isListening ? (
-                    <p>Mendengarkan...</p>
-                ):(
-                    <p>...</p>
-                )}
+                <div className="absolute w-[10rem] h-[10rem] -translate-y-[28px] border-[1px] border-non-active rounded-full z-0 opacity-40"/>
+                <div className="absolute w-[12rem] h-[12rem] -translate-y-[28px] border-[1px] border-non-active rounded-full z-0 opacity-20"/>
+                <div className="absolute w-[14rem] h-[14rem] -translate-y-[28px] border-[1px] border-non-active rounded-full z-0 opacity-10"/>
+                <div className="flex flex-col gap-1 justify-center items-center">
+                    <p className="text-lg font-medium">{text}</p>
+                    {isListening ? (
+                        <p>Mendengarkan...</p>
+                    ):(
+                        <p>...</p>
+                    )}
+                </div>
             </div>
         </div>
     )

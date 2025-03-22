@@ -8,7 +8,8 @@ import Popup from '../../components/elements/popup';
 import chat from '../../services/api/chat';
 import NavbarMobile from '../../components/fragments/navbarmobile';
 import { supabase } from '../../services/lib/supabaseClient';
-import { Link } from 'react-router-dom';
+import Sidebar, { SidebarItem } from "../../components/fragments/sidebar";
+import { Link } from "react-router-dom";
 
 const Barcode = () => {
     const { decryptSession } = UserAuth();
@@ -169,13 +170,19 @@ const Barcode = () => {
         };
 
     return (
-        <div className='bg-gray-50 w-screen h-screen relative overflow-hidden' 
+        <div className='bg-gray-50 w-screen h-screen relative overflow-hidden lg:flex' 
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
         onTouchStart={handleMouseDown}
         onTouchEnd={handleMouseUp}>
-            <Navbar session={userData} mode="vi" />
+            {/* <Navbar session={userData} mode="vi" /> */}
+            <Sidebar session={userData} >
+                <Link to={"/vi"}><SidebarItem text={"Assistant"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
+                <Link to={"/vi/sos"}><SidebarItem text={"sos"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
+                <Link to={"/vi/barcode"}><SidebarItem text={"barcode"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
+                <Link to={"/vi/profile"}><SidebarItem text={"Profile"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
+            </Sidebar>
             <div className='w-full flex justify-between lg:hidden items-center relative top-0 container pt-5 bg-background'>
                 <Link to={"/vi"}>
                     <img src="/assets/images/back.svg" alt="" />
@@ -183,7 +190,7 @@ const Barcode = () => {
                 <h1 className='font-bold'>QR CODE</h1>
                 <span></span>
             </div>
-            <div className="flex flex-col lg:pt-32 items-center justify-center h-screen bg-background" 
+            <div className="w-full flex flex-col lg:pt-32 items-center justify-center h-screen bg-background" 
             >
                 {userData  ? (
                     <div className='w-[90%] lg:w-[40%] -translate-y-10  bg-gradient-to-r from-blue-800 to-blue-500 relative flex justify-center gap-5 items-center pt-16 rounded-xl p-10 flex-col'>

@@ -10,6 +10,8 @@ import LoadingPage from "../LoadingPage";
 import NavbarMobile from "../../components/fragments/navbarmobile";
 import Popup from '../../components/elements/popup';
 import { supabase } from "../../services/lib/supabaseClient";
+import Sidebar, { SidebarItem } from "../../components/fragments/sidebar";
+import { Link } from "react-router-dom";
 
 
 const Assistant = () => {
@@ -181,7 +183,7 @@ const Assistant = () => {
     return (
         <>
             <section
-                className="flex md:flex-row-reverse flex-col w-screen h-screen relative overflow-hidden"
+                className="flex md:flex-row-reverse flex-col bg-[#e9effd] w-screen h-screen relative overflow-hidden"
                 onMouseDown={handleMouseDown}
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseUp}
@@ -190,20 +192,35 @@ const Assistant = () => {
             >
                 {userData ? (
                     <>
-                        <Navbar session={userData} mode="vi"/>
-                        <MapComponent to={map} id={userData.id}>
-                            
-                            <Camera setCameraResponse={handleDataFromChild} />
-                            <button className="z-10 block lg:hidden absolute bottom-8 right-5 outline-none bg-secondary p-3 rounded-full shadow-lg shadow-dark">
-                                <img src="assets/images/flash.svg" alt="" />
-                            </button>
-                        </MapComponent>
-                        <MateContent
-                            message={transcript}
-                            responseTxt={cameraResponse}
-                            setMap={handleDataMap}
-                            sensor={sensor}
-                        />
+                        {/* <Navbar session={userData} mode="vi"/> */}
+                        <div
+                        className="flex lg:p-5 md:flex-row-reverse gap-5 flex-col w-full h-full relative overflow-hidden"
+                        >
+                            <div className="lg:p-5 bg-background rounded-2xl flex md:flex-col gap-2 flex-col w-full h-full relative overflow-hidden">
+                                <p className="text-lg mb-0 font-bold text-non-active text-center lg:text-start">Asistant Mate</p>
+                                <div className="lg:p-0 bg-background rounded-xl flex md:flex-row-reverse gap-5 flex-col w-full h-full relative overflow-hidden">
+                                    <MapComponent to={map} id={userData.id}>
+                                        <Camera setCameraResponse={handleDataFromChild} />
+                                        <button className="z-10 block lg:hidden absolute bottom-8 right-5 outline-none bg-secondary p-3 rounded-full shadow-lg shadow-dark">
+                                            <img src="assets/images/flash.svg" alt="" />
+                                        </button>
+                                    </MapComponent>
+                                    <MateContent
+                                        message={transcript}
+                                        responseTxt={cameraResponse}
+                                        setMap={handleDataMap}
+                                        sensor={sensor}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <Sidebar session={userData} >
+                            <Link to={"/vi"}><SidebarItem text={"Assistant"} icon={"/assets/images/sidebar/nav.svg"}/></Link>
+                            <Link to={"/vi/sos"}><SidebarItem text={"sos"} icon={"/assets/images/sidebar/sos.svg"}/></Link>
+                            <Link to={"/vi/barcode"}><SidebarItem text={"barcode"} icon={"/assets/images/sidebar/barcode.svg"}/></Link>
+                            <Link to={"/vi/profile"}><SidebarItem text={"Profile"} icon={"/assets/images/sidebar/profile.svg"}/></Link>
+                        </Sidebar>
                         <NavbarMobile />
                         <Popup text="Halo Mate, ada apa?" showPopup={showPopup} isListening={isListening} />
                         {/* Modal Pop-Up */}
