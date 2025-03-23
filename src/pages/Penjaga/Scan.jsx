@@ -8,6 +8,8 @@ import useSession from '../../hooks/useSession';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../../components/fragments/navbar';
 import LoadingPage from '../LoadingPage';
+import { Link } from "react-router-dom";
+import Sidebar, { SidebarItem } from "../../components/fragments/sidebar";
 
 
 
@@ -144,51 +146,64 @@ const Scan = () => {
         {userData ? (
             <>
         {/* <Navbar session={userData} mode={"guard"} /> */}
-        <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-            <h1 className="text-2xl font-bold mb-4">Scan Barcode</h1>
-            <div className="w-80 h-80 bg-white shadow-lg rounded-lg">
-                <QrReader
-                    constraints={{ facingMode: "environment" }} // Menggunakan kamera belakang
-                    onResult={(result, error) => {
-                        if (result) {
-                            const scannedData = result.text;
-                            // Periksa apakah barcode sudah diproses
-                            if (lastScannedData.current === scannedData) {
-                                console.log("Barcode sudah diproses.");
-                                return;
-                            }
-                            lastScannedData.current = scannedData;
-                            console.log(scannedData);
-                            setData(scannedData); 
-                            saveToSupabase(scannedData); 
-                        }
+        <div className="flex md:flex-row bg-soft-background flex-col-reverse w-screen h-screen relative">
+            <Sidebar session={userData} >
+                <Link to={"/guard"}><SidebarItem text={"Monitoring"} icon={"/assets/images/sidebar/monitoring.svg"}/></Link>
+                <Link to={"/guard/sos"}><SidebarItem text={"SOS"} icon={"/assets/images/sidebar/sos-guard.svg"}/></Link>
+                <Link to={"/guard/scan"}><SidebarItem text={"Scan"} icon={"/assets/images/sidebar/scan.svg"}/></Link>
+                <Link to={"/guard/profile"}><SidebarItem text={"Profile"} icon={"/assets/images/sidebar/profile.svg"}/></Link>
+            </Sidebar>
+            <div
+                className="flex lg:p-5 md:flex-row gap-5 flex-col w-full h-full relative overflow-hidden"
+                >
+                <div className="lg:p-5 bg-background rounded-2xl flex md:flex-col gap-2 flex-col w-full h-full relative overflow-hidden">
 
-                        if (error) {
-                            toastShownRef.current = true;
-                            setError('Tidak dapat membaca barcode. Pastikan kamera menghadap barcode.');
-                        }
-                    }}
-                    containerStyle={{ width: '100%', height: '100%' }}
-                />
-            </div>
+                <h1 className="text-2xl font-bold mb-4">Scan Barcode</h1>
+                <div className="lg:p-0 bg-background rounded-xl flex md:flex-col gap-5 flex-col items-center w-full h-full relative overflow-hidden">
+                    <div className="w-80 h-80 bg-white shadow-lg rounded-lg">
+                        <QrReader
+                            constraints={{ facingMode: "environment" }} // Menggunakan kamera belakang
+                            onResult={(result, error) => {
+                                if (result) {
+                                    const scannedData = result.text;
+                                    // Periksa apakah barcode sudah diproses
+                                    if (lastScannedData.current === scannedData) {
+                                        console.log("Barcode sudah diproses.");
+                                        return;
+                                    }
+                                    lastScannedData.current = scannedData;
+                                    console.log(scannedData);
+                                    setData(scannedData); 
+                                    saveToSupabase(scannedData); 
+                                }
 
-            <div className="mt-4">
-                { error ? (
-                    <p className="text-red-600 text-center">{error}</p>
-                ) : (
-                    <p className="text-gray-600 text-center">Arahkan kamera ke barcode untuk memulai scan.</p>
-                )}
-                {/* {data ? (
-                    <p className="text-green-600">Data hasil scan: {data}</p>
-                    ) : error ? (
-                        <p className="text-red-600">{error}</p>
+                                if (error) {
+                                    toastShownRef.current = true;
+                                    setError('Tidak dapat membaca barcode. Pastikan kamera menghadap barcode.');
+                                }
+                            }}
+                            containerStyle={{ width: '100%', height: '100%' }}
+                        />
+                    </div>
+                    <div className="mt-4">
+                        { error ? (
+                            <p className="text-red-600 text-center">{error}</p>
                         ) : (
-                            <p className="text-gray-600">Arahkan kamera ke barcode untuk memulai scan.</p>
-                            )} */}
+                            <p className="text-gray-600 text-center">Arahkan kamera ke barcode untuk memulai scan.</p>
+                        )}
+                        {/* {data ? (
+                            <p className="text-green-600">Data hasil scan: {data}</p>
+                            ) : error ? (
+                                <p className="text-red-600">{error}</p>
+                                ) : (
+                                    <p className="text-gray-600">Arahkan kamera ke barcode untuk memulai scan.</p>
+                                    )} */}
+                    </div>
+
+                    {status && <p className="mt-2 text-blue-600">{status}</p>}
+                    </div>
+                </div>
             </div>
-
-            {status && <p className="mt-2 text-blue-600">{status}</p>}
-
             <ToastContainer />
         </div>
         </>

@@ -105,7 +105,7 @@ export default function Sidebar({ session,children }) {
                         <h4 className="font-semibold">{userData.fullName}</h4>
                         <span className="text-xs text-gray-600">{userData.email}</span>
                         </div>
-                        <MoreVertical size={20} onClick={toggleDropdown} />
+                        <MoreVertical size={20} onClick={toggleDropdown} className="cursor-pointer"/>
                         {isDropdownOpen && (
                             <div className="absolute bottom-16 right-0 mt-3 w-[18vw] bg-white rounded-lg shadow-lg dark:bg-gray-800">
                             <ul className="py-2">

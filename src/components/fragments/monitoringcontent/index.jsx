@@ -126,7 +126,7 @@ const MonitoringContent = ({ id, connections, setDestination }) => {
                     return(
                     <div
                         key={connection.vi_id}
-                        className="flex-col flex bg-white shadow-md border-[1px] border-gray-400 rounded-lg"
+                        className="flex-col flex bg-white shadow-sm border-[1px] border-gray-400 rounded-lg"
                         
                     >
                         <div className="flex items-start p-3">

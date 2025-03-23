@@ -14,6 +14,7 @@ import RedirectIfAuthenticated from "./middleware/RedirectIfAuthenticated";
 import SOS from "./pages/VI/Sos";
 import Profile from "./pages/Profile";
 import AdminPage from "./pages/Admin/AdminPage";
+import SOSGuard from "./pages/Penjaga/SOSGuard";
 
 
 export const router = createBrowserRouter([
@@ -95,6 +96,17 @@ export const router = createBrowserRouter([
         element: (
             <ProtectedRoute allowedRoles={["Guard"]}>
                 <Monitoring />
+            </ProtectedRoute>
+        ),
+        errorElement: (
+            <Notfound />
+        ),
+    },
+    {
+        path: "/guard/sos",
+        element: (
+            <ProtectedRoute allowedRoles={["Guard"]}>
+                <SOSGuard />
             </ProtectedRoute>
         ),
         errorElement: (
