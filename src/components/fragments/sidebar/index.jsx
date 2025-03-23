@@ -10,10 +10,24 @@ const SidebarContext = createContext()
 export default function Sidebar({ session,children }) {
     const [expanded, setExpanded] = useState(true)
     const [userData, setUserData] = useState([]);
+    const [isDropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
     const { logOut } = UserAuth();
 
     const location = useLocation();
+
+    const handleLogOut = async () => {
+        try {
+            await logOut();
+            if (window.location.pathname === "/") {
+                window.location.reload(); 
+            } else {
+                navigate("/");
+            }
+        } catch (error) {
+            console.error("Error during logout:", error);
+        }
+    };
 
 
     useEffect(() => {
@@ -37,6 +51,11 @@ export default function Sidebar({ session,children }) {
 
         fetchUserData();
     }, [session]);
+
+    const toggleDropdown = () => {
+        setDropdownOpen(!isDropdownOpen);
+    };
+
 
     return (
         <aside className="hidden lg:block h-screen z-50 max-w-[18vw] sticky top-0 left-0">
@@ -86,7 +105,21 @@ export default function Sidebar({ session,children }) {
                         <h4 className="font-semibold">{userData.fullName}</h4>
                         <span className="text-xs text-gray-600">{userData.email}</span>
                         </div>
-                        <MoreVertical size={20} />
+                        <MoreVertical size={20} onClick={toggleDropdown} />
+                        {isDropdownOpen && (
+                            <div className="absolute bottom-16 right-0 mt-3 w-[18vw] bg-white rounded-lg shadow-lg dark:bg-gray-800">
+                            <ul className="py-2">
+                                <li>
+                                    <button
+                                        onClick={handleLogOut}
+                                        className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 w-full text-left"
+                                    >
+                                        <img src="/assets/images/logout.svg" alt="" />Keluar
+                                </button>
+                                </li>
+                            </ul>
+                            </div>
+                        )}
                     </div>
                 </div>
             ):(

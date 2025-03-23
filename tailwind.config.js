@@ -34,6 +34,7 @@ export default {
       'not-active':'#3f3f3f',
       'purpleAbout':'#9F2AD6',
       'blueAbout':'#2A5AD6',
+      'soft-background':'#e9effd',
     },
     keyframes: {
       item1: {

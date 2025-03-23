@@ -143,7 +143,7 @@ const Scan = () => {
         <>
         {userData ? (
             <>
-        <Navbar session={userData} mode={"guard"} />
+        {/* <Navbar session={userData} mode={"guard"} /> */}
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
             <h1 className="text-2xl font-bold mb-4">Scan Barcode</h1>
             <div className="w-80 h-80 bg-white shadow-lg rounded-lg">

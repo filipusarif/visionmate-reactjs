@@ -5,7 +5,11 @@ const MonitoringContent = ({ id, connections, setDestination }) => {
     const [statusFilter, setStatusFilter] = useState("all"); // all, active, inactive
     const [filteredConnections, setFilteredConnections] = useState(connections);
     const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+    const [isDropdownOpen, setDropdownOpen] = useState(null);
 
+    const toggleDropdown = (id) => {
+        setDropdownOpen((prevId) => (prevId === id ? null : id)); // Tutup jika sama, buka jika beda
+    };
     // Filter connections setiap kali searchQuery, statusFilter, atau connections berubah
     useEffect(() => {
         const lowerCaseQuery = searchQuery.toLowerCase();
@@ -32,15 +36,15 @@ const MonitoringContent = ({ id, connections, setDestination }) => {
     };
 
     return (
-        <section className="md:w-[35vw] md:h-screen w-screen h-[50%] p-5 lg:pt-20 flex flex-col gap-3">
+        <section className="md:w-[55vw] md:h-full w-screen h-[50%] p-5 lg:p-4 flex flex-col gap-3 border-[1px] border-gray-400 rounded-xl">
             {/* Search Bar and Filters */}
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-1">
                 {/* Search Bar */}
                 <div className="relative w-full">
                     <input
                         type="text"
                         placeholder="Search..."
-                        className="w-full px-4 py-2 border rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-1 text-md border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -61,7 +65,7 @@ const MonitoringContent = ({ id, connections, setDestination }) => {
                 </div>
 
                 {/* Filter Button */}
-                <div className="relative">
+                {/* <div className="relative">
                     <button
                         className="ml-3 px-4 py-2 border rounded-full shadow-sm flex items-center gap-2 hover:bg-gray-100"
                         onClick={() => setShowFilterDropdown(!showFilterDropdown)}
@@ -83,7 +87,6 @@ const MonitoringContent = ({ id, connections, setDestination }) => {
                         Filters
                     </button>
 
-                    {/* Filter Dropdown */}
                     {showFilterDropdown && (
                         <div className="absolute right-0 mt-2 bg-white border rounded shadow-lg w-40 z-10">
                             <button
@@ -112,44 +115,119 @@ const MonitoringContent = ({ id, connections, setDestination }) => {
                             </button>
                         </div>
                     )}
-                </div>
+                </div> */}
             </div>
-            <h1 className="text-xl font-medium">Monitoring Saudara Kamu</h1>
+            {/* <h1 className="text-xl font-medium">Monitoring Saudara Kamu</h1> */}
 
             {/* Connections List */}
-            <div className="flex flex-col gap-4">
-                {filteredConnections.map((connection) => (
+            <div className="flex flex-col gap-2">
+                {filteredConnections.map((connection) => {
+                    const isOpen = isDropdownOpen === connection.vi_id;
+                    return(
                     <div
-                        key={connection.users.vi_id}
-                        className="flex items-center gap-4 p-4 bg-white shadow rounded-lg cursor-pointer"
-                        onClick={() =>
-                            setDestination([
-                                connection.users.latitude,
-                                connection.users.longitude,
-                            ])
-                        }
+                        key={connection.vi_id}
+                        className="flex-col flex bg-white shadow-md border-[1px] border-gray-400 rounded-lg"
+                        
                     >
-                        {/* Profile Picture */}
-                        <img
-                            src={connection.users.photo || "/placeholder-profile.jpg"}
-                            alt={connection.users.fullName}
-                            className="w-12 h-12 rounded-full object-cover"
-                        />
-                        {/* Name and Status */}
-                        <div className="flex-1">
-                            <h3 className="font-medium text-gray-800">{connection.users.fullName}</h3>
-                            <p className="text-sm text-gray-500">
-                                Waktu berjalan: {connection.users.duration} Menit
-                            </p>
+                        <div className="flex items-start p-3">
+                            <div className="flex items-center w-[80%] gap-3 ">
+                                <img src="/assets/images/drop.svg" alt="" 
+                                className={`transition-transform duration-300 cursor-pointer ${
+                                            isOpen ? "rotate-0" : "-rotate-90"
+                                        }`}  
+                                onClick={() => toggleDropdown(connection.vi_id)} 
+                                />
+                                {/* Profile Picture */}
+                                <img
+                                    src={connection.users.photo || "/placeholder-profile.jpg"}
+                                    alt={connection.users.fullName}
+                                    className="w-10 h-10 rounded-full object-cover cursor-pointer"
+                                    onClick={() =>
+                                        setDestination([
+                                            connection.users.latitude,
+                                            connection.users.longitude,
+                                        ])
+                                    }
+                                />
+                                {/* Name and Status */}
+                                <div className="flex-1 cursor-pointer"
+                                onClick={() =>
+                                    setDestination([
+                                        connection.users.latitude,
+                                        connection.users.longitude,
+                                    ])
+                                }>
+                                    <h3 className="font-medium text-gray-800 text-lg">{connection.users.fullName}</h3>
+                                    <p className="text-sm text-gray-500 flex items-center gap-1">
+                                        <img src="/assets/images/monitoring/location.svg" alt="" className="-translate-y-[2px]" />Jalan Pendirikan Timur
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Active Status Indicator */}
+                            {connection.users.status ? (
+                                <div className="text-[10px] font-semibold px-2 rounded-md py-1 h-fit bg-[#1EC198] bg-opacity-20 text-[#1EC198]">
+                                    WALKING
+                                </div>
+                            ): (
+                                <div className="text-[10px] font-semibold px-2 rounded-md py-1 h-fit bg-[#FF576E] bg-opacity-20 text-[#FF576E]">
+                                    UNACTIVE
+                                </div>
+                            )}
                         </div>
-                        {/* Active Status Indicator */}
                         <div
-                            className={`w-3 h-3 rounded-full ${
-                                connection.users.status ? "bg-green-500" : "bg-gray-300"
-                            }`}
-                        ></div>
+                                className={`transition-all duration-300 overflow-hidden cursor-pointer ${
+                                    isOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
+                                }`}
+                                onClick={() =>
+                                    setDestination([
+                                        connection.users.latitude,
+                                        connection.users.longitude,
+                                    ])
+                                }
+                            >
+                                <div className="flex gap-2 justify-items-center items-center px-3">
+                                    <span className="h-[1px] w-[50%] bg-gray-400"></span>
+                                    <p className="text-sm text-gray-400">Detail</p>
+                                    <span className="h-[1px] w-[50%] bg-gray-400"></span>
+                                </div>
+                                <main className="flex flex-col gap-2 items-center p-3">
+                                    <div className="flex flex-row gap-2 items-center justify-center w-full">
+                                        <div className="flex flex-col gap-0 w-[50%] h-full ">
+                                            <h5 className="flex gap-1 items-center text-sm">
+                                                <img src="/assets/images/monitoring/destination.svg" alt="" />
+                                                Tujuan
+                                            </h5>
+                                            <p className="text-[12px]">Poliklinik Dian Nuswantoro</p>
+                                        </div>
+                                        <div className="flex flex-col gap-0 w-[50%] h-full ">
+                                            <h5 className="flex gap-1 items-center text-sm">
+                                                <img src="/assets/images/monitoring/id.svg" alt="" />
+                                                Visual Impairment ID
+                                            </h5>
+                                            <p className="text-[12px]">#23</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-row gap-2 items-center justify-center w-full">
+                                        <div className="flex flex-col gap-0 w-[50%] h-full ">
+                                            <h5 className="flex gap-1 items-center text-sm">
+                                                <img src="/assets/images/monitoring/estimation.svg" alt="" />
+                                                Estimasi
+                                            </h5>
+                                            <p className="text-[12px]">30 Menit</p>
+                                        </div>
+                                        <div className="flex flex-col gap-0 w-[50%] h-full ">
+                                            <h5 className="flex gap-1 items-center text-sm">
+                                                <img src="/assets/images/monitoring/distance.svg" alt="" />
+                                                Jarak dari Anda
+                                            </h5>
+                                            <p className="text-[12px]">5 Menit</p>
+                                        </div>
+                                    </div>
+                                </main>
+                            </div>
                     </div>
-                ))}
+                )})}
                 {filteredConnections.length === 0 && (
                     <p className="text-gray-500 text-center">Tidak ada hasil yang ditemukan.</p>
                 )}

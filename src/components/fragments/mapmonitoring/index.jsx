@@ -63,7 +63,7 @@ const MapMonitoring = ({to, id, connections, destination}) => {
             <MapContainer
                 center={[-6.983056, 110.4186]}
                 zoom={13}
-                style={{ width: "100%", height: "100%", zIndex: 0 }}
+                style={{ width: "100%", height: "100%", zIndex: 0, borderRadius:"10px" }}
                 className="custom-map-container"
                 >
                 <TileLayer

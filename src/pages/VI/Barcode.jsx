@@ -170,7 +170,7 @@ const Barcode = () => {
         };
 
     return (
-        <div className='bg-gray-50 w-screen h-screen relative overflow-hidden lg:flex' 
+        <div className='bg-soft-background w-screen h-screen relative overflow-hidden lg:flex' 
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
@@ -183,18 +183,18 @@ const Barcode = () => {
                 <Link to={"/vi/barcode"}><SidebarItem text={"barcode"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
                 <Link to={"/vi/profile"}><SidebarItem text={"Profile"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
             </Sidebar>
-            <div className='w-full flex justify-between lg:hidden items-center relative top-0 container pt-5 bg-background'>
+            <div className='w-full flex justify-between shadow-lg lg:hidden items-center relative top-0 container pt-5 bg-soft-background'>
                 <Link to={"/vi"}>
                     <img src="/assets/images/back.svg" alt="" />
                 </Link>
                 <h1 className='font-bold'>QR CODE</h1>
                 <span></span>
             </div>
-            <div className="w-full flex flex-col lg:pt-32 items-center justify-center h-screen bg-background" 
+            <div className="w-full flex flex-col lg:pt-32 items-center justify-center h-screen bg-soft-background" 
             >
                 {userData  ? (
-                    <div className='w-[90%] lg:w-[40%] -translate-y-10  bg-gradient-to-r from-blue-800 to-blue-500 relative flex justify-center gap-5 items-center pt-16 rounded-xl p-10 flex-col'>
-                        <img src={ photo?.photo } alt="" className='w-[7rem] bg-blue-800 h-[7rem] -top-14 rounded-full absolute border-4 border-secondary ' />
+                    <div className='w-[90%] lg:w-[40%] -translate-y-10  bg-background relative flex justify-center gap-5 items-center pt-16 rounded-xl p-10 flex-col'>
+                        <img src={ photo?.photo } alt="" className='w-[7rem] bg-background h-[7rem] -top-14 rounded-full absolute border-4 border-background ' />
                         <div className='flex w-full items-center flex-col gap-0'>
                         <h1 className="text-2xl font-bold text-dark ">{photo?.fullName}</h1>
                         <p className="text-xl text-dark ">VISUAL IMPAIRMENT</p>
@@ -203,7 +203,7 @@ const Barcode = () => {
                         value={userData.id.toString()} 
                         size={256}
                         level="H"
-                        className="shadow-lg"
+                        className=""
                         />
                     </div>
                 ) : (
