@@ -10,9 +10,8 @@ import LoadingPage from "../LoadingPage";
 import NavbarMobile from "../../components/fragments/navbarmobile";
 import Popup from '../../components/elements/popup';
 import { supabase } from "../../services/lib/supabaseClient";
-import Sidebar, { SidebarItem } from "../../components/fragments/sidebar";
-import { Link } from "react-router-dom";
-
+import SidebarLayout from "../../components/layouts/Sidebar";
+import IncomingCall from "../../components/elements/call";
 
 const Assistant = () => {
     const [showPopup, setShowPopup] = useState(false);
@@ -35,8 +34,6 @@ const Assistant = () => {
         window.speechSynthesis.cancel();
         
     },[])
-
-
     
     useEffect(() => {
         const fetchLatestResponse = async () => {
@@ -214,13 +211,7 @@ const Assistant = () => {
                                 </div>
                             </div>
                         </div>
-
-                        <Sidebar session={userData} >
-                            <Link to={"/vi"}><SidebarItem text={"Assistant"} icon={"/assets/images/sidebar/nav.svg"}/></Link>
-                            <Link to={"/vi/sos"}><SidebarItem text={"sos"} icon={"/assets/images/sidebar/sos.svg"}/></Link>
-                            <Link to={"/vi/barcode"}><SidebarItem text={"barcode"} icon={"/assets/images/sidebar/barcode.svg"}/></Link>
-                            <Link to={"/vi/profile"}><SidebarItem text={"Profile"} icon={"/assets/images/sidebar/profile.svg"}/></Link>
-                        </Sidebar>
+                        <SidebarLayout type={"vi"} userData={userData}/>
                         <NavbarMobile />
                         <Popup text="Halo Mate, ada apa?" showPopup={showPopup} isListening={isListening} />
                         {/* Modal Pop-Up */}

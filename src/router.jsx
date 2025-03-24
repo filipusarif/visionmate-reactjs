@@ -15,6 +15,8 @@ import SOS from "./pages/VI/Sos";
 import Profile from "./pages/Profile";
 import AdminPage from "./pages/Admin/AdminPage";
 import SOSGuard from "./pages/Penjaga/SOSGuard";
+import Read from "./pages/VI/Read";
+import VideoCall from "./pages/Call";
 
 
 export const router = createBrowserRouter([
@@ -41,6 +43,17 @@ export const router = createBrowserRouter([
         element: (
             <ProtectedRoute allowedRoles={["VI"]}>
                 <Assistant />
+            </ProtectedRoute>
+        ),
+        errorElement: (
+            <Notfound />
+        ),
+    },
+    {
+        path: "/vi/read",
+        element: (
+            <ProtectedRoute allowedRoles={["VI"]}>
+                <Read />
             </ProtectedRoute>
         ),
         errorElement: (
@@ -85,6 +98,28 @@ export const router = createBrowserRouter([
         element: (
             <ProtectedRoute allowedRoles={["VI"]}>
                 <EditProfile/>
+            </ProtectedRoute>
+        ),
+        errorElement: (
+            <Notfound />
+        ),
+    },
+    {
+        path: "/guard/video-call/:viId",
+        element: (
+            <ProtectedRoute allowedRoles={["Guard"]}>
+                <VideoCall userRole="guard"/>
+            </ProtectedRoute>
+        ),
+        errorElement: (
+            <Notfound />
+        ),
+    },
+    {
+        path: "/vi/video-call/:guardId",
+        element: (
+            <ProtectedRoute allowedRoles={["VI"]}>
+                <VideoCall userRole="vi"/>
             </ProtectedRoute>
         ),
         errorElement: (

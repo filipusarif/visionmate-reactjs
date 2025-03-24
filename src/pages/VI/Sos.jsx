@@ -10,8 +10,8 @@ import Popup from '../../components/elements/popup';
 import chat from '../../services/api/chat';
 import sosChat from '../../services/api/sos';
 import Navbar from '../../components/fragments/navbar';
-import Sidebar, { SidebarItem } from "../../components/fragments/sidebar";
-import { Link } from "react-router-dom";
+import SidebarLayout from "../../components/layouts/Sidebar";
+
 
 const SOS = () => {
     const { decryptSession } = UserAuth();
@@ -230,12 +230,7 @@ const SOS = () => {
                     onTouchEnd={handleMouseUp}
                 >
                     {/* <Navbar session={userData} mode="vi" /> */}
-                    <Sidebar session={userData} >
-                        <Link to={"/vi"}><SidebarItem text={"Assistant"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
-                        <Link to={"/vi/sos"}><SidebarItem text={"sos"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
-                        <Link to={"/vi/barcode"}><SidebarItem text={"barcode"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
-                        <Link to={"/vi/profile"}><SidebarItem text={"Profile"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
-                    </Sidebar>
+                    <SidebarLayout type={"vi"} userData={userData}/>
                     <div className='container mx-auto px-4 pt-10 lg:pt-0 md:px-8 lg:px-16 lg:mt-0'>
         
                         <Back title={"SOS"} to={"/vi"} />

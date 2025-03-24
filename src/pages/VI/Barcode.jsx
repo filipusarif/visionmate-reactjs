@@ -8,7 +8,7 @@ import Popup from '../../components/elements/popup';
 import chat from '../../services/api/chat';
 import NavbarMobile from '../../components/fragments/navbarmobile';
 import { supabase } from '../../services/lib/supabaseClient';
-import Sidebar, { SidebarItem } from "../../components/fragments/sidebar";
+import SidebarLayout from "../../components/layouts/Sidebar";
 import { Link } from "react-router-dom";
 
 const Barcode = () => {
@@ -177,12 +177,7 @@ const Barcode = () => {
         onTouchStart={handleMouseDown}
         onTouchEnd={handleMouseUp}>
             {/* <Navbar session={userData} mode="vi" /> */}
-            <Sidebar session={userData} >
-                <Link to={"/vi"}><SidebarItem text={"Assistant"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
-                <Link to={"/vi/sos"}><SidebarItem text={"sos"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
-                <Link to={"/vi/barcode"}><SidebarItem text={"barcode"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
-                <Link to={"/vi/profile"}><SidebarItem text={"Profile"} icon={"/assets/images/mobile/assistant.svg"}/></Link>
-            </Sidebar>
+            <SidebarLayout type={"vi"} userData={userData}/>
             <div className='w-full flex justify-between shadow-lg lg:hidden items-center relative top-0 container pt-5 bg-soft-background'>
                 <Link to={"/vi"}>
                     <img src="/assets/images/back.svg" alt="" />

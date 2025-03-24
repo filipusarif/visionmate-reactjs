@@ -6,8 +6,8 @@ import { UserAuth } from "../../components/context/AuthContext";
 import { supabase } from "../../services/lib/supabaseClient";
 import Navbar from "../../components/fragments/navbar";
 import LoadingPage from "../LoadingPage";
-import { Link } from "react-router-dom";
-import Sidebar, { SidebarItem } from "../../components/fragments/sidebar";
+import SidebarLayout from "../../components/layouts/Sidebar";
+
 
 
 const Monitoring = () => {
@@ -52,12 +52,7 @@ const Monitoring = () => {
         <section className="flex md:flex-row bg-soft-background flex-col-reverse w-screen h-screen relative">
             {userData ? (
                 <>
-                    <Sidebar session={userData} >
-                        <Link to={"/guard"}><SidebarItem text={"Monitoring"} icon={"/assets/images/sidebar/monitoring.svg"}/></Link>
-                        <Link to={"/guard/sos"}><SidebarItem text={"SOS"} icon={"/assets/images/sidebar/sos-guard.svg"}/></Link>
-                        <Link to={"/guard/scan"}><SidebarItem text={"Scan"} icon={"/assets/images/sidebar/scan.svg"}/></Link>
-                        <Link to={"/guard/profile"}><SidebarItem text={"Profile"} icon={"/assets/images/sidebar/profile.svg"}/></Link>
-                    </Sidebar>
+                    <SidebarLayout type={"guard"} userData={userData}/>
                     <div
                         className="flex lg:p-5 md:flex-row gap-5 flex-col w-full h-full relative overflow-hidden"
                         >

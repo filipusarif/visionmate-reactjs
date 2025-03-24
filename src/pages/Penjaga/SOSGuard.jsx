@@ -6,17 +6,20 @@ import { UserAuth } from "../../components/context/AuthContext";
 import { supabase } from "../../services/lib/supabaseClient";
 import Navbar from "../../components/fragments/navbar";
 import LoadingPage from "../LoadingPage";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Sidebar, { SidebarItem } from "../../components/fragments/sidebar";
 import Chat from "../../components/layouts/Chat";
 import ChatContent from "../../components/fragments/chatcontent";
+import { Navigate } from "react-router-dom";
 
 
 const SOSGuard = () => {
     const { decryptSession } = UserAuth();
     const [userData, setUserData] = useState(null);
     const [connections, setConnections] = useState([]);
-    const [destination, setDestination] = useState([]);
+    // const [destination, setDestination] = useState([]);
+    const [isCalling, setIsCalling] = useState(false);
+    const navigate = useNavigate();
 
     useSession(decryptSession, setUserData);
 
@@ -48,6 +51,19 @@ const SOSGuard = () => {
         fetchConnections();
     }, [userData]);
     
+    const startCall = async (viId) => {
+        setIsCalling(true);
+        const { error } = await supabase.from("video_calls").insert([{ guard_id: userData.id, vi_id: viId, status: "pending" }]);
+    
+        if (error) {
+            console.error("Error inserting call:", error.message);
+            setIsCalling(false);
+            return;
+        }
+    
+        console.log("Call started for VI:", viId);
+        navigate(`/guard/video-call/${viId}`);
+    };
 
     return (
         <section className="flex md:flex-row bg-soft-background flex-col-reverse w-screen h-screen relative">
@@ -64,6 +80,14 @@ const SOSGuard = () => {
                         >
                             <div className="lg:p-5 bg-background rounded-2xl flex md:flex-col gap-2 flex-col w-full h-full relative overflow-hidden">
                                 <p className="text-lg mb-0 lg:block hidden font-bold text-non-active text-center lg:text-start">SOS</p>
+                                {connections.length > 0 && (
+                                    <button
+                                        onClick={() => startCall(connections[0].vi_id)}
+                                        className="bg-green-500 text-white px-4 py-2 rounded"
+                                    >
+                                        📞 Call VI
+                                    </button>
+                                )}
                                 <div className="lg:p-0 bg-background rounded-xl flex md:flex-row gap-5 flex-col-reverse w-full h-full relative overflow-hidden">
                                 {/* <Navbar session={userData} mode="guard"/> */}
                                     <ChatContent setDestination={handleDestination} id={userData.id}  connections={connections}/>
