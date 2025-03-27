@@ -230,91 +230,93 @@ export default function Profile(){
         return (
             <>
                 {data ? (
-                    <div className='bg-gray-50 w-screen relative h-screen overflow-hidden lg:flex' 
-                    onMouseDown={handleMouseDown}
-                    onMouseUp={handleMouseUp}
-                    onMouseLeave={handleMouseUp}
-                    onTouchStart={handleMouseDown}
-                    onTouchEnd={handleMouseUp}>
-                        {/* <Navbar session={userData} mode="vi" /> */}
-                        <SidebarLayout type={"vi"} userData={userData}/>
-                        <NavbarMobile />
+                    <>
                         <IncomingCall viId={data.id}/>
-                        
-                        <section className="w-screen min-h-screen overflow-y-scroll flex flex-col gap-6 bg-background"
-                        >
-                            <div className="bg-secondary pb-10 lg:pt-10 rounded-b-3xl ">
-                                <div className="container mx-auto flex flex-col gap-8">
-                                <Back title={"PROFILE"}  to={"/vi"}/>
+                        <div className='bg-gray-50 w-screen relative h-screen overflow-hidden lg:flex' 
+                        onMouseDown={handleMouseDown}
+                        onMouseUp={handleMouseUp}
+                        onMouseLeave={handleMouseUp}
+                        onTouchStart={handleMouseDown}
+                        onTouchEnd={handleMouseUp}>
+                            {/* <Navbar session={userData} mode="vi" /> */}
+                            <SidebarLayout type={"vi"} userData={userData}/>
+                            <NavbarMobile />
+                            
+                            <section className="w-screen min-h-screen overflow-y-scroll flex flex-col gap-6 bg-background"
+                            >
+                                <div className="bg-secondary pb-10 lg:pt-10 rounded-b-3xl ">
+                                    <div className="container mx-auto flex flex-col gap-8">
+                                    <Back title={"PROFILE"}  to={"/vi"}/>
 
-        
-                                <div className="flex flex-col justify-center items-center gap-4">
-                                    <img 
-                                        src={data.photo} 
-                                        alt="Profile" 
-                                        className="w-32 h-32 border-4 border-gray-100 object-cover rounded-full shadow-lg" 
-                                    />
-                                    <div className="text-center">
-                                        <h1 className="font-bold text-xl text-gray-100">{data.fullName}</h1>
-                                        <p className="font-medium text-base text-gray-200">
-                                            {data.role === "VI" ? "Visual Impairment" : "Guard"}
-                                        </p>
-                                        <p className="text-sm text-gray-300">#{data.id}</p>
-                                    </div>
-                                    </div>
-
-                                </div>
-        
-                                <div className="flex justify-between items-center gap-8">
-                                    <div className="basis-1/2 flex flex-col justify-center items-center">
-                                        <h1 className="text-lg font-bold text-gray-100">3.14 KM</h1>
-                                        <p className="text-sm text-gray-200">Jarak</p>
-                                    </div>
-                                    <div className="basis-1/2 flex flex-col justify-center items-center">
-                                        <h1 className="text-lg font-bold text-gray-100">00:00:20</h1>
-                                        <p className="text-sm text-gray-200">Waktu Aktif</p>
-                                    </div>
-                                </div>
-                            </div>
-        
-                            <main className="container mx-auto flex flex-col gap-4 w-full px-6 pb-20">
-                                {slides.map((slide, index) => (
-                                    <div 
-                                        key={index} 
-                                        className="w-full flex gap-4 items-center py-4 border-b border-gray-300">
+            
+                                    <div className="flex flex-col justify-center items-center gap-4">
                                         <img 
-                                            src={slide.icon} 
-                                            alt="Icon" 
-                                            className="w-7 h-7" 
+                                            src={data.photo} 
+                                            alt="Profile" 
+                                            className="w-32 h-32 border-4 border-gray-100 object-cover rounded-full shadow-lg" 
                                         />
-                                        {slide.content === "penjaga" ? (
-                                            <>
-                                                {Array.isArray(slide.content) ? (
-                                                    <div className="flex flex-col gap-2">
-                                                        {slide.content.map((content, idx) => (
-                                                            <div key={idx}>{content}</div>
-                                                        ))}
-                                                    </div>
-                                                ) : (
-                                                    <p className="text-xs text-gray-600">{slide.content}</p>
-                                                )}
-                                            </>
-                                        ):(
-                                            <div>
-                                                <h1 className="text-sm font-semibold text-gray-800">{slide.title}</h1>
-                                                <p className="text-xs text-gray-600">{slide.content}</p>
-                                            </div>
-                                        )}
+                                        <div className="text-center">
+                                            <h1 className="font-bold text-xl text-gray-100">{data.fullName}</h1>
+                                            <p className="font-medium text-base text-gray-200">
+                                                {data.role === "VI" ? "Visual Impairment" : "Guard"}
+                                            </p>
+                                            <p className="text-sm text-gray-300">#{data.id}</p>
+                                        </div>
+                                        </div>
+
                                     </div>
-                                ))}
-                            </main>
-                        </section>
-                        {/* <div className="hidden lg:block">
-                            <Footer />
-                        </div> */}
-                        <Popup text="Halo Mate, mau pindah halaman?" showPopup={showPopup} isListening={isListening} />
-                        
-                    </div>
+            
+                                    <div className="flex justify-between items-center gap-8">
+                                        <div className="basis-1/2 flex flex-col justify-center items-center">
+                                            <h1 className="text-lg font-bold text-gray-100">3.14 KM</h1>
+                                            <p className="text-sm text-gray-200">Jarak</p>
+                                        </div>
+                                        <div className="basis-1/2 flex flex-col justify-center items-center">
+                                            <h1 className="text-lg font-bold text-gray-100">00:00:20</h1>
+                                            <p className="text-sm text-gray-200">Waktu Aktif</p>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <main className="container mx-auto flex flex-col gap-4 w-full px-6 pb-20">
+                                    {slides.map((slide, index) => (
+                                        <div 
+                                            key={index} 
+                                            className="w-full flex gap-4 items-center py-4 border-b border-gray-300">
+                                            <img 
+                                                src={slide.icon} 
+                                                alt="Icon" 
+                                                className="w-7 h-7" 
+                                            />
+                                            {slide.content === "penjaga" ? (
+                                                <>
+                                                    {Array.isArray(slide.content) ? (
+                                                        <div className="flex flex-col gap-2">
+                                                            {slide.content.map((content, idx) => (
+                                                                <div key={idx}>{content}</div>
+                                                            ))}
+                                                        </div>
+                                                    ) : (
+                                                        <p className="text-xs text-gray-600">{slide.content}</p>
+                                                    )}
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <h1 className="text-sm font-semibold text-gray-800">{slide.title}</h1>
+                                                    <p className="text-xs text-gray-600">{slide.content}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </main>
+                            </section>
+                            {/* <div className="hidden lg:block">
+                                <Footer />
+                            </div> */}
+                            <Popup text="Halo Mate, mau pindah halaman?" showPopup={showPopup} isListening={isListening} />
+                            
+                        </div>
+                    </>
                 ) : (
                     <LoadingPage />
                 )}
