@@ -17,6 +17,8 @@ const SOSGuard = () => {
     const { decryptSession } = UserAuth();
     const [userData, setUserData] = useState(null);
     const [connections, setConnections] = useState([]);
+    const [lastChats, setLastChats] = useState([]);
+    const [selectedChat, setSelectedChat] = useState(null);
     // const [destination, setDestination] = useState([]);
     const [isCalling, setIsCalling] = useState(false);
     const navigate = useNavigate();
@@ -50,6 +52,85 @@ const SOSGuard = () => {
     
         fetchConnections();
     }, [userData]);
+
+    useEffect(() => {
+        const fetchLastChats = async () => {
+            if (userData && userData.id) {
+                const { data, error } = await supabase
+                    .from("communications")
+                    .select("id_user, chat, created_at")
+                    .order("created_at", { ascending: false }) 
+                    .limit(1);
+        
+                if (error) {
+                    console.error("Error fetching last chats:", error.message);
+                } else {
+                    // Konversi ke WIB (UTC+7) dan ambil jam & menit saja
+                    const convertedData = data.map(item => {
+                        const date = new Date(item.created_at);
+                        date.setHours(date.getHours() + 7); // Konversi ke WIB
+                        
+                        // Format: "HH:mm" (contoh: "14:30")
+                        const hours = String(date.getHours()).padStart(2, '0');
+                        const minutes = String(date.getMinutes()).padStart(2, '0');
+                        return {
+                            ...item,
+                            created_at: `${hours}:${minutes}`
+                        };
+                    });
+                    setLastChats(convertedData);
+                }
+            }
+        };
+    
+        fetchLastChats();
+    }, [userData]);
+
+
+    const fetchChatByUser = async (vi_id) => {
+        console.log("Fetching chat for VI:", vi_id);
+        const { data: communications, error: commError } = await supabase
+            .from("communications")
+            .select("chat, created_at")
+            .eq("id_user", vi_id)
+            .order("created_at", { ascending: true });
+    
+        const { data: responses, error: respError } = await supabase
+            .from("respons")
+            .select("chat, created_at")
+            .eq("vi_id", vi_id)
+            .order("created_at", { ascending: true });
+    
+        if (commError || respError) {
+            console.error("Error fetching chats:", commError || respError);
+            return;
+        }
+
+        console.log("Communications:", communications);
+        console.log("Responses:", responses);
+    
+        // Tandai asal pesan
+        const formattedCommunications = communications.map(msg => ({
+            ...msg,
+            sender: "other" // Pesan dari pengguna lain
+        }));
+    
+        const formattedResponses = responses.map(msg => ({
+            ...msg,
+            sender: "self" // Pesan dari sistem atau admin
+        }));
+    
+        // Gabungkan dan urutkan berdasarkan waktu
+        const allMessages = [...formattedCommunications, ...formattedResponses].sort((a, b) => 
+            new Date(a.created_at) - new Date(b.created_at)
+        );
+
+        console.log("All messages:", allMessages);
+    
+        setSelectedChat({ vi_id, messages: allMessages });
+    };
+    
+    
     
     const startCall = async (viId) => {
         setIsCalling(true);
@@ -90,8 +171,8 @@ const SOSGuard = () => {
                                 )}
                                 <div className="lg:p-0 bg-background rounded-xl flex md:flex-row gap-5 flex-col-reverse w-full h-full relative overflow-hidden">
                                 {/* <Navbar session={userData} mode="guard"/> */}
-                                    <ChatContent setDestination={handleDestination} id={userData.id}  connections={connections}/>
-                                    <Chat />
+                                    <ChatContent setDestination={handleDestination} id={userData.id}  connections={connections} lastChats={lastChats} onSelectChat={fetchChatByUser}/>
+                                    <Chat messages={selectedChat ? selectedChat.messages : []} />
                                 </div>
                             </div>
                     </div>
