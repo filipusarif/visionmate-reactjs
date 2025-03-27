@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../../services/lib/supabaseClient";
+import zgEngine from "../../../services/lib/zegocloud";
+import { useNavigate } from "react-router-dom";
+
 
 const IncomingCall = ({ viId }) => {
     const [incomingCall, setIncomingCall] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const channel = supabase
@@ -24,8 +28,7 @@ const IncomingCall = ({ viId }) => {
         console.log(incomingCall)
         if (incomingCall) {
             await supabase.from("video_calls").update({ status: "accepted" }).eq("id", incomingCall.id);
-            // Arahkan ke halaman video call
-            window.location.href = `/vi/video-call/${incomingCall.guard_id}`;
+            navigate(`/careyou/?roomID=${incomingCall.room_id}`);
         }
     };
 

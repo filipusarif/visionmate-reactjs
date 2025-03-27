@@ -105,21 +105,10 @@ export const router = createBrowserRouter([
         ),
     },
     {
-        path: "/guard/video-call/:viId",
+        path: "/careyou",
         element: (
-            <ProtectedRoute allowedRoles={["Guard"]}>
-                <VideoCall userRole="guard"/>
-            </ProtectedRoute>
-        ),
-        errorElement: (
-            <Notfound />
-        ),
-    },
-    {
-        path: "/vi/video-call/:guardId",
-        element: (
-            <ProtectedRoute allowedRoles={["VI"]}>
-                <VideoCall userRole="vi"/>
+            <ProtectedRoute allowedRoles={["Guard","VI"]}>
+                <VideoCall/>
             </ProtectedRoute>
         ),
         errorElement: (

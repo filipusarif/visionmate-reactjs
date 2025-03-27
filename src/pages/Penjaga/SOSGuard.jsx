@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Sidebar, { SidebarItem } from "../../components/fragments/sidebar";
 import Chat from "../../components/layouts/Chat";
 import ChatContent from "../../components/fragments/chatcontent";
-import { Navigate } from "react-router-dom";
+import zgEngine from "../../services/lib/zegocloud";
 
 
 const SOSGuard = () => {
@@ -21,6 +21,7 @@ const SOSGuard = () => {
     const [selectedChat, setSelectedChat] = useState(null);
     // const [destination, setDestination] = useState([]);
     const [isCalling, setIsCalling] = useState(false);
+    const [roomID, setRoomId] = useState(null);
     const navigate = useNavigate();
 
     useSession(decryptSession, setUserData);
@@ -29,6 +30,10 @@ const SOSGuard = () => {
         setDestination(data);
         
     }
+
+    useEffect(() => {
+        setRoomId(randomID(10));
+    },[])
 
     // Mendapatkan VI_id yang terhubung
     useEffect(() => {
@@ -130,20 +135,36 @@ const SOSGuard = () => {
         setSelectedChat({ vi_id, messages: allMessages });
     };
     
-    
+    useEffect(() => {
+        // Inisialisasi SDK saat komponen dimuat
+        console.log("zgEngine:", zgEngine);
+        console.log("Available methods:", Object.keys(zgEngine));
+
+        zgEngine
+    }, []);
+
+    function randomID(len) {
+        let result = '';
+        if (result) return result;
+        var chars = '12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJP',
+            maxPos = chars.length,
+            i;
+        len = len || 5;
+        for (i = 0; i < len; i++) {
+          result += chars.charAt(Math.floor(Math.random() * maxPos));
+        }
+        return result;
+    }
     
     const startCall = async (viId) => {
         setIsCalling(true);
-        const { error } = await supabase.from("video_calls").insert([{ guard_id: userData.id, vi_id: viId, status: "pending" }]);
-    
+        const { error } = await supabase.from("video_calls").insert([{ guard_id: userData.id, vi_id: viId, status: "pending", room_id: roomID }]);
         if (error) {
             console.error("Error inserting call:", error.message);
             setIsCalling(false);
             return;
         }
-    
-        console.log("Call started for VI:", viId);
-        navigate(`/guard/video-call/${viId}`);
+        navigate(`/careyou/?roomID=${roomID}`);
     };
 
     return (
