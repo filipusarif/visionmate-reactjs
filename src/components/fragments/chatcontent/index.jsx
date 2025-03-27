@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const ChatContent = ({ id, connections, setDestination }) => {
+const ChatContent = ({ id, connections, setDestination, lastChats, onSelectChat }) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [statusFilter, setStatusFilter] = useState("all"); // all, active, inactive
     const [filteredConnections, setFilteredConnections] = useState(connections);
@@ -69,10 +69,13 @@ const ChatContent = ({ id, connections, setDestination }) => {
             {/* Connections List */}
             <div className="flex flex-col">
                 {filteredConnections.map((connection) => {
+                    const lastChat = lastChats.find(chat => chat.id_user === connection.vi_id);
+                    
                     return(
                     <div
                         key={connection.vi_id}
                         className="flex-col flex bg-white  border-gray-400 rounded-lg cursor-pointer hover:bg-gray-100"
+                        onClick={() => onSelectChat(connection.vi_id)}
                         
                     >
                         <div className="flex items-start ">
@@ -89,11 +92,11 @@ const ChatContent = ({ id, connections, setDestination }) => {
                                     >
                                         <h3 className="font-medium text-gray-800 text-lg">{connection.users.fullName}</h3>
                                         <p className="text-sm text-gray-500 flex items-center gap-1">
-                                        Saya mampir dulu beli minum
+                                        {lastChat ? lastChat.chat : "Belum ada pesan"}
                                         </p>
                                     </div>
                                     <div className="text-[11px]  text-non-active font-semibold px-2 rounded-md py-1 h-fit ">
-                                        23.59
+                                    {lastChat ? lastChat.created_at : "--:--"}
                                     </div>
                                 </div>
                             </div>
