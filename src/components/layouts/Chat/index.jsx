@@ -1,19 +1,73 @@
 import { useState } from "react";
+import { supabase } from "../../../services/lib/supabaseClient";
 
-const Chat = ({ messages }) => {
+const Chat = ({ messages, userInfo, vi_id, guard_email, onNewMessage }) => {
+    const [message, setMessage] = useState("");
+    const [isSending, setIsSending] = useState(false);
+
+    const handleSendMessage = async () => {
+        if (!message.trim() || !vi_id || !guard_email) return;
+        
+        setIsSending(true);
+        
+        try {
+            const newMessage = {
+                vi_id: vi_id,
+                chat: message,
+                guard_email: guard_email,
+                created_at: new Date().toISOString()
+            };
+
+            // Insert message to respons table
+            const { data, error } = await supabase
+                .from("respons")
+                .insert([newMessage])
+                .select();
+
+            if (error) throw error;
+
+            // Update UI immediately
+            onNewMessage({
+                ...newMessage,
+                sender: "self" // Tandai sebagai pesan dari guard
+            });
+
+            setMessage("");
+            
+        } catch (error) {
+            console.error("Error sending message:", error.message);
+            // Anda bisa tambahkan notifikasi error di sini jika perlu
+        } finally {
+            setIsSending(false);
+        }
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
+            handleSendMessage();
+        }
+    };
+
+    if (!userInfo) {
+        return (
+            <div className="flex items-center justify-center h-full w-full bg-gray-100 rounded-xl border-[1px] border-gray-400"></div>
+        );
+    }
 
     return (
         <div className="flex flex-col h-full w-full bg-gray-100 rounded-xl border-[1px] border-gray-400 relative" style={{ backgroundImage: "url('/assets/images/texture.svg')" }}>
-            {/* Header Chat */}
-            <div className="flex items-center py-2  px-4 bg-white rounded-t-xl shadow-md">
-                <img src="https://ngnqrvzddtpdmmjpfkkm.supabase.co/storage/v1/object/public/profile-photos/photos/8-1736594586171" alt="User" className="w-10 h-10 rounded-full mr-3" />
+            <div className="flex items-center py-2 px-4 bg-white rounded-t-xl shadow-md">
+                <img 
+                    src={userInfo.photo || "https://placehold.co/20"} 
+                    alt="User" 
+                    className="w-10 h-10 rounded-full mr-3" 
+                />
                 <div>
-                    <p className="font-semibold">Bambang Putra Amsal Gautama</p>
+                    <h2 className="text-lg font-semibold">{userInfo.fullName}</h2>
                     <p className="text-xs text-green-500">Walking</p>
                 </div>
             </div>
 
-            {/* Chat Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
                 {messages.length > 0 ? messages.map((msg, index) => (
                     <div key={index} className={`flex ${msg.sender === "self" ? "justify-end" : "justify-start"}`}>
@@ -22,7 +76,9 @@ const Chat = ({ messages }) => {
                                 ${msg.sender === "self" ? "bg-[#1E4FBC] text-white rounded-br-none" : "bg-[#0D2352] text-white rounded-bl-none"}`}>
                                 {msg.chat}
                             </div>
-                            <p className="text-[12px] text-non-active">{msg.created_at.split("T")[1].slice(0, 5)}</p>
+                            <p className="text-[12px] text-non-active">
+                                {new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                            </p>
                         </div>
                     </div>
                 )) : (
@@ -30,17 +86,22 @@ const Chat = ({ messages }) => {
                 )}
             </div>
 
-            {/* Input Chat */}
             <div className="flex items-center p-3 border-t bg-white rounded-b-xl">
                 <input
                     type="text"
                     className="flex-1 p-2 border rounded-lg focus:outline-none"
                     placeholder="Tulis pesan..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    disabled={isSending}
                 />
                 <button
-                    className="ml-2 p-2 bg-blue-500 text-white rounded-lg"
+                    className="ml-2 p-2 bg-blue-500 text-white rounded-lg disabled:bg-blue-300"
+                    onClick={handleSendMessage}
+                    disabled={isSending || !message.trim()}
                 >
-                    Send
+                    {isSending ? "Mengirim..." : "Kirim"}
                 </button>
             </div>
         </div>

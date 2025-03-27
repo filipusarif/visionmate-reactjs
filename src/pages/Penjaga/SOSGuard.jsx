@@ -25,6 +25,27 @@ const SOSGuard = () => {
     const navigate = useNavigate();
 
     useSession(decryptSession, setUserData);
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from("users")
+                    .select("id,phone, fullName, email, language, role, photo, duration, destination")
+                    .eq("id", userData?.id)
+                    .single();
+
+                if (error) throw error;
+                console.log(data);
+                setUserData(data);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        if (userData?.id) {
+            fetchUserData();
+        }
+    }, [userData?.id]);
 
     const handleDestination = (data) => {
         setDestination(data);
@@ -105,14 +126,21 @@ const SOSGuard = () => {
             .select("chat, created_at")
             .eq("vi_id", vi_id)
             .order("created_at", { ascending: true });
+
+        const { data: userData, error: userError } = await supabase
+        .from("users")
+        .select("fullName, phone, latitude, longitude, photo, destination, duration, status")
+        .eq("id", vi_id)
+        .single();
     
-        if (commError || respError) {
-            console.error("Error fetching chats:", commError || respError);
+        if (commError || respError || userError) {
+            console.error("Error fetching chats:", commError || respError || userError);
             return;
         }
 
         console.log("Communications:", communications);
         console.log("Responses:", responses);
+        console.log("User Data:", userData);
     
         // Tandai asal pesan
         const formattedCommunications = communications.map(msg => ({
@@ -132,7 +160,7 @@ const SOSGuard = () => {
 
         console.log("All messages:", allMessages);
     
-        setSelectedChat({ vi_id, messages: allMessages });
+        setSelectedChat({ vi_id, messages: allMessages, userInfo: userData });
     };
     
     useEffect(() => {
@@ -167,6 +195,17 @@ const SOSGuard = () => {
         navigate(`/careyou/?roomID=${roomID}`);
     };
 
+    const handleNewMessage = (newMessage) => {
+        setSelectedChat(prev => {
+            if (!prev) return null;
+            
+            return {
+                ...prev,
+                messages: [...prev.messages, newMessage]
+            };
+        });
+    };
+
     return (
         <section className="flex md:flex-row bg-soft-background flex-col-reverse w-screen h-screen relative">
             {userData ? (
@@ -193,7 +232,7 @@ const SOSGuard = () => {
                                 <div className="lg:p-0 bg-background rounded-xl flex md:flex-row gap-5 flex-col-reverse w-full h-full relative overflow-hidden">
                                 {/* <Navbar session={userData} mode="guard"/> */}
                                     <ChatContent setDestination={handleDestination} id={userData.id}  connections={connections} lastChats={lastChats} onSelectChat={fetchChatByUser}/>
-                                    <Chat messages={selectedChat ? selectedChat.messages : []} />
+                                    <Chat messages={selectedChat ? selectedChat.messages : []} userInfo={selectedChat ? selectedChat.userInfo : null} vi_id={selectedChat?.vi_id} guard_email={userData?.email} onNewMessage={handleNewMessage}/>
                                 </div>
                             </div>
                     </div>
