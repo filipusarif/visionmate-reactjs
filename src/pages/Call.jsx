@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
-
+import useSession from '../hooks/useSession';
+import { UserAuth } from "../components/context/AuthContext";
+import { useState, useEffect } from 'react';
 
 function randomID(len) {
   let result = '';
@@ -15,44 +17,74 @@ function randomID(len) {
   return result;
 }
 
-export function getUrlParams(
-  url = window.location.href
-) {
+export function getUrlParams(url = window.location.href) {
   let urlStr = url.split('?')[1];
   return new URLSearchParams(urlStr);
 }
 
 export default function App() {
-      const roomID = getUrlParams().get('roomID') || randomID(5);
-      let myMeeting = async (element) => {
-     // generate Kit Token
-      const appID = Number(import.meta.env.VITE_APP_ID);
-      const serverSecret = import.meta.env.VITE_Server_Secret;
-      const kitToken =  ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID,  randomID(5),  randomID(5));
+  const { decryptSession } = UserAuth();
+  const [userData, setUserData] = useState(null);
+  useSession(decryptSession, setUserData);
+  
+  const roomID = getUrlParams().get('roomID') || randomID(5);
 
-    
-     // Create instance object from Kit Token.
-      const zp = ZegoUIKitPrebuilt.create(kitToken);
-      // start the call
-      zp.joinRoom({
-        container: element,
-        sharedLinks: [
-          {
-            name: 'Personal link',
-            url:
-             window.location.protocol + '//' + 
-             window.location.host + window.location.pathname +
-              '?roomID=' +
-              roomID,
-          },
-        ],
-        scenario: {
-          // mode: ZegoUIKitPrebuilt.GroupCall, // To implement 1-on-1 calls, modify the parameter here to [ZegoUIKitPrebuilt.OneONoneCall].
-          mode: ZegoUIKitPrebuilt.OneONoneCall, // To implement 1-on-1 calls, modify the parameter here to [ZegoUIKitPrebuilt.OneONoneCall].
+  useEffect(() => {
+    console.log(userData)
+  },[userData])
+
+  let myMeeting = async (element) => {
+    const appID = Number(import.meta.env.VITE_APP_ID);
+    const serverSecret = import.meta.env.VITE_Server_Secret;
+    const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
+      appID, 
+      serverSecret, 
+      roomID, 
+      randomID(5),  
+      userData.fullName
+    );
+
+    // Buat instance Zego
+    const zp = ZegoUIKitPrebuilt.create(kitToken);
+
+    zp.joinRoom({
+      container: element,
+      sharedLinks: [
+        {
+          name: 'Personal link',
+          url:
+            window.location.protocol + '//' +
+            window.location.host + window.location.pathname +
+            '?roomID=' +
+            roomID,
         },
-      });
+      ],
+      scenario: {
+        mode: ZegoUIKitPrebuilt.OneONoneCall,
+      },
+      showPreJoinView: true,
+      turnOnCameraWhenJoining: true,
+      turnOnMicrophoneWhenJoining: true,
+      useCamera: true,
+      useMicrophone: true,
+      showRoomTimer: true,
 
-    
+      onLeaveRoom: () => {
+        if(userData.role == "Guard"){
+          window.location.href = "/guard/sos"; 
+        } else {
+          window.location.href = "/vi"; 
+        }
+      },
+    });
+
+    // 🔥 Simulasi klik tombol "Join" setelah 2 detik
+    setTimeout(() => {
+      const joinButton = document.querySelector('.VsTVUAD89KWleD0YRVsD'); 
+      if (joinButton) {
+        joinButton.click();
+      }
+    }, 100);
   };
 
   return (

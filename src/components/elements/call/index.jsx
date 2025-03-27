@@ -25,19 +25,76 @@ const IncomingCall = ({ viId }) => {
     
 
     const acceptCall = async () => {
-        console.log(incomingCall)
         if (incomingCall) {
             await supabase.from("video_calls").update({ status: "accepted" }).eq("id", incomingCall.id);
             navigate(`/careyou/?roomID=${incomingCall.room_id}`);
         }
     };
 
+    const denyCall = async () => {
+        if (incomingCall) {
+            await supabase.from("video_calls").update({ status: "rejected" }).eq("id", incomingCall.id);
+            setIncomingCall(null);
+        }
+    }
+
+    useEffect(() => {
+        if(incomingCall != null){
+            const utterance = new SpeechSynthesisUtterance("Halo Mate, "+incomingCall.from + " mengundang video call. tekan 1 kali pada layar bebas untuk bergabung, tahan pada layar bebas selama 2 detik untuk menolak panggilan.");
+            utterance.lang = "id-ID";
+            window.speechSynthesis.speak(utterance);
+        }
+    }, [incomingCall])
+
+    
+    const handleClick = () => {
+        acceptCall();
+    };
+
+    const handleHoldStart = () => {
+        holdTimer = setTimeout(() => {
+            denyCall();
+        }, 2000);
+    };
+
+    const handleHoldEnd = () => {
+        clearTimeout(holdTimer);
+    };
+
     return incomingCall ? (
-        <div className="fixed z-50 top-0 left-0 flex items-center justify-center w-full bg-red-500 text-white p-4">
-            <p>📞 Incoming Call from Guard</p>
-            <button onClick={acceptCall} className="bg-green-500 px-4 py-2 rounded">Accept</button>
+        <div className="w-screen h-screen z-50 absolute top-0  left-0 ">
+            <div className="w-full h-full" 
+            onClick={handleClick} 
+            onMouseDown={handleHoldStart} 
+            onMouseUp={handleHoldEnd} 
+            onTouchStart={handleHoldStart} 
+            onTouchEnd={handleHoldEnd} 
+            >
+            </div>
+            <div className="fixed z-50 transition duration-200 top-0 left-0 flex gap-2 items-center justify-center w-full bg-background text-dark p-4 md:flex-col md:mr-5 md:mt-5 md:right-0 md:left-auto md:w-[200px] md:h-[200px] md:rounded-xl">
+                <p className="font-medium text-center"> {incomingCall.from} mengundang video call </p>
+                <button onClick={acceptCall} className="bg-green-500 px-4 py-2 rounded md:w-full">Terima</button>
+                <button onClick={denyCall} className="bg-red-500 px-4 py-2 rounded md:w-full">Tolak</button>
+            </div>
         </div>
-    ) : null;
+    ) : (
+        <div className="w-screen h-screen z-50 absolute top-0  left-0 ">
+            <div className="w-full h-full " 
+            onClick={handleClick} 
+            onMouseDown={handleHoldStart} 
+            onMouseUp={handleHoldEnd} 
+            onTouchStart={handleHoldStart} 
+            onTouchEnd={handleHoldEnd}
+            >
+            </div>
+            <div className="fixed z-50 transition duration-200 top-0 -translate-y-[100px] md:translate-y-0 md:translate-x-[220px] left-0 flex gap-2 items-center justify-center w-full bg-background text-dark p-4 md:flex-col md:mr-5 md:mt-5 md:right-0 md:left-auto md:w-[200px] md:h-[200px] md:rounded-xl">
+                <p className="font-medium text-center"> mengundang video call </p>
+                <button onClick={acceptCall} className="bg-green-500 px-4 py-2 rounded md:w-full">Terima</button>
+                <button onClick={denyCall} className="bg-red-500 px-4 py-2 rounded md:w-full">Tolak</button>
+            </div>
+        </div>
+    );
+    
 };
 
 export default IncomingCall;

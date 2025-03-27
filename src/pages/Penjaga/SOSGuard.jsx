@@ -186,7 +186,7 @@ const SOSGuard = () => {
     
     const startCall = async (viId) => {
         setIsCalling(true);
-        const { error } = await supabase.from("video_calls").insert([{ guard_id: userData.id, vi_id: viId, status: "pending", room_id: roomID }]);
+        const { error } = await supabase.from("video_calls").insert([{ guard_id: userData.id, vi_id: viId, status: "pending", room_id: roomID, from: userData.fullName }]);
         if (error) {
             console.error("Error inserting call:", error.message);
             setIsCalling(false);
