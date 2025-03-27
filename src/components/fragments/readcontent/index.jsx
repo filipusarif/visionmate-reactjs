@@ -1,15 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import chat from "../../../services/api/chat";
 
-export default function ReadContent({ message, responseTxt, setMap, sensor }) {
+export default function ReadContent({ message, responseTxt, setRead }) {
   const [responseText, setResponseText] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [destination, setDestination] = useState("-");
-  const [sensorTriggered, setSensorTriggered] = useState(false);
   const isFirstRender = useRef(true);
-
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -34,31 +32,9 @@ export default function ReadContent({ message, responseTxt, setMap, sensor }) {
   }, [message]);
 
   useEffect(() => {
-    if (!sensor) return;
-
-    if (sensor < 100 && !sensorTriggered) {
-      setSensorTriggered(true);
-      window.speechSynthesis.cancel();
-
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: "ai", text: "Didepan kamu ada object, dari tongkat" },
-      ]);
-
-      // Text-to-Speech
-      const synth = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance("Didepan kamu ada object, dari tongkat");
-      utterance.lang = "id-ID";
-      synth.speak(utterance);
-    } else if (sensor >= 100) {
-      setSensorTriggered(false); // Reset trigger saat sensor >= 100
-    }
-  }, [sensor, sensorTriggered]);
-
-  useEffect(() => {
     if (!responseTxt) return;
 
-    console.log("Response:", responseTxt);
+    // console.log("Response:", responseTxt);
 
     // Tambahkan pesan ke chat
     setMessages((prevMessages) => [
@@ -117,74 +93,18 @@ export default function ReadContent({ message, responseTxt, setMap, sensor }) {
     }
   };
 
-  // const handleSubmitType = async (e) => {
-  //   e.preventDefault();
-  //   const textToSend = inputValue;
-  //   console.log(textToSend);
-
-  //   if (!textToSend) {
-  //     alert("Please enter a question.");
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   setResponseText(null);
-
-  //   setMessages((prevMessages) => [
-  //     ...prevMessages,
-  //     { sender: "user", text: textToSend },
-  //   ]);
-
-  //   try {
-  //     const response = await fetch(import.meta.env.VITE_API_URL+"/chat", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         message: textToSend,
-  //         api_key: import.meta.env.VITE_NVIDIA_API_KEY,
-  //       }),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch response from the API.");
-  //     }
-
-  //     const data = await response.json();
-  //     const { action, value } = data;
-
-  //     executeAction(action, value);
-  //     setMessages((prevMessages) => [
-  //       ...prevMessages,
-  //       { sender: "ai", text: value || "No action received." },
-  //     ]);
-      
-  //     // Text-to-Speech
-  //     const synth = window.speechSynthesis;
-  //     const utterance = new SpeechSynthesisUtterance(value || "No action received.");
-  //     utterance.lang = "id-ID";
-  //     synth.speak(utterance);
-  //   } catch (error) {
-  //     setMessages((prevMessages) => [
-  //       ...prevMessages,
-  //       { sender: "ai", text: "Failed to fetch response from the API." },
-  //     ]);
-  //   } finally {
-  //     setLoading(false);
-  //     setInputValue("");
-  //   }
-  // };
-
   const executeAction = (action, value) => {
     if (action === "switch") {
       window.location.href = value;
     } else if (action === "go") {
       setDestination(value);
-      setMap(value);
+      setResponseText("Kamu berada di halaman ReadThat, untuk menggunakan navigasi beralih ke halaman Assistant")
+      // setMap(value);
+    } else if (action === "read"){
+      setRead(true);
     } else if (action === "control") {
       console.log(`Control interval set to: ${value} ms`);
-    }
+    } 
   };
 
   return (

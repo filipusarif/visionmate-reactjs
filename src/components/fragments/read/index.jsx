@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { getActiveNevaApiKey } from "../../../services/api/apiKey";
 
-export default function ReadCamera({ setCameraResponse }) {
+export default function ReadCamera({ setCameraResponse, readStatus, setRead }) {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [isFrontCamera, setIsFrontCamera] = useState(true);
@@ -15,6 +15,15 @@ export default function ReadCamera({ setCameraResponse }) {
     };
 
     const switchCamera = () => setIsFrontCamera((prevState) => !prevState);
+
+    useEffect(() =>{
+        console.log("mode",readStatus)
+        if (readStatus) {
+            setRead(false);
+            console.log("scanning")
+            captureImage()
+        }
+    },[readStatus])
 
     useEffect(() => {
         const fetchApiKey = async () => {
@@ -71,7 +80,8 @@ export default function ReadCamera({ setCameraResponse }) {
                 formData.append("api_key", apiKey);
 
                 try {
-                    const response = await fetch(import.meta.env.VITE_API_URL+"/detectneva/", {
+                    console.log("scann sir")
+                    const response = await fetch(import.meta.env.VITE_API_URL+"/detectread/", {
                         method: "POST",
                         body: formData,
                     });
@@ -88,6 +98,7 @@ export default function ReadCamera({ setCameraResponse }) {
             }, "image/png");
         }
     };
+
 
     return (
         <div className="w-full h-fit">

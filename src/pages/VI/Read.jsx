@@ -27,6 +27,7 @@ const Read = () => {
     const closeTimer = useRef(null);
     const recognitionRef = useRef(null);
     const [map, setMap] = useState("");
+    const [read, setRead] = useState(false);
     const [countdown, setCountdown] = useState(35); 
     const [sensor, setSensor] = useState(null);
 
@@ -127,6 +128,10 @@ const Read = () => {
         setMap(data);
     };
 
+    const handleDataRead = (data) => {
+        setRead(data);
+    }
+
     return (
         <>
             <section
@@ -146,12 +151,11 @@ const Read = () => {
                             <div className="lg:p-5 bg-background rounded-2xl flex md:flex-col gap-2 flex-col w-full h-full relative overflow-hidden">
                                 <p className="text-lg mb-0 font-bold text-non-active text-center lg:text-start">ReadThat</p>
                                 <div className="lg:p-0 bg-background rounded-xl flex md:flex-row-reverse gap-5 flex-col w-full h-full relative overflow-hidden">
-                                    <ReadCamera setCameraResponse={handleDataFromChild} />
+                                    <ReadCamera setCameraResponse={handleDataFromChild} readStatus={read} setRead={handleDataRead}/>
                                     <ReadContent
                                         message={transcript}
                                         responseTxt={cameraResponse}
-                                        setMap={handleDataMap}
-                                        sensor={sensor}
+                                        setRead={handleDataRead}
                                     />
                                 </div>
                             </div>
