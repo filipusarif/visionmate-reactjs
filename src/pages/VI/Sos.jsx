@@ -11,6 +11,7 @@ import chat from '../../services/api/chat';
 import sosChat from '../../services/api/sos';
 import Navbar from '../../components/fragments/navbar';
 import SidebarLayout from "../../components/layouts/Sidebar";
+import IncomingCall from '../../components/elements/call';
 
 
 const SOS = () => {
@@ -221,80 +222,92 @@ const SOS = () => {
         return (
             <>
             {data ? (
-                <div 
-                    className="bg-[#F8F9FF] min-h-screen w-screen h-screen overflow-hidden relative flex flex-col items-center lg:flex-row" 
-                    onMouseDown={handleMouseDown}
-                    onMouseUp={handleMouseUp}
-                    onMouseLeave={handleMouseUp}
-                    onTouchStart={handleMouseDown}
-                    onTouchEnd={handleMouseUp}
-                >
-                    {/* <Navbar session={userData} mode="vi" /> */}
-                    <SidebarLayout type={"vi"} userData={userData}/>
-                    <div className='container mx-auto px-4 pt-10 lg:pt-0 md:px-8 lg:px-16 lg:mt-0'>
-        
-                        <Back title={"SOS"} to={"/vi"} />
-        
-                        {/* Header */}
-                        <div className="w-full container mx-auto flex flex-row md:flex-row justify-between items-center bg-white rounded-lg shadow-sm p-4 mb-4 mt-4">
-                            <div className="flex items-center space-x-4 w-full">
-                                <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
-                                    <img src={data.photo} alt="Profile" className="w-10 h-10 rounded-full" />
-                                </div>
-                                <div>
-                                    <p className="font-bold text-gray-800">{data.fullName}</p>
-                                    <p className="text-sm text-gray-500">{data.role === "VI" ? "Visual Impairment" : "Guard"}</p>
-                                </div>
-                            </div>
-                            {/* <div className='flex flex-col items-end justify-center mt-4 md:mt-0 w-5/12'>
-                                <p className="font-bold text-gray-800">Universitas Dian</p>
-                                <p className="text-sm text-gray-500 cursor-pointer">Lokasi Anda</p>
-                            </div> */}
-                        </div>
-        
-                        {/* Main Content */}
-                        <div className="w-full container mx-auto bg-transparent rounded-lg shadow-sm p-6 text-center flex flex-col gap-5 items-center">
-                            <p className="font-bold text-lg text-gray-800">HALO MATE, APAKAH ANDA PERLU BANTUAN?</p>
-        
-                            {/* SOS Button */}
-                            <div className="w-40 h-40 rounded-full bg-blue-100 flex items-center justify-center relative">
-                                <div className="w-32 h-32 rounded-full bg-blue-300 flex items-center justify-center animate-ping absolute" />
-                                <div className="w-32 h-32 rounded-full bg-blue-500 flex items-center justify-center z-10">
-                                    <span className="text-white font-bold text-xl">SOS</span>
-                                </div>
-                            </div>
-        
-                            {/* Response Section */}
-                            <div className="w-full mt-6">
-                                <p className="font-bold text-gray-800 text-left">Respons Penjaga</p>
-                                <div className="flex flex-wrap gap-6 mt-4 pb-20">
-                                    {/* Response Card */}
-                                    {guards.length > 0 ? (
-                                        guards.map((guard, index) => (
-                                            <div key={index} className="flex items-center w-full md:w-48 lg:w-full bg-background rounded-lg p-4 ">
-                                                <div className="w-10 h-10 rounded-full bg-blue-200 flex items-center justify-center mr-4">
-                                                    <img src={guard.users.photo} alt="Profile" className="w-8 h-8 rounded-full" />
-                                                </div>
-                                                <div className='flex flex-col items-start justify-center gap-1 w-full'>
-                                                    <p className="font-bold text-secondary text-md w-full rounded-lg text-center bg-blue-200 ">{guard.users.fullName}</p>
-                                                    <p className="text-md text-gray-500 text-left">Universitas Dian Nuswantoro</p>
-                                                    <p className='text-sm text-gray-500 text-left'>{guard.chat}</p>
-                                                </div>
+                <>
+                    <IncomingCall viId={data.id}/>
+                    <div 
+                        className="bg-soft-background min-h-screen w-screen h-screen overflow-hidden relative flex flex-col items-center lg:flex-row" 
+                        onMouseDown={handleMouseDown}
+                        onMouseUp={handleMouseUp}
+                        onMouseLeave={handleMouseUp}
+                        onTouchStart={handleMouseDown}
+                        onTouchEnd={handleMouseUp}
+                    >
+                        {/* <Navbar session={userData} mode="vi" /> */}
+                        <SidebarLayout type={"vi"} userData={userData}/>
+
+                        <div
+                        className="flex lg:p-5 lg:flex-row-reverse flex-col w-full gap-5 h-full relative overflow-hidden"
+                        >
+                            <div className="lg:p-5  bg-background lg:rounded-2xl flex lg:flex-col lg:gap-2 flex-col w-full h-full relative overflow-hidden">
+                                <p className="text-lg mb-0 font-bold text-non-active text-center lg:text-start hidden lg:block">Barcode</p>
+                                <div className='w-full pt-16 lg:pt-0 bg-soft-background h-full bg-opacity-40 lg:bg-transparent'>
+                                    <div className='w-full px-4 z-50 block lg:hidden'>
+                                        <Back title={"SOS"} to={"/vi"} />
+                                    </div>
+                                    {/* Header */}
+                                    <div className="w-full flex flex-row  justify-between items-center bg-white rounded-lg shadow-md p-4 ">
+                                        <div className="flex items-center  space-x-4 w-full h-full">
+                                            <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
+                                                <img src={data.photo} alt="Profile" className="w-10 h-10 rounded-full" />
                                             </div>
-                                        ))
-                                    ) : (
-                                        <p className="text-gray-500">Tidak ada respons terbaru.</p>
-                                    )}
+                                            <div>
+                                                <p className="font-bold text-gray-800">{data.fullName}</p>
+                                                <p className="text-sm text-gray-500">{data.role === "VI" ? "Visual Impairment" : "Guard"}</p>
+                                            </div>
+                                        </div>
+                                        <div className='flex h-full  flex-col items-end justify-center md:mt-0 w-5/12'>
+                                            <p className="font-bold text-gray-800">Universitas Dian</p>
+                                            <p className="text-sm text-gray-500 cursor-pointer">Lokasi Anda</p>
+                                        </div>
+                                    </div>
+                
+                                {/* Main Content */}
+                                    <div className="w-full bg-transparent rounded-lg shadow-sm p-6 text-center flex flex-col gap-5 items-center">
+                                        <p className="font-bold text-lg text-gray-800">HALO MATE, APAKAH ANDA PERLU BANTUAN?</p>
+                    
+                                        {/* SOS Button */}
+                                        <div className="w-44 h-44 rounded-full bg-blue-100 flex items-center justify-center relative">
+                                            {/* <div className="w-32 h-32 rounded-full bg-blue-300 flex items-center justify-center animate-ping absolute" /> */}
+                                            <div className="w-32 h-32 rounded-full bg-blue-500 flex items-center justify-center z-10">
+                                                <span className="text-white font-bold text-xl">SOS</span>
+                                            </div>
+                                            <div className="w-40 h-40 rounded-full bg-blue-200 flex items-center justify-center animate-ping absolute" />
+                                            <div className="w-36 h-36 rounded-full bg-blue-300 flex items-center justify-center animate-ping absolute" />
+                                        </div>
+                    
+                                        {/* Response Section */}
+                                        <div className="w-full mt-6">
+                                            <p className="font-bold text-gray-800 text-left">Respons Penjaga</p>
+                                            <div className="flex flex-col lg:flex-row w-full overflow-x-auto flex-wrap gap-6 mt-4 pb-20">
+                                                {/* Response Card */}
+                                                {guards.length > 0 ? (
+                                                    guards.map((guard, index) => (
+                                                        <div key={index} className="flex items-center w-full md:w-48 lg:w-1/3 bg-background rounded-lg p-4 ">
+                                                            <div className="w-10 h-10 rounded-full bg-blue-200 flex items-center justify-center mr-4">
+                                                                <img src={guard.users.photo} alt="Profile" className="w-8 h-8 rounded-full" />
+                                                            </div>
+                                                            <div className='flex flex-col items-start justify-center gap-1 w-full'>
+                                                                <p className="font-bold text-secondary text-md w-full rounded-lg text-center bg-blue-200 ">{guard.users.fullName}</p>
+                                                                <p className="text-md text-gray-500 text-left">Universitas Dian Nuswantoro</p>
+                                                                <p className='text-sm text-gray-500 text-left'>{guard.chat}</p>
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <p className="text-gray-500">Tidak ada respons terbaru.</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-        
+            
+                        {/* Footer */}
+                        <NavbarMobile />
+                        <Popup text="Halo Mate, Butuh Bantuan?" showPopup={showPopup} isListening={isListening} />
                     </div>
-        
-                    {/* Footer */}
-                    <NavbarMobile />
-                    <Popup text="Halo Mate, Butuh Bantuan?" showPopup={showPopup} isListening={isListening} />
-                </div>
+                </>
             ) : (
                 <LoadingPage />
             )}

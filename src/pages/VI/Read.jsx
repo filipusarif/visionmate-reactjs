@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import ReadCamera from "../../components/fragments/read";
 import ReadContent from "../../components/fragments/readcontent";
 import SidebarLayout from "../../components/layouts/Sidebar";
+import IncomingCall from "../../components/elements/call";
 
 
 const Read = () => {
@@ -134,71 +135,74 @@ const Read = () => {
 
     return (
         <>
-            <section
-                className="flex md:flex-row-reverse flex-col bg-[#e9effd] w-screen h-screen relative overflow-hidden"
-                onMouseDown={handleMouseDown}
-                onMouseUp={handleMouseUp}
-                onMouseLeave={handleMouseUp}
-                onTouchStart={handleMouseDown}
-                onTouchEnd={handleMouseUp}
-            >
-                {userData ? (
-                    <>
-                        {/* <Navbar session={userData} mode="vi"/> */}
-                        <div
-                        className="flex lg:p-5 md:flex-row-reverse gap-5 flex-col w-full h-full relative overflow-hidden"
-                        >
-                            <div className="lg:p-5 bg-background rounded-2xl flex md:flex-col gap-2 flex-col w-full h-full relative overflow-hidden">
-                                <p className="text-lg mb-0 font-bold text-non-active text-center lg:text-start">ReadThat</p>
-                                <div className="lg:p-0 bg-background rounded-xl flex md:flex-row-reverse gap-5 flex-col w-full h-full relative overflow-hidden">
-                                    <ReadCamera setCameraResponse={handleDataFromChild} readStatus={read} setRead={handleDataRead}/>
-                                    <ReadContent
-                                        message={transcript}
-                                        responseTxt={cameraResponse}
-                                        setRead={handleDataRead}
-                                    />
+            {userData ? (
+                <>
+                    <IncomingCall viId={userData.id}/>
+                    <section
+                        className="flex lg:flex-row-reverse flex-col bg-[#e9effd] w-screen h-screen relative overflow-hidden"
+                        onMouseDown={handleMouseDown}
+                        onMouseUp={handleMouseUp}
+                        onMouseLeave={handleMouseUp}
+                        onTouchStart={handleMouseDown}
+                        onTouchEnd={handleMouseUp}
+                    >
+                            <>
+                                {/* <Navbar session={userData} mode="vi"/> */}
+                                <div
+                                className="flex lg:p-5 lg:flex-row-reverse gap-5 flex-col w-full h-full relative overflow-hidden"
+                                >
+                                    <div className="lg:p-5 bg-background lg:rounded-2xl flex lg:flex-col gap-2 flex-col w-full h-full relative overflow-hidden">
+                                        <p className="text-lg mb-0 font-bold text-non-active text-center lg:text-start hidden lg:block">ReadThat</p>
+                                        <div className="lg:p-0 bg-background lg:rounded-xl flex lg:flex-row-reverse gap-0 lg:gap-5 flex-col w-full h-full relative overflow-hidden">
+                                            <ReadCamera setCameraResponse={handleDataFromChild} readStatus={read} setRead={handleDataRead}/>
+                                            <ReadContent
+                                                message={transcript}
+                                                responseTxt={cameraResponse}
+                                                setRead={handleDataRead}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <SidebarLayout type={"vi"} userData={userData}/>
-                        <NavbarMobile />
-                        <Popup text="Halo Mate, ada apa?" showPopup={showPopup} isListening={isListening} />
-                        {/* Modal Pop-Up */}
-                        {showPopupFirst && (
-                            <div
-                            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 popup-overlay"
-                            onClick={handleOutsideClick}
-                        >
-                            <div className="bg-white p-5 md:p-10 rounded-lg shadow-lg w-[90%] md:w-[30%] flex flex-col items-center justify-center gap-3">
-                                <img src="assets/images/warning.svg" alt="" className="w-[7rem]" />
-                                <h1 className="font-bold text-lg">HARAP DIPERHATIKAN!!</h1>
-                                <p className="w-full text-left">Cara Penggunaan</p>
-                                <ol>
-                                    <li>1. Tahan layar di manapun selama 2 detik untuk memulai perintah suara.</li>
-                                    <li>2. Berikan perintah setelah VisionMate selesai mengatakan “Halo mate, ada apa?”.</li>
-                                    <li>3. Anda bisa melakukan navigasi ke halaman apapun menggunakan voice command (contoh : “pindahkan saya ke halaman login”, "arahkan saya ke Poliklinik Dian Nuswantoro", dsb)</li>
-                                </ol>
-                                <div className="flex gap-3 flex-col-reverse md:flex-row items-center justify-between w-full">
+                                <SidebarLayout type={"vi"} userData={userData}/>
+                                <NavbarMobile />
+                                <Popup text="Halo Mate, ada apa?" showPopup={showPopup} isListening={isListening} />
+                                {/* Modal Pop-Up */}
+                                {/* {showPopupFirst && (
+                                    <div
+                                    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 popup-overlay"
+                                    onClick={handleOutsideClick}
+                                >
+                                    <div className="bg-white p-5 lg:p-10 rounded-lg shadow-lg w-[90%] lg:w-[30%] flex flex-col items-center justify-center gap-3">
+                                        <img src="assets/images/warning.svg" alt="" className="w-[7rem]" />
+                                        <h1 className="font-bold text-lg">HARAP DIPERHATIKAN!!</h1>
+                                        <p className="w-full text-left">Cara Penggunaan</p>
+                                        <ol>
+                                            <li>1. Tahan layar di manapun selama 2 detik untuk memulai perintah suara.</li>
+                                            <li>2. Berikan perintah setelah VisionMate selesai mengatakan “Halo mate, ada apa?”.</li>
+                                            <li>3. Anda bisa melakukan navigasi ke halaman apapun menggunakan voice command (contoh : “pindahkan saya ke halaman login”, "arahkan saya ke Poliklinik Dian Nuswantoro", dsb)</li>
+                                        </ol>
+                                        <div className="flex gap-3 flex-col-reverse lg:flex-row items-center justify-between w-full">
 
-                                <button
-                                    onClick={handleClosePopup}
-                                    className="bg-blue-500 text-white px-4 py-2 rounded w-full md:w-auto"
-                                    >
-                                    Tutup
-                                </button>
-                                <div className="flex flex-col w-full items-end">
-                                    <p>Menutup {countdown} detik</p>
-                                    <p className="text-[10px]">tekan dipinggir untuk mengabaikan informasi</p>
+                                        <button
+                                            onClick={handleClosePopup}
+                                            className="bg-blue-500 text-white px-4 py-2 rounded w-full lg:w-auto"
+                                            >
+                                            Tutup
+                                        </button>
+                                        <div className="flex flex-col w-full items-end">
+                                            <p>Menutup {countdown} detik</p>
+                                            <p className="text-[10px]">tekan dipinggir untuk mengabaikan informasi</p>
+                                        </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                </div>
-                            </div>
-                        </div>
-                        )}
-                    </>
-                ) : (
-                    <LoadingPage />
-                )}
-            </section>
+                                )} */}
+                            </>
+                    </section>
+                </>
+            ) : (
+                <LoadingPage />
+            )}
         </>
     );
 };

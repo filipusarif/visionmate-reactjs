@@ -90,7 +90,7 @@ export default function Camera({ setCameraResponse }) {
             }
         };
 
-        const interval = setInterval(captureImage, 20000);
+        const interval = setInterval(captureImage, 15000);
 
         return () => clearInterval(interval);
     }, [setCameraResponse]);

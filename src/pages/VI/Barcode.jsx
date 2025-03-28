@@ -10,6 +10,8 @@ import NavbarMobile from '../../components/fragments/navbarmobile';
 import { supabase } from '../../services/lib/supabaseClient';
 import SidebarLayout from "../../components/layouts/Sidebar";
 import { Link } from "react-router-dom";
+import Back from '../../components/elements/back';
+import IncomingCall from '../../components/elements/call';
 
 const Barcode = () => {
     const { decryptSession } = UserAuth();
@@ -49,13 +51,6 @@ const Barcode = () => {
     const closeTimer = useRef(null);
     const recognitionRef = useRef(null);
     
-    // useEffect(() => {
-    //     // Menghentikan sintesis suara yang masih berlangsung jika ada
-    //     if (window.speechSynthesis.speaking) {
-    //         window.speechSynthesis.cancel();
-    //     }
-    // }, []);
-
     useEffect(() => {
         if (isFirstRender.current) {
             window.speechSynthesis.cancel();
@@ -170,45 +165,55 @@ const Barcode = () => {
         };
 
     return (
-        <div className='bg-soft-background w-screen h-screen relative overflow-hidden lg:flex' 
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-        onTouchStart={handleMouseDown}
-        onTouchEnd={handleMouseUp}>
-            {/* <Navbar session={userData} mode="vi" /> */}
-            <SidebarLayout type={"vi"} userData={userData}/>
-            <div className='w-full flex justify-between shadow-lg lg:hidden items-center relative top-0 container pt-5 bg-soft-background'>
-                <Link to={"/vi"}>
-                    <img src="/assets/images/back.svg" alt="" />
-                </Link>
-                <h1 className='font-bold'>QR CODE</h1>
-                <span></span>
-            </div>
-            <div className="w-full flex flex-col lg:pt-32 items-center justify-center h-screen bg-soft-background" 
-            >
-                {userData  ? (
-                    <div className='w-[90%] lg:w-[40%] -translate-y-10  bg-background relative flex justify-center gap-5 items-center pt-16 rounded-xl p-10 flex-col'>
-                        <img src={ photo?.photo } alt="" className='w-[7rem] bg-background h-[7rem] -top-14 rounded-full absolute border-4 border-background ' />
-                        <div className='flex w-full items-center flex-col gap-0'>
-                        <h1 className="text-2xl font-bold text-dark ">{photo?.fullName}</h1>
-                        <p className="text-xl text-dark ">VISUAL IMPAIRMENT</p>
+        <>
+        {userData  ? (
+            <>
+                <IncomingCall viId={userData.id}/>
+                <div className='bg-soft-background w-screen h-screen relative overflow-hidden lg:flex' 
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp}
+                onTouchStart={handleMouseDown}
+                onTouchEnd={handleMouseUp}>
+                    {/* <Navbar session={userData} mode="vi" /> */}
+                    <SidebarLayout type={"vi"} userData={userData}/>            
+                    
+                    
+                    <div
+                    className="flex lg:p-5 lg:flex-row-reverse flex-col w-full gap-5 h-full relative overflow-hidden"
+                    >
+                        <div className="lg:p-5  bg-background lg:rounded-2xl flex lg:flex-col lg:gap-2 flex-col w-full h-full relative overflow-hidden">
+                            <p className="text-lg mb-0 font-bold text-non-active text-center lg:text-start hidden lg:block">Barcode</p>
+                            <div className='w-full px-4 block lg:hidden'>
+                                <Back title={"QR Code"} to={"/vi"} />
+                            </div>
+                            <div className="w-full flex flex-col items-center justify-center h-full bg-soft-background bg-opacity-40 lg:bg-transparent" 
+                            >
+                                    <div className='w-[90%] lg:w-[40%] bg-background relative shadow-xl flex justify-center gap-5 items-center pt-16 rounded-xl p-10 flex-col'>
+                                        <img src={ photo?.photo } alt="" className='w-[7rem] bg-background h-[7rem] -top-14 rounded-full shadow-lg absolute border-4 border-background ' />
+                                        <div className='flex w-full items-center flex-col gap-0'>
+                                        <h1 className="text-2xl font-bold text-dark ">{photo?.fullName}</h1>
+                                        <p className="text-xl text-dark ">VISUAL IMPAIRMENT</p>
+                                        </div>
+                                        <QRCodeCanvas
+                                        value={userData.id.toString()} 
+                                        size={256}
+                                        level="H"
+                                        className=""
+                                        />
+                                    </div>
+                                <p className="mt-4 text-gray-600">Scan barcode ini untuk menghubungkan ke penjaga.</p>
+                            </div>
                         </div>
-                        <QRCodeCanvas
-                        value={userData.id.toString()} 
-                        size={256}
-                        level="H"
-                        className=""
-                        />
                     </div>
-                ) : (
-                    <LoadingPage />
-                )}
-                <p className="mt-4 text-gray-600">Scan barcode ini untuk menghubungkan ke penjaga.</p>
-            </div>
-            <NavbarMobile />
-            <Popup text="Halo Mate, mau pindah halaman?" showPopup={showPopup} isListening={isListening} />
-        </div>
+                    <NavbarMobile />
+                    <Popup text="Halo Mate, mau pindah halaman?" showPopup={showPopup} isListening={isListening} />
+                </div>
+            </>
+        ) : (
+            <LoadingPage />
+        )}
+        </>
     );
 };
 

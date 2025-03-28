@@ -63,16 +63,16 @@ const Register = () => {
     };
 
     return (
-        <div className="h-fit lg:h-screen w-screen overflow-hidden flex flex-col md:flex-row items-center bg-gray-50">
+        <div className="h-fit lg:h-screen w-screen overflow-hidden flex flex-col lg:flex-row items-center bg-gray-50">
             {/* Form Section */}
             <div className="container mx-auto">
 
-            <form onSubmit={handleRegister} className="flex-1 px-8 py-12 space-y-6 w-full md:w-[65%] z-50">
+            <form onSubmit={handleRegister} className="flex-1 px-8 py-12 space-y-6 w-full lg:w-[65%] z-50">
                 <Link to="/" className="text-center mb-4">
                     <img src="assets/images/auth/Logo.svg" alt="VisionMate" className="w-16 mx-auto" />
                     <h2 className="text-2xl font-bold text-blue-600">VisionMate</h2>
                 </Link>
-                <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2  gap-4">
                     <div className="flex flex-col">
                         <label htmlFor="fullName" className="text-gray-700 text-sm mb-1">Nama Lengkap</label>
                         <input
@@ -196,10 +196,10 @@ const Register = () => {
             </form>
             
             </div>
-            <img src="assets/images/auth/Group 2683.svg" alt="" className='absolute right-40 bottom-64 z-20 hidden md:block '/>
-                <img src="assets/images/auth/Group 2682.svg" alt="" className='absolute right-14 bottom-16 z-20 w-[19rem] hidden md:block '/>
-                <img src="assets/images/auth/Group 2654.svg" alt="" className='absolute -right-20 hidden md:block md:w-[30rem] lg:w-[40rem]  xl:w-[50rem]  h-screen z-10' />
-            <img src="assets/images/auth/Group 1.svg" alt="" className='z-20 absolute right-8 bg-background p-[15px] rounded-full hidden md:block ' />
+            <img src="assets/images/auth/Group 2683.svg" alt="" className='absolute right-40 bottom-64 z-20 hidden lg:block '/>
+                <img src="assets/images/auth/Group 2682.svg" alt="" className='absolute right-14 bottom-16 z-20 w-[19rem] hidden lg:block '/>
+                <img src="assets/images/auth/Group 2654.svg" alt="" className='absolute -right-20 hidden lg:block lg:w-[30rem] lg:w-[40rem]  xl:w-[50rem]  h-screen z-10' />
+            <img src="assets/images/auth/Group 1.svg" alt="" className='z-20 absolute right-8 bg-background p-[15px] rounded-full hidden lg:block ' />
         </div>
     );
 };

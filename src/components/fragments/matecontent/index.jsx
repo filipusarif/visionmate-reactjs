@@ -117,65 +117,6 @@ export default function MateContent({ message, responseTxt, setMap, sensor }) {
     }
   };
 
-  // const handleSubmitType = async (e) => {
-  //   e.preventDefault();
-  //   const textToSend = inputValue;
-  //   console.log(textToSend);
-
-  //   if (!textToSend) {
-  //     alert("Please enter a question.");
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   setResponseText(null);
-
-  //   setMessages((prevMessages) => [
-  //     ...prevMessages,
-  //     { sender: "user", text: textToSend },
-  //   ]);
-
-  //   try {
-  //     const response = await fetch(import.meta.env.VITE_API_URL+"/chat", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         message: textToSend,
-  //         api_key: import.meta.env.VITE_NVIDIA_API_KEY,
-  //       }),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch response from the API.");
-  //     }
-
-  //     const data = await response.json();
-  //     const { action, value } = data;
-
-  //     executeAction(action, value);
-  //     setMessages((prevMessages) => [
-  //       ...prevMessages,
-  //       { sender: "ai", text: value || "No action received." },
-  //     ]);
-      
-  //     // Text-to-Speech
-  //     const synth = window.speechSynthesis;
-  //     const utterance = new SpeechSynthesisUtterance(value || "No action received.");
-  //     utterance.lang = "id-ID";
-  //     synth.speak(utterance);
-  //   } catch (error) {
-  //     setMessages((prevMessages) => [
-  //       ...prevMessages,
-  //       { sender: "ai", text: "Failed to fetch response from the API." },
-  //     ]);
-  //   } finally {
-  //     setLoading(false);
-  //     setInputValue("");
-  //   }
-  // };
-
   const executeAction = (action, value) => {
     if (action === "switch") {
       window.location.href = value;
@@ -197,7 +138,7 @@ export default function MateContent({ message, responseTxt, setMap, sensor }) {
       </div>
       <div className="flex flex-col w-full h-full lg:h-full gap-3 p-4 lg:p-0 pt-2 lg:pt-0 rounded-t-3xl border-[1px] border-gray-500 lg:rounded-xl z-50 relative top-5 left-0 lg:top-0 bg-background">
         {/* <div className="w-[20%] left-[40%] h-[5px] bg-background absolute -top-3.5 rounded-full z-50" /> */}
-        <div className="chat-box p-2 lg:px-4 pb-20 rounded  basis-5/6 overflow-y-auto mb-4">
+        <div className="chat-box p-2 lg:p-4 lg:px-4 pb-20 rounded  basis-5/6 lg:basis-full overflow-y-auto mb-4">
           {messages.map((msg, index) => (
             <div
               key={index}

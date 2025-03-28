@@ -93,6 +93,7 @@ export default function ReadCamera({ setCameraResponse, readStatus, setRead }) {
                     setCameraResponse(text); // Panggil handler untuk mengirim responseText ke parent
                 } catch (error) {
                     console.error("Error uploading image:", error);
+                    setCameraResponse("Maaf, gagal melakukan scan. lakukan scan ulang")
                     setError("Failed to upload image or process the response.");
                 }
             }, "image/png");
@@ -102,7 +103,7 @@ export default function ReadCamera({ setCameraResponse, readStatus, setRead }) {
 
     return (
         <div className="w-full h-fit">
-            <video ref={videoRef} autoPlay playsInline className="rounded-md w-full" ></video>
+            <video ref={videoRef} autoPlay playsInline className="rounded-none lg:rounded-md w-full" ></video>
             <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
         </div>
     );

@@ -78,7 +78,7 @@ const IncomingCall = ({ viId }) => {
             </div>
         </div>
     ) : (
-        <div className="w-screen h-screen z-50 absolute top-0  left-0 ">
+        <div className="w-screen h-screen absolute top-0  left-0 ">
             <div className="w-full h-full " 
             onClick={handleClick} 
             onMouseDown={handleHoldStart} 
