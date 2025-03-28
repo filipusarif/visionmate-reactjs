@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../../../services/lib/supabaseClient";
 
-const Chat = ({ messages, userInfo, vi_id, guard_email, onNewMessage }) => {
+const Chat = ({ messages, userInfo, vi_id, guard_email, onNewMessage, startCall }) => {
     const [message, setMessage] = useState("");
     const [isSending, setIsSending] = useState(false);
 
@@ -56,16 +56,31 @@ const Chat = ({ messages, userInfo, vi_id, guard_email, onNewMessage }) => {
 
     return (
         <div className="flex flex-col h-full w-full bg-gray-100 rounded-xl border-[1px] border-gray-400 relative" style={{ backgroundImage: "url('/assets/images/texture.svg')" }}>
-            <div className="flex items-center py-2 px-4 bg-white rounded-t-xl shadow-md">
-                <img 
-                    src={userInfo.photo || "https://placehold.co/20"} 
-                    alt="User" 
-                    className="w-10 h-10 rounded-full mr-3" 
-                />
-                <div>
-                    <h2 className="text-lg font-semibold">{userInfo.fullName}</h2>
-                    <p className="text-xs text-green-500">Walking</p>
+            <div className="flex items-center justify-between py-2 px-4 bg-white rounded-t-xl shadow-md">
+                <div className="flex items-center">
+                    <img 
+                        src={userInfo.photo || "https://placehold.co/20"} 
+                        alt="User" 
+                        className="w-10 h-10 rounded-full mr-3" 
+                    />
+                    <div>
+                        <h2 className="text-lg font-semibold">{userInfo.fullName}</h2>
+                        <p className="text-xs text-green-500">Walking</p>
+                    </div>
                 </div>
+
+                {vi_id && (
+                    <button
+                        onClick={() => startCall(vi_id)}
+                        className="py-2 px-3 border border-gray-300 rounded-lg text-gray-600  hover:bg-gray-200 transition-all duration-200"
+                    >
+                        <img 
+                            src="/assets/images/vidCall/Vidcall.svg" 
+                            alt="Call Icon" 
+                            className="w-5 h-5" 
+                        />
+                    </button>
+                )}
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-3">

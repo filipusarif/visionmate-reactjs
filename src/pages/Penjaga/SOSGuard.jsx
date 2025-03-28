@@ -221,18 +221,10 @@ const SOSGuard = () => {
                         >
                             <div className="lg:p-5 bg-background rounded-2xl flex md:flex-col gap-2 flex-col w-full h-full relative overflow-hidden">
                                 <p className="text-lg mb-0 lg:block hidden font-bold text-non-active text-center lg:text-start">SOS</p>
-                                {connections.length > 0 && (
-                                    <button
-                                        onClick={() => startCall(connections[0].vi_id)}
-                                        className="bg-green-500 text-white px-4 py-2 rounded"
-                                    >
-                                        📞 Call VI
-                                    </button>
-                                )}
                                 <div className="lg:p-0 bg-background rounded-xl flex md:flex-row gap-5 flex-col-reverse w-full h-full relative overflow-hidden">
                                 {/* <Navbar session={userData} mode="guard"/> */}
                                     <ChatContent setDestination={handleDestination} id={userData.id}  connections={connections} lastChats={lastChats} onSelectChat={fetchChatByUser}/>
-                                    <Chat messages={selectedChat ? selectedChat.messages : []} userInfo={selectedChat ? selectedChat.userInfo : null} vi_id={selectedChat?.vi_id} guard_email={userData?.email} onNewMessage={handleNewMessage}/>
+                                    <Chat messages={selectedChat ? selectedChat.messages : []} userInfo={selectedChat ? selectedChat.userInfo : null} vi_id={selectedChat?.vi_id} guard_email={userData?.email} onNewMessage={handleNewMessage} startCall={startCall}/>
                                 </div>
                             </div>
                     </div>
