@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../../../services/lib/supabaseClient";
 
-const Chat = ({ messages, userInfo, vi_id, guard_email, onNewMessage, startCall }) => {
+const Chat = ({ messages, userInfo, vi_id, guard_email, onNewMessage, startCall, setPage }) => {
     const [message, setMessage] = useState("");
     const [isSending, setIsSending] = useState(false);
 
@@ -54,10 +54,13 @@ const Chat = ({ messages, userInfo, vi_id, guard_email, onNewMessage, startCall 
         );
     }
 
+
+
     return (
-        <div className="flex flex-col h-full w-full bg-gray-100 rounded-xl border-[1px] border-gray-400 relative" style={{ backgroundImage: "url('/assets/images/texture.svg')" }}>
+        <div className="flex flex-col h-full w-full pb-12 lg:pb-0 bg-gray-100 rounded-xl border-[1px] border-gray-400 relative" style={{ backgroundImage: "url('/assets/images/texture.svg')" }}>
             <div className="flex items-center justify-between py-2 px-4 bg-white rounded-t-xl shadow-md">
                 <div className="flex items-center">
+                    <img src="/assets/images/menu/back.svg" className="mr-3 block lg:hidden" onClick={()=>setPage(false)} alt="" />
                     <img 
                         src={userInfo.photo || "https://placehold.co/20"} 
                         alt="User" 

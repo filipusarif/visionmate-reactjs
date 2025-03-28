@@ -11,6 +11,8 @@ import Sidebar, { SidebarItem } from "../../components/fragments/sidebar";
 import Chat from "../../components/layouts/Chat";
 import ChatContent from "../../components/fragments/chatcontent";
 import zgEngine from "../../services/lib/zegocloud";
+import NavbarMobile from "../../components/fragments/navbarmobile";
+
 
 
 const SOSGuard = () => {
@@ -22,6 +24,7 @@ const SOSGuard = () => {
     // const [destination, setDestination] = useState([]);
     const [isCalling, setIsCalling] = useState(false);
     const [roomID, setRoomId] = useState(null);
+    const [page, setPage] = useState(false);
     const navigate = useNavigate();
 
     useSession(decryptSession, setUserData);
@@ -159,8 +162,8 @@ const SOSGuard = () => {
         );
 
         console.log("All messages:", allMessages);
-    
         setSelectedChat({ vi_id, messages: allMessages, userInfo: userData });
+        setPage(true);
     };
     
     useEffect(() => {
@@ -206,8 +209,12 @@ const SOSGuard = () => {
         });
     };
 
+    const handleSetPage = (data) => {
+        setPage(data);
+    }
+
     return (
-        <section className="flex md:flex-row bg-soft-background flex-col-reverse w-screen h-screen relative">
+        <section className="flex lg:flex-row bg-soft-background flex-col-reverse w-screen h-screen relative">
             {userData ? (
                 <>
                     <Sidebar session={userData} >
@@ -216,15 +223,23 @@ const SOSGuard = () => {
                         <Link to={"/guard/scan"}><SidebarItem text={"Scan"} icon={"/assets/images/sidebar/scan.svg"}/></Link>
                         <Link to={"/guard/profile"}><SidebarItem text={"Profile"} icon={"/assets/images/sidebar/profile.svg"}/></Link>
                     </Sidebar>
+                    <NavbarMobile type="guard"/>
                     <div
-                        className="flex lg:p-5 md:flex-row gap-5 flex-col w-full h-full relative overflow-hidden"
+                        className="flex lg:p-5 lg:flex-row gap-5 flex-col w-full h-full relative overflow-hidden"
                         >
-                            <div className="lg:p-5 bg-background rounded-2xl flex md:flex-col gap-2 flex-col w-full h-full relative overflow-hidden">
+                            <div className="lg:p-5 bg-background rounded-2xl flex lg:flex-col gap-2 flex-col w-full h-full relative overflow-hidden">
                                 <p className="text-lg mb-0 lg:block hidden font-bold text-non-active text-center lg:text-start">SOS</p>
-                                <div className="lg:p-0 bg-background rounded-xl flex md:flex-row gap-5 flex-col-reverse w-full h-full relative overflow-hidden">
+                                <div className="block lg:hidden w-full h-full">
+                                    {page ? (
+                                        <Chat messages={selectedChat ? selectedChat.messages : []} userInfo={selectedChat ? selectedChat.userInfo : null} vi_id={selectedChat?.vi_id} guard_email={userData?.email} onNewMessage={handleNewMessage} startCall={startCall} setPage={handleSetPage}/>
+                                    ):(
+                                        <ChatContent setDestination={handleDestination} id={userData.id}  connections={connections} lastChats={lastChats} onSelectChat={fetchChatByUser} />
+                                    )}
+                                </div>
+                                <div className="lg:p-0 hidden bg-background rounded-xl lg:flex lg:flex-row gap-5 flex-col-reverse w-full h-full relative overflow-hidden">
                                 {/* <Navbar session={userData} mode="guard"/> */}
-                                    <ChatContent setDestination={handleDestination} id={userData.id}  connections={connections} lastChats={lastChats} onSelectChat={fetchChatByUser}/>
-                                    <Chat messages={selectedChat ? selectedChat.messages : []} userInfo={selectedChat ? selectedChat.userInfo : null} vi_id={selectedChat?.vi_id} guard_email={userData?.email} onNewMessage={handleNewMessage} startCall={startCall}/>
+                                    <ChatContent setDestination={handleDestination} id={userData.id}  connections={connections} lastChats={lastChats} onSelectChat={fetchChatByUser} />
+                                    <Chat messages={selectedChat ? selectedChat.messages : []} userInfo={selectedChat ? selectedChat.userInfo : null} vi_id={selectedChat?.vi_id} guard_email={userData?.email} onNewMessage={handleNewMessage} startCall={startCall} setPage={handleSetPage}/>
                                 </div>
                             </div>
                     </div>

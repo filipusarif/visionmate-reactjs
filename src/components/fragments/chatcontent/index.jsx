@@ -36,7 +36,7 @@ const ChatContent = ({ id, connections, setDestination, lastChats, onSelectChat 
     };
 
     return (
-        <section className="md:w-[40vw] md:h-full w-screen h-[50%] p-5 lg:p-4 flex flex-col gap-3 border-[1px] border-gray-400 rounded-xl">
+        <section className="lg:w-[40vw] lg:h-full w-full h-full p-5 lg:p-4 flex flex-col gap-3 lg:border-[1px] lg:border-gray-400 rounded-xl">
             {/* Search Bar and Filters */}
             <div className="flex items-center justify-between mb-1">
                 {/* Search Bar */}
@@ -67,18 +67,18 @@ const ChatContent = ({ id, connections, setDestination, lastChats, onSelectChat 
             {/* <h1 className="text-xl font-medium">Monitoring Saudara Kamu</h1> */}
 
             {/* Connections List */}
-            <div className="flex flex-col">
+            <div className="flex flex-col w-full">
                 {filteredConnections.map((connection) => {
                     const lastChat = lastChats.find(chat => chat.id_user === connection.vi_id);
                     
                     return(
                     <div
                         key={connection.vi_id}
-                        className="flex-col flex bg-white  border-gray-400 rounded-lg cursor-pointer hover:bg-gray-100"
+                        className="flex-col flex bg-white w-full border-gray-400 rounded-lg cursor-pointer hover:bg-gray-100"
                         onClick={() => onSelectChat(connection.vi_id)}
                         
                     >
-                        <div className="flex items-start ">
+                        <div className="flex items-start w-full">
                             <div className="flex items-center w-full gap-3 p-1 ">
                                 {/* Profile Picture */}
                                 <img
@@ -87,7 +87,7 @@ const ChatContent = ({ id, connections, setDestination, lastChats, onSelectChat 
                                     className="w-12 h-12 rounded-full object-cover"
                                 
                                 />
-                                <div className="flex items-start justify-between border-b-[1px] w-[80%] py-1">
+                                <div className="flex items-start justify-between border-b-[1px] w-full py-1">
                                     <div className="flex-1"
                                     >
                                         <h3 className="font-medium text-gray-800 text-lg">{connection.users.fullName}</h3>

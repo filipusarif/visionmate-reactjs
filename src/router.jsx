@@ -17,6 +17,7 @@ import AdminPage from "./pages/Admin/AdminPage";
 import SOSGuard from "./pages/Penjaga/SOSGuard";
 import Read from "./pages/VI/Read";
 import VideoCall from "./pages/Call";
+import GuardProfile from "./pages/Penjaga/GuardPage";
 
 
 export const router = createBrowserRouter([
@@ -142,6 +143,17 @@ export const router = createBrowserRouter([
         element: (
             <ProtectedRoute allowedRoles={["Guard"]}>
                 <Scan />
+            </ProtectedRoute>
+        ),
+        errorElement: (
+            <Notfound />
+        ),
+    },
+    {
+        path: "/guard/profile",
+        element: (
+            <ProtectedRoute allowedRoles={["Guard"]}>
+                <GuardProfile />
             </ProtectedRoute>
         ),
         errorElement: (

@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../../components/fragments/navbar';
 import LoadingPage from '../LoadingPage';
 import { Link } from "react-router-dom";
+import NavbarMobile from '../../components/fragments/navbarmobile';
 import Sidebar, { SidebarItem } from "../../components/fragments/sidebar";
 
 
@@ -146,21 +147,21 @@ const Scan = () => {
         {userData ? (
             <>
         {/* <Navbar session={userData} mode={"guard"} /> */}
-        <div className="flex md:flex-row bg-soft-background flex-col-reverse w-screen h-screen relative">
+        <div className="flex lg:flex-row bg-soft-background flex-col-reverse w-screen h-screen relative">
             <Sidebar session={userData} >
                 <Link to={"/guard"}><SidebarItem text={"Monitoring"} icon={"/assets/images/sidebar/monitoring.svg"}/></Link>
                 <Link to={"/guard/sos"}><SidebarItem text={"SOS"} icon={"/assets/images/sidebar/sos-guard.svg"}/></Link>
                 <Link to={"/guard/scan"}><SidebarItem text={"Scan"} icon={"/assets/images/sidebar/scan.svg"}/></Link>
                 <Link to={"/guard/profile"}><SidebarItem text={"Profile"} icon={"/assets/images/sidebar/profile.svg"}/></Link>
             </Sidebar>
+            <NavbarMobile type="guard"/>
             <div
-                className="flex lg:p-5 md:flex-row gap-5 flex-col w-full h-full relative overflow-hidden"
+                className="flex lg:p-5 lg:flex-row gap-5 flex-col w-full h-full relative overflow-hidden"
                 >
-                <div className="lg:p-5 bg-background rounded-2xl flex md:flex-col gap-2 flex-col w-full h-full relative overflow-hidden">
-
-                <h1 className="text-2xl font-bold mb-4">Scan Barcode</h1>
-                <div className="lg:p-0 bg-background rounded-xl flex md:flex-col gap-5 flex-col items-center w-full h-full relative overflow-hidden">
-                    <div className="w-80 h-80 bg-white shadow-lg rounded-lg">
+                <div className="lg:p-5 bg-background lg:rounded-2xl flex lg:flex-col gap-2 flex-col w-full h-full relative overflow-hidden">
+                <p className="text-lg mb-0 lg:block hidden font-bold text-non-active text-center lg:text-start">Scan</p>
+                <div className="lg:p-0 bg-black lg:bg-background flex lg:flex-col flex-col items-center w-full h-full relative overflow-hidden">
+                    <div className="absolute overflow-hidden h-full w-full  bg-black">
                         <QrReader
                             constraints={{ facingMode: "environment" }} // Menggunakan kamera belakang
                             onResult={(result, error) => {
@@ -183,22 +184,25 @@ const Scan = () => {
                                 }
                             }}
                             containerStyle={{ width: '100%', height: '100%' }}
+                            videoStyle={{ objectFit: 'cover', width: '100%', height: '100%' }}
                         />
                     </div>
-                    <div className="mt-4">
+                    <div className="absolute pb-12 lg:pb-0 inset-0 flex flex-col justify-between">
+                        <div className="bg-gradient-to-b from-black/60 to-transparent h-20 w-full"></div>
+                        <div className="flex justify-center items-center relative">
+                            <div className="w-64 h-64 border-4 border-white rounded-lg"></div>
+                        </div>
+                        <div className="bg-gradient-to-t from-black/60 to-transparent h-20 w-full flex justify-center items-center">
+                            <p className="text-white text-lg">Arahkan kamera ke barcode</p>
+                        </div>
+                    </div>
+                    {/* <div className="mt-4">
                         { error ? (
                             <p className="text-red-600 text-center">{error}</p>
                         ) : (
                             <p className="text-gray-600 text-center">Arahkan kamera ke barcode untuk memulai scan.</p>
                         )}
-                        {/* {data ? (
-                            <p className="text-green-600">Data hasil scan: {data}</p>
-                            ) : error ? (
-                                <p className="text-red-600">{error}</p>
-                                ) : (
-                                    <p className="text-gray-600">Arahkan kamera ke barcode untuk memulai scan.</p>
-                                    )} */}
-                    </div>
+                    </div> */}
 
                     {status && <p className="mt-2 text-blue-600">{status}</p>}
                     </div>

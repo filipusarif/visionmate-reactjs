@@ -225,7 +225,7 @@ const SOS = () => {
                 <>
                     <IncomingCall viId={data.id}/>
                     <div 
-                        className="bg-soft-background min-h-screen w-screen h-screen overflow-hidden relative flex flex-col items-center lg:flex-row" 
+                        className="bg-soft-background min-h-screen w-screen lg:h-screen overflow-hidden relative flex flex-col items-center lg:flex-row" 
                         onMouseDown={handleMouseDown}
                         onMouseUp={handleMouseUp}
                         onMouseLeave={handleMouseUp}

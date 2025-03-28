@@ -1,4 +1,13 @@
+import { useEffect } from "react";
+
 export default function Popup({text, showPopup, isListening}) {
+    useEffect(() => {
+        if (isListening) {
+            const audio = new Audio("/assets/audio/mate.mp3");
+            audio.play();
+        }
+    }, [isListening]);
+
     return (
         <div
         className={`absolute  inset-0 flex items-end lg:items-center px-0 justify-center bg-black bg-opacity-20 z-50 

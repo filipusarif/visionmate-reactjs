@@ -61,6 +61,13 @@ const IncomingCall = ({ viId }) => {
         clearTimeout(holdTimer);
     };
 
+    useEffect(() => {
+        if (incomingCall) {
+            const audio = new Audio("/assets/audio/notification.mp3");
+            audio.play();
+        }
+    }, [incomingCall]);
+
     return incomingCall ? (
         <div className="w-screen h-screen z-50 absolute top-0  left-0 ">
             <div className="w-full h-full" 
