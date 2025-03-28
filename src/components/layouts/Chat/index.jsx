@@ -116,7 +116,11 @@ const Chat = ({ messages, userInfo, vi_id, guard_email, onNewMessage, startCall 
                     onClick={handleSendMessage}
                     disabled={isSending || !message.trim()}
                 >
-                    {isSending ? "Mengirim..." : "Kirim"}
+                    <img 
+                        src="/assets/images/sos/Send.svg" 
+                        alt="Send Icon" 
+                        className="w-6 h-6" 
+                    />
                 </button>
             </div>
         </div>

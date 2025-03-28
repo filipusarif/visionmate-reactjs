@@ -184,7 +184,7 @@ const SOS = () => {
                             `)
                             .eq('vi_id', userData.id)
                             .order('created_at', { ascending: false })
-                            .limit(1);
+                            .limit(3);
         
                         if (error) throw error;
         
@@ -278,11 +278,11 @@ const SOS = () => {
                                         {/* Response Section */}
                                         <div className="w-full mt-6">
                                             <p className="font-bold text-gray-800 text-left">Respons Penjaga</p>
-                                            <div className="flex flex-col lg:flex-row w-full overflow-x-auto flex-wrap gap-6 mt-4 pb-20">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4 pb-20">
                                                 {/* Response Card */}
                                                 {guards.length > 0 ? (
                                                     guards.map((guard, index) => (
-                                                        <div key={index} className="flex items-center w-full md:w-48 lg:w-1/3 bg-background rounded-lg p-4 ">
+                                                        <div key={index} className="flex items-center bg-background rounded-lg p-4">
                                                             <div className="w-10 h-10 rounded-full bg-blue-200 flex items-center justify-center mr-4">
                                                                 <img src={guard.users.photo} alt="Profile" className="w-8 h-8 rounded-full" />
                                                             </div>
