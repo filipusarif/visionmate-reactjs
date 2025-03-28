@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../../services/lib/supabaseClient";
 import Cookies from "js-cookie";
 import bcrypt from "bcryptjs";
@@ -10,6 +10,7 @@ const AuthContext = createContext();
 const SECRET_KEY = "pejuterbang"; // Ganti dengan kunci rahasia yang aman
 
 export const AuthContextProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
     // Fungsi untuk mendaftarkan pengguna baru
     const registerNewUser = async (fullName, email, password, role, phone, language) => {
         try {
@@ -87,6 +88,8 @@ export const AuthContextProvider = ({ children }) => {
             Cookies.set("userSession", encryptedData, { expires: 1, secure: true });
             Cookies.set("firstLogin", true, { expires: 1, secure: true });
 
+            await supabase.from("users").update({ active: true }).eq("id", data.id);
+
             return { success: true, data: sessionData };
         } catch (error) {
             console.error("Unexpected login error: ", error);
@@ -97,6 +100,13 @@ export const AuthContextProvider = ({ children }) => {
     // Fungsi untuk logout
     const logOut = async () => {
         try {
+            const sessionData = decryptSession();
+            if (sessionData) {
+                await supabase.from("users").update({ active: false }).eq("id", sessionData.id);
+            } else {
+                console.error("No user session found during logout.");
+            }
+
             Cookies.remove("userSession");
             Cookies.remove("firstLogin");
         } catch (error) {
