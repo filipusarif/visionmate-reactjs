@@ -185,6 +185,7 @@ const Scan = () => {
                             }}
                             containerStyle={{ width: '100%', height: '100%' }}
                             videoStyle={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                            videoContainerStyle={{ position: 'relative', width: '100%', height: '100%',}}
                         />
                     </div>
                     <div className="absolute pb-12 lg:pb-0 inset-0 flex flex-col justify-between">
