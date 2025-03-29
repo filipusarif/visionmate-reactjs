@@ -38,7 +38,6 @@ const SOSGuard = () => {
                     .single();
 
                 if (error) throw error;
-                console.log(data);
                 setUserData(data);
             } catch (error) {
                 console.error("Error fetching user data:", error);
@@ -117,7 +116,8 @@ const SOSGuard = () => {
 
 
     const fetchChatByUser = async (vi_id) => {
-        console.log("Fetching chat for VI:", vi_id);
+
+        // console.log("Fetching chat for VI:", vi_id);
         const { data: communications, error: commError } = await supabase
             .from("communications")
             .select("chat, created_at")
@@ -128,22 +128,20 @@ const SOSGuard = () => {
             .from("respons")
             .select("chat, created_at")
             .eq("vi_id", vi_id)
+            .eq("guard_email", userData.email)
             .order("created_at", { ascending: true });
 
-        const { data: userData, error: userError } = await supabase
+        const { data: userInfo, error: userError } = await supabase
         .from("users")
         .select("fullName, phone, latitude, longitude, photo, destination, duration, status")
         .eq("id", vi_id)
         .single();
+        
     
         if (commError || respError || userError) {
             console.error("Error fetching chats:", commError || respError || userError);
             return;
         }
-
-        console.log("Communications:", communications);
-        console.log("Responses:", responses);
-        console.log("User Data:", userData);
     
         // Tandai asal pesan
         const formattedCommunications = communications.map(msg => ({
@@ -161,15 +159,14 @@ const SOSGuard = () => {
             new Date(a.created_at) - new Date(b.created_at)
         );
 
-        console.log("All messages:", allMessages);
-        setSelectedChat({ vi_id, messages: allMessages, userInfo: userData });
+        setSelectedChat({ vi_id, messages: allMessages, userInfo: userInfo });
         setPage(true);
     };
     
     useEffect(() => {
         // Inisialisasi SDK saat komponen dimuat
-        console.log("zgEngine:", zgEngine);
-        console.log("Available methods:", Object.keys(zgEngine));
+        // console.log("zgEngine:", zgEngine);
+        // console.log("Available methods:", Object.keys(zgEngine));
 
         zgEngine
     }, []);
