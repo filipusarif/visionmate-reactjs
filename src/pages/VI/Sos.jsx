@@ -180,14 +180,14 @@ const SOS = () => {
                             .select(`
                                 chat,
                                 guard_email,
-                                users:guard_email(fullName, photo)
+                                users:guard_email(fullName, photo, phone)
                             `)
                             .eq('vi_id', userData.id)
                             .order('created_at', { ascending: false })
                             .limit(3);
         
                         if (error) throw error;
-        
+
                         // Cek jika data baru berbeda dari data sebelumnya
                         if (JSON.stringify(data) !== JSON.stringify(prevGuards.current)) {
                             // Simpan data terbaru
@@ -288,7 +288,7 @@ const SOS = () => {
                                                             </div>
                                                             <div className='flex flex-col items-start justify-center gap-1 w-full'>
                                                                 <p className="font-bold text-secondary text-md w-full rounded-lg text-center bg-blue-200 ">{guard.users.fullName}</p>
-                                                                <p className="text-md text-gray-500 text-left">Universitas Dian Nuswantoro</p>
+                                                                {/* <p className="text-md text-gray-500 text-left">{guard.users.phone}</p> */}
                                                                 <p className='text-sm text-gray-500 text-left'>{guard.chat}</p>
                                                             </div>
                                                         </div>
