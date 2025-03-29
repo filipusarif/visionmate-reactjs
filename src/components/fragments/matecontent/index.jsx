@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import chat from "../../../services/api/chat";
+import Typing from "../../elements/typing";
 
 export default function MateContent({ message, responseTxt, setMap, sensor }) {
   const [responseText, setResponseText] = useState(null);
@@ -162,20 +163,17 @@ export default function MateContent({ message, responseTxt, setMap, sensor }) {
                     ? msg.text
                     : JSON.stringify(msg.text)}
                 </p>
+                
               </div>
             </div>
           ))}
           {loading && (
-            <div className="chat-message text-left">
-              <div className="inline-block bg-gray-200 text-black p-2 rounded-lg my-2">
-                <p>Typing...</p>
-              </div>
-            </div>
+            <Typing />
           )}
         </div>
 
-        {/* <div className="flex flex-col gap-4 basis-1/6">
-          <form onSubmit={handleSubmitType} className="flex items-center gap-3">
+        {/* <div className="flex flex-col gap-4 basis-1/6"2
+          <form onSubmit={handleSubmitType} className="flex items-center gap-2">
             <input
               type="text"
               value={inputValue}

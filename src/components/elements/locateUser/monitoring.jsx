@@ -21,8 +21,8 @@ const checkIfConnectionExists = async (id) => {
     try {
         const { data, error } = await supabase
             .from("connections")
-            .select("vi_id")
-            .eq("vi_id", id);
+            .select("guard_id")
+            .eq("guard_id", id);
 
         if (error) {
             console.error("Error checking connection:", error.message);
@@ -237,7 +237,6 @@ export default function LocateUserAndRouteMonitoring({ destination, audioEnabled
             if (error) {
                 console.error("Error fetching connections:", error.message);
             } else {
-                console.log("data   ",data)
                 setPhoto(data);
             }
 

@@ -50,7 +50,12 @@ const Chat = ({ messages, userInfo, vi_id, guard_email, onNewMessage, startCall,
 
     if (!userInfo) {
         return (
-            <div className="flex items-center justify-center h-full w-full bg-gray-100 rounded-xl border-[1px] border-gray-400"></div>
+            <div className="flex items-center justify-center flex-col gap-5 h-full w-full bg-gray-100 rounded-xl border-[1px] border-gray-400">
+                <img src="/assets/images/sidebar/sos-guard.svg" className="w-12" alt="" />
+                <p className="font-medium text-non-active">
+                    Mulai Percakapan dengan VI
+                </p>
+            </div>
         );
     }
 
@@ -68,7 +73,11 @@ const Chat = ({ messages, userInfo, vi_id, guard_email, onNewMessage, startCall,
                     />
                     <div>
                         <h2 className="text-lg font-semibold">{userInfo.fullName}</h2>
-                        <p className="text-xs text-green-500">Walking</p>
+                        {userInfo.active ? (
+                            <p className="text-xs text-green-500">Walking</p>
+                        ) : (
+                            <p className="text-xs text-red-500">Unactive</p>
+                        )}
                     </div>
                 </div>
 

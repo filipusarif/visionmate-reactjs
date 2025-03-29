@@ -64,6 +64,13 @@ export default {
         '90%': { transform: 'translateX(0px) ' },
         '100%': { transform: 'translateX(-260px)  ' },
       },
+      bounce: {
+        '0%': { transform: 'translateY(2px)  ' },
+        '45%': { transform: 'translateY(2px)  ' },
+        '60%': { transform: 'translateY(-2px) ' },
+        '90%': { transform: 'translateY(-2px) ' },
+        '100%': { transform: 'translateY(2px)  ' },
+      },
     }, 
     
   },

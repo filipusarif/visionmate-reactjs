@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const MonitoringContent = ({ id, connections, setDestination }) => {
+const MonitoringContent = ({ id, data, connections, setDestination }) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [statusFilter, setStatusFilter] = useState("all"); // all, active, inactive
     const [filteredConnections, setFilteredConnections] = useState(connections);
@@ -34,6 +34,36 @@ const MonitoringContent = ({ id, connections, setDestination }) => {
         setStatusFilter(filter);
         setShowFilterDropdown(false); // Menutup dropdown setelah memilih filter
     };
+
+    const haversineDistance = (lat1, lon1, lat2, lon2) => {
+        const toRad = (angle) => (angle * Math.PI) / 180;
+    
+        const R = 6371; // Jari-jari bumi dalam km
+        const dLat = toRad(lat2 - lat1);
+        const dLon = toRad(lon2 - lon1);
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // Hasil dalam km
+    };
+
+    const estimateTime = (distanceKm, speedKmPerHour) => {
+        if (distanceKm === 0) return "0 Menit";
+    
+        const timeInMinutes = (distanceKm / speedKmPerHour) * 60;
+    
+        if (timeInMinutes < 60) {
+            return `${Math.round(timeInMinutes)} Menit`;
+        } else {
+            const hours = Math.floor(timeInMinutes / 60);
+            const minutes = Math.round(timeInMinutes % 60);
+            return minutes > 0 ? `${hours} Jam ${minutes} Menit` : `${hours} Jam`;
+        }
+    };
+    
+    
 
     return (
         <div className="relative h-fit lg:h-full  lg:w-[60vw]">
@@ -163,13 +193,13 @@ const MonitoringContent = ({ id, connections, setDestination }) => {
                                     }>
                                         <h3 className="font-medium text-gray-800 text-lg">{connection.users.fullName}</h3>
                                         <p className="text-sm text-gray-500 flex items-center gap-1">
-                                            <img src="/assets/images/monitoring/location.svg" alt="" className="-translate-y-[2px]" />Jalan Pendirikan Timur
+                                            <img src="/assets/images/monitoring/location.svg" alt="" className="-translate-y-[2px]" /> {connection.users.position}
                                         </p>
                                     </div>
                                 </div>
 
                                 {/* Active Status Indicator */}
-                                {connection.users.status ? (
+                                {connection.users.active ? (
                                     <div className="text-[10px] font-semibold px-2 rounded-md py-1 h-fit bg-[#1EC198] bg-opacity-20 text-[#1EC198]">
                                         WALKING
                                     </div>
@@ -202,7 +232,7 @@ const MonitoringContent = ({ id, connections, setDestination }) => {
                                                     <img src="/assets/images/monitoring/destination.svg" alt="" />
                                                     Tujuan
                                                 </h5>
-                                                <p className="text-[12px]">Poliklinik Dian Nuswantoro</p>
+                                                <p className="text-[12px]">{connection.users.destination}</p>
                                             </div>
                                             <div className="flex flex-col gap-0 w-[50%] h-full ">
                                                 <h5 className="flex gap-1 items-center text-sm">
@@ -218,14 +248,21 @@ const MonitoringContent = ({ id, connections, setDestination }) => {
                                                     <img src="/assets/images/monitoring/estimation.svg" alt="" />
                                                     Estimasi
                                                 </h5>
-                                                <p className="text-[12px]">30 Menit</p>
+                                                {/* Jalan kaki: 5 km/jam
+                                                Sepeda: 15 km/jam
+                                                Motor/Mobil di dalam kota: 40 km/jam
+                                                Mobil di tol: 80-100 km/jam */}
+                                                <p className="text-[12px]">{estimateTime(
+                                                    haversineDistance(data.latitude, data.longitude, connection.users.latitude, connection.users.longitude), 
+                                                    15 // Kecepatan rata-rata 5 km/jam (jalan kaki)
+                                                )} </p>
                                             </div>
                                             <div className="flex flex-col gap-0 w-[50%] h-full ">
                                                 <h5 className="flex gap-1 items-center text-sm">
                                                     <img src="/assets/images/monitoring/distance.svg" alt="" />
                                                     Jarak dari Anda
                                                 </h5>
-                                                <p className="text-[12px]">5 Menit</p>
+                                                <p className="text-[12px]">{haversineDistance(data.latitude, data.longitude, connection.users.latitude, connection.users.longitude).toFixed(2)} km</p>
                                             </div>
                                         </div>
                                     </main>

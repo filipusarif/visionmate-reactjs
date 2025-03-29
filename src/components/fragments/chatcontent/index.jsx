@@ -84,7 +84,7 @@ const ChatContent = ({ id, connections, setDestination, lastChats, onSelectChat 
                                 <img
                                     src={connection.users.photo || "/placeholder-profile.jpg"}
                                     alt={connection.users.fullName}
-                                    className="w-12 h-12 rounded-full object-cover"
+                                    className="w-12 h-10 rounded-full object-cover"
                                 
                                 />
                                 <div className="flex items-start justify-between border-b-[1px] w-full py-1">

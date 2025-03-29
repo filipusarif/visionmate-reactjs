@@ -154,7 +154,7 @@ const SOS = () => {
                     try {
                         const { data, error } = await supabase
                             .from("users")
-                            .select("id,phone, fullName, email, language, role, photo, duration, destination, longitude, latitude")
+                            .select("id,phone, fullName, email, language, role, photo, duration, destination, longitude, latitude, position")
                             .eq("id", userData.id)
                             .single();
     
@@ -238,10 +238,10 @@ const SOS = () => {
                         <div
                         className="flex lg:p-5 lg:flex-row-reverse flex-col w-full gap-5 h-full relative overflow-hidden"
                         >
-                            <div className="lg:p-5  bg-background lg:rounded-2xl flex lg:flex-col lg:gap-2 flex-col w-full h-full relative overflow-hidden">
+                            <div className="lg:p-5 lg:rounded-2xl flex lg:flex-col lg:gap-2 flex-col w-full h-full relative overflow-hidden">
                                 <p className="text-lg mb-0 font-bold text-non-active text-center lg:text-start hidden lg:block">Barcode</p>
-                                <div className='w-full pt-16 lg:pt-0 bg-soft-background h-full bg-opacity-40 lg:bg-transparent'>
-                                    <div className='w-full px-4 z-50 block lg:hidden'>
+                                <div className='w-full pt-16 lg:pt-0  h-full bg-opacity-40 lg:bg-transparent'>
+                                    <div className='w-full px-4 z-40 block lg:hidden'>
                                         <Back title={"SOS"} to={"/vi"} />
                                     </div>
                                     {/* Header */}
@@ -256,7 +256,7 @@ const SOS = () => {
                                             </div>
                                         </div>
                                         <div className='flex h-full  flex-col items-end justify-center md:mt-0 w-5/12'>
-                                            <p className="font-bold text-gray-800">Universitas Dian</p>
+                                            <p className="font-bold text-gray-800">{data.position}</p>
                                             <p className="text-sm text-gray-500 cursor-pointer">Lokasi Anda</p>
                                         </div>
                                     </div>

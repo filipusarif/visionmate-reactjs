@@ -4,9 +4,9 @@ import LocateUserAndRoute from "../../elements/locateUser";
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
 import Loading from "../../elements/loading";
+import { supabase } from "../../../services/lib/supabaseClient";
 
-
-const MapComponent = ({ to, id, children }) => {
+const MapComponent = ({ to, id, children, setResponse }) => {
     const [destination, setDestination] = useState([]);
     const [placeName, setPlaceName] = useState("");
     const [audioEnabled, setAudioEnabled] = useState(true);
@@ -39,12 +39,33 @@ const MapComponent = ({ to, id, children }) => {
             setLoading(false);
 
             if (data.length === 0) {
-                alert("Tempat tidak ditemukan, coba nama lain.");
+                setResponse("Tempat tidak ditemukan, coba nama lain.")
+                // alert("Tempat tidak ditemukan, coba nama lain.");
+                const { error } = await supabase
+                    .from("users")
+                    .update({ destination:"-" })
+                    .eq("id", id) 
+            
+                if (error) {
+                    console.error("Data gagal diupdate:", error.message);
+                } else {
+                    console.log("Data berhasil diupdate untuk ID:");
+                }
                 return;
             }
 
             const { lat, lon } = data[0];
             setDestination([parseFloat(lat), parseFloat(lon)]);
+            const { error } = await supabase
+                .from("users")
+                .update({ destination:placeName })
+                .eq("id", id) 
+        
+            if (error) {
+                console.error("Data gagal diupdate:", error.message);
+            } else {
+                console.log("Data berhasil diupdate untuk ID:");
+            }
         } catch (error) {
             setLoading(false);
             alert("Gagal mendapatkan lokasi. Coba lagi.");
@@ -73,7 +94,7 @@ const MapComponent = ({ to, id, children }) => {
             )}
 
             {distance && distance.direction && distance.distance && (
-                <div className="z-10 absolute -translate-x-1/2 left-1/2 gap-2 rounded-xl px-2 border-[1px] border-dark lg:gap-2 top-5 bg-background min-h-[5rem] flex justify-center items-center lg:top-20 lg:left-52 w-[90%] lg:w-[40%] lg:rounded-md ">
+                <div className="z-10 absolute -translate-x-1/2 left-1/2 gap-2 rounded-xl px-2 border-[1px] border-dark lg:gap-2 top-5 bg-background min-h-[5rem] lg:min-h-[4rem] flex justify-center items-center lg:top-2.5 lg:left-1/2 w-[90%] lg:w-[40%] lg:rounded-md ">
                     {distance.direction === "W" && (
                         <img src="/assets/images/arrow/up.svg" alt="" className="basis-1/6 "/>
                     )}

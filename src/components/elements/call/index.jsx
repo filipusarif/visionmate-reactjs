@@ -28,6 +28,9 @@ const IncomingCall = ({ viId }) => {
         if (incomingCall) {
             await supabase.from("video_calls").update({ status: "accepted" }).eq("id", incomingCall.id);
             navigate(`/careyou/?roomID=${incomingCall.room_id}`);
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
         }
     };
 
@@ -69,7 +72,7 @@ const IncomingCall = ({ viId }) => {
     }, [incomingCall]);
 
     return incomingCall ? (
-        <div className="w-screen h-screen z-50 absolute top-0  left-0 ">
+        <div className="w-screen h-screen z-50 absolute top-0 left-0 ">
             <div className="w-full h-full" 
             onClick={handleClick} 
             onMouseDown={handleHoldStart} 
@@ -78,10 +81,10 @@ const IncomingCall = ({ viId }) => {
             onTouchEnd={handleHoldEnd} 
             >
             </div>
-            <div className="fixed z-50 transition duration-200 top-0 left-0 flex gap-2 items-center justify-center w-full bg-background text-dark p-4 md:flex-col md:mr-5 md:mt-5 md:right-0 md:left-auto md:w-[200px] md:h-[200px] md:rounded-xl">
-                <p className="font-medium text-center"> {incomingCall.from} mengundang video call </p>
-                <button onClick={acceptCall} className="bg-green-500 px-4 py-2 rounded md:w-full">Terima</button>
-                <button onClick={denyCall} className="bg-red-500 px-4 py-2 rounded md:w-full">Tolak</button>
+            <div className="fixed z-50 shadow-lg transition duration-200 top-0 left-0 flex gap-2 items-center justify-center w-full bg-background text-dark p-4 md:flex-col md:mr-5 md:mt-5 md:right-0 md:left-auto md:w-[200px] md:h-[200px] md:rounded-xl">
+                <p className="font-medium text-center text-non-active"> {incomingCall.from} mengundang video call </p>
+                <button onClick={acceptCall} className="bg-green-500 text-white px-4 py-2 rounded md:w-full">Terima</button>
+                <button onClick={denyCall} className="bg-red-500 px-4 text-white py-2 rounded md:w-full">Tolak</button>
             </div>
         </div>
     ) : (

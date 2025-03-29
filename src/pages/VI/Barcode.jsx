@@ -184,7 +184,7 @@ const Barcode = () => {
                     >
                         <div className="lg:p-5  bg-background lg:rounded-2xl flex lg:flex-col lg:gap-2 flex-col w-full h-full relative overflow-hidden">
                             <p className="text-lg mb-0 font-bold text-non-active text-center lg:text-start hidden lg:block">Barcode</p>
-                            <div className='w-full px-4 block lg:hidden'>
+                            <div className='w-full px-4 z-40 block lg:hidden'>
                                 <Back title={"QR Code"} to={"/vi"} />
                             </div>
                             <div className="w-full flex flex-col items-center justify-center h-full bg-soft-background bg-opacity-40 lg:bg-transparent" 

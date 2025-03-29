@@ -70,6 +70,48 @@ const getData = async (id) => {
     }
 }
 
+const reverseGeocode = async (id,lat, lon) => {
+    try {
+        const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
+        );
+        const data = await response.json();
+        let position = "-";
+        if (data.address) {
+            const { city, town, village, suburb, state_district, state } = data.address;
+            const location = {
+                city: city || town || village || suburb || "",
+                district: state_district || "",
+                state: state || "",
+            };
+            if(location.city != ""){
+                position = location.city;
+            }else if(location.district != ""){
+                position = location.district;
+            } else if(location.state != ""){
+                position = location.state;
+            } else {
+                position = "-"
+            }
+            console.log("lokasi ", position)
+        } 
+
+        const { error } = await supabase
+            .from("users")
+            .update({ position: position })
+            .eq("id", id) 
+
+        if (error) {
+            console.error("Data gagal diupdate:", error.message);
+        } else {
+            console.log("Data berhasil diupdate untuk ID");
+        }
+    } catch (error) {
+        console.error("Error fetching location:", error);
+    }
+};
+
+
 export default function LocateUserAndRoute({ destination, audioEnabled, id, setStep, setDistance}) {
     const map = useMap();
     const routingControlRef = useRef(null);
@@ -132,6 +174,7 @@ export default function LocateUserAndRoute({ destination, audioEnabled, id, setS
                 updateTimeoutRef.current = setTimeout(async () => {
                     const exists = await checkIfConnectionExists(id);
                     if (exists) {
+                        await reverseGeocode(id, latitude, longitude)
                         await updateDataLocation(id, latitude, longitude);
                     }
                 }, 1000);

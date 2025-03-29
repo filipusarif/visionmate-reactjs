@@ -33,7 +33,7 @@ const Monitoring = () => {
                     .from("connections")
                     .select(`
                         vi_id,
-                        users:vi_id (fullName, phone, latitude, longitude, photo, destination, duration, status)
+                        users:vi_id (fullName, phone, latitude, longitude, photo, destination, position, duration, status, active)
                     `)
                     .eq("guard_id", userData.id);
     
@@ -47,11 +47,37 @@ const Monitoring = () => {
     
         fetchConnections();
     }, [userData]);
+
+    
+
+    const [data, setData] = useState(null);
+    
+    useEffect(() => {
+            const fetchUserData = async () => {
+                if (userData?.id) {
+                    try {
+                        const { data, error } = await supabase
+                            .from("users")
+                            .select("id,phone, fullName, latitude, longitude, email, language, role, photo, duration, destination")
+                            .eq("id", userData.id)
+                            .single();
+    
+                        if (error) throw error;
+                        // console.log(data)
+                        setData(data);
+                    } catch (error) {
+                        console.error("Error fetching user data:", error);
+                    }
+                }
+            };
+    
+            fetchUserData();
+        }, [userData]);
     
 
     return (
         <section className="flex lg:flex-row bg-soft-background flex-col-reverse w-screen h-screen relative">
-            {userData ? (
+            {userData && data ? (
                 <>
                     <SidebarLayout type={"guard"} userData={userData}/>
                     <div
@@ -61,7 +87,7 @@ const Monitoring = () => {
                                 <p className="text-lg mb-0 lg:block hidden font-bold text-non-active text-center lg:text-start">Monitoring</p>
                                 <div className="lg:p-0 bg-background rounded-xl flex lg:flex-row gap-5 flex-col-reverse w-full h-full relative overflow-hidden">
                                 {/* <Navbar session={userData} mode="guard"/> */}
-                                    <MonitoringContent setDestination={handleDestination} id={userData.id}  connections={connections}/>
+                                    <MonitoringContent setDestination={handleDestination} id={userData.id} data={data}  connections={connections}/>
                                     <MapMonitoring to={null} id={userData.id} connections={connections}  destination={destination}/>
                                 </div>
                             </div>

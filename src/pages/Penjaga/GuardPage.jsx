@@ -95,7 +95,8 @@ export default function GuardProfile(){
                                 vi_id (
                                     fullName,
                                     phone,
-                                    photo
+                                    photo,
+                                    active
                                 )
                             `)
                             .eq("guard_id", userData.id);
@@ -185,7 +186,7 @@ export default function GuardProfile(){
                                             </div>
                                         </div>
                                         <div className='w-full px-4 z-50 block lg:hidden'>
-                                            <Back title={"Profile"} to={"/vi"} />
+                                            <Back title={"Profile"} to={"/vi"} out="profile"/>
                                         </div>
                                         <main className="lg:container lg:mx-auto flex flex-col lg:flex-row gap-0 lg:gap-4 w-full px-6 ">
                                             {slides.map((slide, index) => (
@@ -227,9 +228,13 @@ export default function GuardProfile(){
                                                     <img src={guard.photo} alt="" className="w-14 h-12 rounded-full object-cover "/>
                                                     <div className="w-full">
                                                         <p className="font-semibold text-lg">{guard.fullName}</p>
-                                                        <p className="text-sm text-gray-600 flex gap-1 items-center"><img src="/assets/images/profile/icon3.svg" alt="" className="w-5"/> ({guard.phone})</p>
+                                                        <p className="text-sm text-gray-600 flex gap-1 items-center"><img src="/assets/images/profile/icon3.svg" alt="" className="w-5"/> {guard.phone}</p>
                                                     </div>
-                                                    <p className="text-[14px] font-semibold px-2 rounded-md py-1 h-fit bg-[#1EC198] bg-opacity-20 text-[#1EC198]">Walking</p>
+                                                    {guard.active ? (
+                                                        <p className="text-[14px] font-semibold px-2 rounded-md py-1 h-fit bg-[#1EC198] bg-opacity-20 text-[#1EC198]">Walking</p>
+                                                    ):(
+                                                        <p className="text-[14px] font-semibold px-2 rounded-md py-1 h-fit bg-[#FF576E] bg-opacity-20 text-[#FF576E]">Unactive</p>
+                                                    )}
                                                 </div>
                                             ))
                                             : (

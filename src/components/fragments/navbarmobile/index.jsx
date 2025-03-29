@@ -7,13 +7,13 @@ const NavbarMobile = ({type = "vi"}) => {
   const menuItems = [
     { path: "/vi/barcode", icon: "/assets/images/mobile/barcode.svg", label: "QR CODE" },
     { path: "/vi/read", icon: "/assets/images/mobile/read.svg", label: "READTHAT" },
-    { path: "/vi", icon: "/assets/images/mobile/assistant.svg", label: "ASSISTANT" },
+    { path: "/vi", icon: "/assets/images/mobile/vi.svg", label: "ASSISTANT" },
     { path: "/vi/sos", icon: "/assets/images/mobile/sos.svg", label: "SOS" },
     { path: "/vi/profile", icon: "/assets/images/mobile/profile.svg", label: "PROFIL" },
   ];
   const menuItemsGuard = [
-    { path: "/guard/scan", icon: "/assets/images/mobile/read.svg", label: "SCAN" },
-    { path: "/guard", icon: "/assets/images/mobile/assistant.svg", label: "MONITORING" },
+    { path: "/guard/scan", icon: "/assets/images/mobile/scan.svg", label: "SCAN" },
+    { path: "/guard", icon: "/assets/images/mobile/monitoring.svg", label: "MONITORING" },
     { path: "/guard/sos", icon: "/assets/images/mobile/sos.svg", label: "SOS" },
     { path: "/guard/profile", icon: "/assets/images/mobile/profile.svg", label: "PROFIL" },
   ];
@@ -24,7 +24,7 @@ const NavbarMobile = ({type = "vi"}) => {
       {type === "vi" && (
         <>
           {menuItems.map((item, index) => (
-          <Link key={index} to={item.path} className={` ${location.pathname === item.path  ? " bg-[#1E4FBC]" : " bg-background"} w-1/5 transition-all ease-in-out  rounded-xl flex justify-center  items-center gap-2 py-3 px-3 mx-1`}>
+          <Link key={index} to={item.path} className={` ${location.pathname === item.path  ? " bg-[#DEE8FC]" : " bg-background"} w-1/5 transition-all ease-in-out  rounded-xl flex justify-center  items-center gap-2 py-3 px-3 mx-1`}>
             <img src={item.icon} alt="" />
           </Link>
           ))}
@@ -33,7 +33,7 @@ const NavbarMobile = ({type = "vi"}) => {
       {type === "guard" && (
         <>
           {menuItemsGuard.map((item, index) => (
-          <Link key={index} to={item.path} className={` ${location.pathname === item.path  ? " bg-[#1E4FBC]" : " bg-background"} w-1/5 transition-all ease-in-out  rounded-xl flex justify-center  items-center gap-2 py-3 px-3 mx-1`}>
+          <Link key={index} to={item.path} className={` ${location.pathname === item.path  ? " bg-[#DEE8FC]" : " bg-background"} w-1/5 transition-all ease-in-out  rounded-xl flex justify-center  items-center gap-2 py-3 px-3 mx-1`}>
             <img src={item.icon} alt="" />
           </Link>
           ))}

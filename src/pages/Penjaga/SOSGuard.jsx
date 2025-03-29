@@ -67,7 +67,7 @@ const SOSGuard = () => {
                     .from("connections")
                     .select(`
                         vi_id,
-                        users:vi_id (fullName, phone, latitude, longitude, photo, destination, duration, status)
+                        users:vi_id (fullName, phone, latitude, longitude, photo, destination, duration, status, active)
                     `)
                     .eq("guard_id", userData.id);
     

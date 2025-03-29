@@ -198,7 +198,7 @@ const Assistant = () => {
                                     <div className="lg:p-5 bg-background rounded-2xl flex lg:flex-col gap-2 flex-col w-full h-full relative overflow-hidden">
                                         <p className="text-lg mb-0 font-bold text-non-active text-center lg:text-start hidden lg:block">Asistant Mate</p>
                                         <div className="lg:p-0 bg-background rounded-xl flex lg:flex-row-reverse gap-0 lg:gap-5 flex-col w-full h-full relative overflow-hidden">
-                                            <MapComponent to={map} id={userData.id}>
+                                            <MapComponent to={map} id={userData.id} setResponse={handleDataFromChild}>
                                                 <Camera setCameraResponse={handleDataFromChild} />
                                                 <button className="z-10 block lg:hidden absolute bottom-8 right-5 outline-none bg-secondary p-3 rounded-full shadow-lg shadow-dark">
                                                     <img src="assets/images/flash.svg" alt="" />
