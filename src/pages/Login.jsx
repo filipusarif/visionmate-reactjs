@@ -114,7 +114,7 @@ const Login = () => {
             </div>
                 <img src="assets/images/auth/Group 2683.svg" alt="" className='absolute right-40 hidden lg:block  bottom-64 z-20'/>
                 <img src="assets/images/auth/Group 2682.svg" alt="" className='absolute right-14 hidden lg:block  bottom-16 z-20 w-[19rem]'/>
-                <img src="assets/images/auth/Group 2654.svg" alt="" className='absolute -right-20 hidden lg:block lg:w-[30rem] lg:w-[40rem] xl:w-[50rem]  h-screen z-10' />
+                <img src="assets/images/auth/Group 2654.svg" alt="" className='absolute -right-20 hidden lg:block lg:w-[40rem] xl:w-[50rem]  h-screen z-10' />
             <img src="assets/images/auth/Group 1.svg" alt="" className='z-20 absolute right-8 hidden lg:block  bg-background p-[15px] rounded-full ' />
         </div>
     );
