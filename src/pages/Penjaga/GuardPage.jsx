@@ -41,7 +41,7 @@ export default function GuardProfile(){
                             .single();
     
                         if (error) throw error;
-                        console.log(data)
+                        // console.log(data)
                         setData(data);
                     } catch (error) {
                         console.error("Error fetching user data:", error);
@@ -105,7 +105,7 @@ export default function GuardProfile(){
 
                         // Extract daftar penjaga
                         const guardList = data.map((connection) => connection.vi_id);
-                        console.log(data)
+                        // console.log(data)
                         setGuards(guardList);
                     } catch (error) {
                         console.error("Error fetching guards:", error);

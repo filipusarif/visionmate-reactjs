@@ -80,9 +80,9 @@ const MapComponent = ({ to, id, children, setResponse }) => {
     };
     
 
-    useEffect(() => {
-        console.log(step)
-    }, [step])
+    // useEffect(() => {
+    //     console.log(step)
+    // }, [step])
 
     return (
         <div className="relative w-screen h-screen lg:h-full z-0">

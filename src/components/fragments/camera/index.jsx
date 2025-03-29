@@ -21,7 +21,7 @@ export default function Camera({ setCameraResponse }) {
             try {
                 const keys = await getActiveNevaApiKey();
                 setApiKey(keys); 
-                console.log("Fetched API key:", keys);
+                // console.log("Fetched API key:", keys);
             } catch (error) {
                 console.error("Error fetching API key:", error);
                 setError("Failed to fetch API key.");
@@ -80,7 +80,7 @@ export default function Camera({ setCameraResponse }) {
 
                         const data = await response.json();
                         const text = data.response.choices[0].message.content || "No response from API";
-                        console.log(text);
+                        // console.log(text);
                         setCameraResponse(text); // Panggil handler untuk mengirim responseText ke parent
                     } catch (error) {
                         console.error("Error uploading image:", error);

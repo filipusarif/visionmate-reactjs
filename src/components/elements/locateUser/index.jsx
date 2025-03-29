@@ -93,7 +93,7 @@ const reverseGeocode = async (id,lat, lon) => {
             } else {
                 position = "-"
             }
-            console.log("lokasi ", position)
+            // console.log("lokasi ", position)
         } 
 
         const { error } = await supabase
@@ -123,7 +123,7 @@ export default function LocateUserAndRoute({ destination, audioEnabled, id, setS
     function translateInstruction(instruction) {
         if (!instruction) return "";
 
-        console.log(instruction);
+        // console.log(instruction);
         // Daftar pola instruksi dan terjemahannya
         const patterns = [
             { regex: /^Head west on (.+)$/, translation: "Mengarah ke barat $1" },
@@ -274,7 +274,7 @@ export default function LocateUserAndRoute({ destination, audioEnabled, id, setS
             if (error) {
                 console.error("Error fetching connections:", error.message);
             } else {
-                console.log("data   ",data)
+                // console.log("data   ",data)
                 setPhoto(data);
             }
 

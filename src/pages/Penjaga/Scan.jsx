@@ -35,9 +35,9 @@ const Scan = () => {
         }
     }, [userData]);
 
-    useEffect(() => {
-        console.log(guardId.current)
-    }, [guardId])
+    // useEffect(() => {
+    //     console.log(guardId.current)
+    // }, [guardId])
 
 
     const checkIfBarcodeExists = async (scannedData) => {
@@ -86,8 +86,8 @@ const Scan = () => {
         // Jika barcode belum ada atau belum terhubung, simpan ke database
         setStatus('Menyimpan data...');
         try {
-            console.log("save",guardId.current)
-            console.log("save2",scannedData)
+            // console.log("save",guardId.current)
+            // console.log("save2",scannedData)
             const { error } = await supabase
                 .from('connections')
                 .insert([
@@ -169,11 +169,11 @@ const Scan = () => {
                                     const scannedData = result.text;
                                     // Periksa apakah barcode sudah diproses
                                     if (lastScannedData.current === scannedData) {
-                                        console.log("Barcode sudah diproses.");
+                                        // console.log("Barcode sudah diproses.");
                                         return;
                                     }
                                     lastScannedData.current = scannedData;
-                                    console.log(scannedData);
+                                    // console.log(scannedData);
                                     setData(scannedData); 
                                     saveToSupabase(scannedData); 
                                 }

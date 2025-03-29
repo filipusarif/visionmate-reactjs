@@ -51,8 +51,8 @@ export default function ReadContent({ message, responseTxt, setRead }) {
   }, [responseTxt]);
 
   const handleSubmitVoice = async (inputMessage) => {
-    const textToSend = inputMessage || inputValue;
-    console.log(textToSend);
+    const textToSend = inputMessage || " ";
+    // console.log(textToSend);
 
     if (!textToSend) {
       alert("Please enter a question.");

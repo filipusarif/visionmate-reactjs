@@ -32,7 +32,7 @@ const Barcode = () => {
                             .single();
     
                         if (error) throw error;
-                        console.log(data)
+                        // console.log(data)
                         setPhoto(data);
                     } catch (error) {
                         console.error("Error fetching user data:", error);
@@ -120,7 +120,7 @@ const Barcode = () => {
                     recognitionRef.current.onresult = (event) => {
                         const result = event.results[0][0].transcript;
                         setTranscript(result);
-                        console.log("Recognized speech:", result);
+                        // console.log("Recognized speech:", result);
                     };
         
                     recognitionRef.current.onerror = (event) => {
@@ -147,8 +147,8 @@ const Barcode = () => {
 
 
         const handleSubmitVoice = async (inputMessage) => {
-            const textToSend = inputMessage || inputValue;
-            console.log(textToSend);
+            const textToSend = inputMessage || " ";
+            // console.log(textToSend);
         
             if (!textToSend) {
             alert("Please enter a question.");

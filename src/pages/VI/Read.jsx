@@ -61,7 +61,7 @@ const Read = () => {
             recognitionRef.current.onresult = (event) => {
                 const result = event.results[0][0].transcript;
                 setTranscript(result);
-                console.log("Recognized speech:", result);
+                // console.log("Recognized speech:", result);
             };
 
             recognitionRef.current.onerror = (event) => {

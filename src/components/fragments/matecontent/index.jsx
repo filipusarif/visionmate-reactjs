@@ -59,7 +59,7 @@ export default function MateContent({ message, responseTxt, setMap, sensor }) {
   useEffect(() => {
     if (!responseTxt) return;
 
-    console.log("Response:", responseTxt);
+    // console.log("Response:", responseTxt);
 
     // Tambahkan pesan ke chat
     setMessages((prevMessages) => [
@@ -75,8 +75,8 @@ export default function MateContent({ message, responseTxt, setMap, sensor }) {
   }, [responseTxt]);
 
   const handleSubmitVoice = async (inputMessage) => {
-    const textToSend = inputMessage || inputValue;
-    console.log(textToSend);
+    const textToSend = inputMessage || " ";
+    // console.log(textToSend);
 
     if (!textToSend) {
       alert("Please enter a question.");

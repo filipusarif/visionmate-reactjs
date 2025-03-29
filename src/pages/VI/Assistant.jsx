@@ -49,7 +49,7 @@ const Assistant = () => {
     
                     if (error) throw error;
                     setSensor(data?.distance);
-                    console.log(data?.distance)
+                    // console.log(data?.distance)
                 } catch (error) {
                     console.error("Error fetching latest response:", error);
                 }
@@ -108,7 +108,7 @@ const Assistant = () => {
             recognitionRef.current.onresult = (event) => {
                 const result = event.results[0][0].transcript;
                 setTranscript(result);
-                console.log("Recognized speech:", result);
+                // console.log("Recognized speech:", result);
             };
 
             recognitionRef.current.onerror = (event) => {
@@ -200,9 +200,9 @@ const Assistant = () => {
                                         <div className="lg:p-0 bg-background rounded-xl flex lg:flex-row-reverse gap-0 lg:gap-5 flex-col w-full h-full relative overflow-hidden">
                                             <MapComponent to={map} id={userData.id} setResponse={handleDataFromChild}>
                                                 <Camera setCameraResponse={handleDataFromChild} />
-                                                <button className="z-10 block lg:hidden absolute bottom-8 right-5 outline-none bg-secondary p-3 rounded-full shadow-lg shadow-dark">
+                                                {/* <button className="z-10 block lg:hidden absolute bottom-8 right-5 outline-none bg-secondary p-3 rounded-full shadow-lg shadow-dark">
                                                     <img src="assets/images/flash.svg" alt="" />
-                                                </button>
+                                                </button> */}
                                             </MapComponent>
                                             <MateContent
                                                 message={transcript}

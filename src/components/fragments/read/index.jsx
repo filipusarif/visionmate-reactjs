@@ -17,10 +17,10 @@ export default function ReadCamera({ setCameraResponse, readStatus, setRead }) {
     const switchCamera = () => setIsFrontCamera((prevState) => !prevState);
 
     useEffect(() =>{
-        console.log("mode",readStatus)
+        // console.log("mode",readStatus)
         if (readStatus) {
             setRead(false);
-            console.log("scanning")
+            // console.log("scanning")
             captureImage()
         }
     },[readStatus])
@@ -30,7 +30,7 @@ export default function ReadCamera({ setCameraResponse, readStatus, setRead }) {
             try {
                 const keys = await getActiveNevaApiKey();
                 setApiKey(keys); 
-                console.log("Fetched API key:", keys);
+                // console.log("Fetched API key:", keys);
             } catch (error) {
                 console.error("Error fetching API key:", error);
                 setError("Failed to fetch API key.");
@@ -80,7 +80,7 @@ export default function ReadCamera({ setCameraResponse, readStatus, setRead }) {
                 formData.append("api_key", apiKey);
 
                 try {
-                    console.log("scann sir")
+                    // console.log("scann sir")
                     const response = await fetch(import.meta.env.VITE_API_URL+"/detectread/", {
                         method: "POST",
                         body: formData,
@@ -89,7 +89,7 @@ export default function ReadCamera({ setCameraResponse, readStatus, setRead }) {
 
                     const data = await response.json();
                     const text = data.response.choices[0].message.content || "No response from API";
-                    console.log(text);
+                    // console.log(text);
                     setCameraResponse(text); // Panggil handler untuk mengirim responseText ke parent
                 } catch (error) {
                     console.error("Error uploading image:", error);
