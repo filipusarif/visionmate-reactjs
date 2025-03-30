@@ -34,7 +34,7 @@ const Login = () => {
             const result = await login(email, password);
 
             if (result.success) {
-                console.log("Login result:", result);
+                // console.log("Login result:", result);
                 const userRole = result.data.role; // Assume role is returned in result.data
                 if (userRole === 'VI') {
                     navigate('/vi');

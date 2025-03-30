@@ -46,9 +46,9 @@ const Homepage = () => {
     }
   }, [decryptSession, navigate]);
 
-  useEffect(() =>{
-    console.log(session)
-  },[session])
+  // useEffect(() =>{
+  //   console.log(session)
+  // },[session])
 
   useEffect(() => {
     if(session?.role === "VI"){
@@ -118,7 +118,7 @@ const Homepage = () => {
                   recognitionRef.current.onresult = (event) => {
                       const result = event.results[0][0].transcript;
                       setTranscript(result);
-                      console.log("Recognized speech:", result);
+                      // console.log("Recognized speech:", result);
                   };
       
                   recognitionRef.current.onerror = (event) => {
@@ -145,8 +145,8 @@ const Homepage = () => {
 
 
       const handleSubmitVoice = async (inputMessage) => {
-        const textToSend = inputMessage || inputValue;
-        console.log(textToSend);
+        const textToSend = inputMessage || " ";
+        // console.log(textToSend);
     
         if (!textToSend) {
           alert("Please enter a question.");

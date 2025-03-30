@@ -32,7 +32,7 @@ const Assistant = () => {
 
     useEffect(() => {
         window.speechSynthesis.cancel();
-        
+        // console.log("stop")
     },[])
     
     useEffect(() => {
