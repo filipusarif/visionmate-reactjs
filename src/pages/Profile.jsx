@@ -249,24 +249,26 @@ export default function Profile(){
                             >
                                 <div className="lg:p-5  bg-background lg:rounded-2xl flex lg:flex-col gap-2 flex-col w-full h-full relative overflow-hidden">
                                     <p className="text-lg mb-0 font-bold text-non-active text-center lg:text-start hidden lg:block">Profile</p>
-                                    <section className="w-full h-full overflow-auto flex flex-col gap-6 bg-background"
+                                    <section className="w-full pb-20 lg:pb-0 h-full overflow-auto flex flex-col gap-6 bg-background"
                                     >
-                                        <div className="from-secondary to-70% to-primary bg-gradient-to-bl  py-5 shadow-md  rounded-b-3xl relative overflow-hidden">
-                                            <img className="absolute left-0 -bottom-32 w-32 opacity-70 lg:w-auto lg:-bottom-80 z-0 lg:opacity-25" src="/assets/images/Ellipsekiri.svg" alt="" />
-                                            <img className="absolute right-0 bottom-0 z-0 opacity-30" src="/assets/images/Ellipsekanan.svg" alt="" />
+                                        <div className="from-secondary to-70% to-primary bg-gradient-to-bl  py-5 shadow-md  rounded-b-3xl relative">
+                                            <div className="w-full z-0 h-full absolute flex justify-between overflow-hidden top-0 left-0 rounded-b-3xl">
+                                                <img className="absolute left-0 -bottom-40 w-48 opacity-70 lg:w-auto lg:-bottom-80 z-0 lg:opacity-25" src="/assets/images/Ellipsekiri.svg" alt="" />
+                                                <img className="absolute right-0 bottom-0 z-0 opacity-30" src="/assets/images/Ellipsekanan.svg" alt="" />
+                                            </div>
                                             <div className="container mx-auto flex flex-col gap-8 pt-10 lg:pt-0 ">
                                                 <div className="flex flex-col justify-center items-center gap-2 ">
                                                     <div className="relative">
                                                         <img 
                                                         src={data.photo} 
                                                         alt="Profile" 
-                                                        className="w-32 h-32 border-2 border-gray-300 object-cover rounded-full shadow-lg" 
+                                                        className="w-32 z-20 h-32 border-2 border-gray-300 object-cover rounded-full shadow-lg" 
                                                         />
                                                         <Link to={"/vi/profile"} className="absolute right-0 bottom-0"><img src="/assets/images/sidebar/nav.svg" alt=""  className="p-2 w-10 bg-white rounded-full"/></Link>
                                                     </div>
                                                     <div className="text-center flex-col gap-0 flex">
-                                                        <h1 className="font-bold text-2xl text-gray-100">{data.fullName}</h1>
-                                                        <div className="flex gap-1 items-center justify-content-center">
+                                                        <h1 className="font-bold z-20 text-2xl text-gray-100">{data.fullName}</h1>
+                                                        <div className="flex gap-1 z-20 items-center justify-content-center">
                                                             <p className="font-medium text-lg text-gray-200">
                                                                 {data.role === "VI" ? "Visual Impairment" : "Guard"}
                                                             </p>

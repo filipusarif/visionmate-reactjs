@@ -158,25 +158,27 @@ export default function GuardProfile(){
                             >
                                 <div className="lg:p-5  bg-background lg:rounded-2xl flex lg:flex-col gap-2 flex-col w-full h-full relative overflow-hidden">
                                     <p className="text-lg mb-0 font-bold text-non-active text-center lg:text-start hidden lg:block">Profile</p>
-                                    <section className="w-full h-full overflow-auto flex flex-col gap-6 bg-background"
+                                    <section className="w-full h-full pb-20 lg:pb-0 overflow-auto flex flex-col justify-start gap-6 bg-background"
                                     >
-                                        <div className="from-secondary to-70% to-primary bg-gradient-to-bl  py-5 shadow-md  rounded-b-3xl relative overflow-hidden">
-                                            <img className="absolute left-0 -bottom-32 w-32 opacity-70 lg:w-auto lg:-bottom-80 z-0 lg:opacity-25" src="/assets/images/Ellipsekiri.svg" alt="" />
-                                            <img className="absolute right-0 bottom-0 z-0 opacity-30" src="/assets/images/Ellipsekanan.svg" alt="" />
-                                            <div className="container mx-auto flex flex-col gap-8 pt-10 lg:pt-0 ">
+                                        <div className="from-secondary to-70% to-primary bg-gradient-to-bl  py-5  shadow-md  rounded-b-3xl relative">
+                                            <div className="w-full z-0 h-full absolute flex justify-between overflow-hidden top-0 left-0 rounded-b-3xl">
+                                                <img className="absolute left-0 -bottom-40 w-48 opacity-70 lg:w-auto lg:-bottom-80 z-0 lg:opacity-25" src="/assets/images/Ellipsekiri.svg" alt="" />
+                                                <img className="absolute right-0 bottom-0 z-0 opacity-30" src="/assets/images/Ellipsekanan.svg" alt="" />
+                                            </div>
+                                            <div className="container mx-auto z-20 flex flex-col gap-8 pt-10 lg:pt-0 ">
                                                 <div className="flex flex-col justify-center items-center gap-2 ">
                                                     <div className="relative">
                                                         <img 
                                                         src={data.photo} 
                                                         alt="Profile" 
-                                                        className="w-32 h-32 border-2 border-gray-300 object-cover rounded-full shadow-lg" 
+                                                        className="w-32 h-32 z-20 border-2 border-gray-300 object-cover rounded-full shadow-lg" 
                                                         />
                                                         <Link to={"/vi/profile"} className="absolute right-0 bottom-0"><img src="/assets/images/sidebar/nav.svg" alt=""  className="p-2 w-10 bg-white rounded-full"/></Link>
                                                     </div>
                                                     <div className="text-center flex-col gap-0 flex">
-                                                        <h1 className="font-bold text-2xl text-gray-100">{data.fullName}</h1>
+                                                        <h1 className="font-bold text-2xl text-gray-100 z-20">{data.fullName}</h1>
                                                         <div className="flex gap-1 items-center justify-content-center">
-                                                            <p className="font-medium text-lg text-gray-200">
+                                                            <p className="font-medium text-lg text-gray-200 z-20">
                                                                 {data.role === "VI" ? "Visual Impairment" : "Guard"}
                                                             </p>
                                                             <p className="text-lg text-gray-300">#{data.id}</p>
@@ -188,7 +190,7 @@ export default function GuardProfile(){
                                         <div className='w-full px-4 z-50 block lg:hidden'>
                                             <Back title={"Profile"} to={"/vi"} out="profile"/>
                                         </div>
-                                        <main className="lg:container lg:mx-auto flex flex-col lg:flex-row gap-0 lg:gap-4 w-full px-6 ">
+                                        <main className="lg:container  lg:mx-auto flex flex-col lg:flex-row gap-0 lg:gap-4 w-full px-6 ">
                                             {slides.map((slide, index) => (
                                                 <div 
                                                     key={index} 
@@ -219,7 +221,7 @@ export default function GuardProfile(){
                                                 </div>
                                             ))}
                                         </main>
-                                        <main className="lg:container mx-auto flex flex-col gap-4 w-full px-6">
+                                        <main className="lg:container lg:mx-auto flex flex-col gap-4 w-full px-6">
                                             <h1 className="font-bold text-lg text-non-active">Pengguna VI Terhubung</h1>
                                             <div className="w-full flex-col items-center">
                                             {guards?.length > 0

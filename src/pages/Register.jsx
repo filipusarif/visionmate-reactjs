@@ -156,7 +156,7 @@ const Register = () => {
                             onChange={() => setRole('VI')}
                             className="mr-2"
                             />
-                        VI
+                        Visual Impairment
                     </label>
                     <label className="flex items-center">
                         <input
@@ -167,7 +167,7 @@ const Register = () => {
                             onChange={() => setRole('Guard')}
                             className="mr-2"
                         />
-                        Penjaga
+                        Guard
                     </label>
                 </div>
                 <div className="flex items-center mt-4">

@@ -103,7 +103,7 @@ export default function App() {
   const menuItemsGuard = [
     { path: "/guard/scan", icon: "/assets/images/mobile/scan.svg", label: "SCAN" },
     { path: "/guard", icon: "/assets/images/mobile/monitoring.svg", label: "MONITORING" },
-    { path: "/guard/sos", icon: "/assets/images/mobile/sos.svg", label: "SOS" },
+    { path: "/guard/sos", icon: "/assets/images/mobile/sos.svg", label: "HELPME" },
     { path: "/guard/profile", icon: "/assets/images/mobile/profile.svg", label: "PROFIL" },
   ];
 
@@ -115,7 +115,7 @@ export default function App() {
       <>
         <Sidebar session={userData} >
           <a href={"/guard"}><SidebarItem text={"Monitoring"} icon={"/assets/images/sidebar/monitoring.svg"}/></a>
-          <a href={"/guard/sos"}><SidebarItem text={"SOS"} icon={"/assets/images/sidebar/sos-guard.svg"}/></a>
+          <a href={"/guard/sos"}><SidebarItem text={"HelpMe"} icon={"/assets/images/sidebar/sos-guard.svg"}/></a>
           <a href={"/guard/scan"}><SidebarItem text={"Scan"} icon={"/assets/images/sidebar/scan.svg"}/></a>
           <a href={"/guard/profile"}><SidebarItem text={"Profile"} icon={"/assets/images/sidebar/profile.svg"}/></a>
         </Sidebar>
@@ -140,7 +140,7 @@ export default function App() {
               <div
             className="myCallContainer"
             ref={myMeeting}
-            style={{ width: '100vw', height: '100vh' }}
+            style={{ width: '100%', height: '100%' }}
             />
           )}
           {/* </div> */}

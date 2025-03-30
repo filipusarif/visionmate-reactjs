@@ -116,7 +116,7 @@ const Scan = () => {
                 } 
             }
 
-            navigate("/guard/monitoring")
+            navigate("/guard")
         } catch (err) {
             console.error(err);
             setStatus('Gagal menyimpan data.');
@@ -150,7 +150,7 @@ const Scan = () => {
         <div className="flex lg:flex-row bg-soft-background flex-col-reverse w-screen h-screen relative">
             <Sidebar session={userData} >
                 <Link to={"/guard"}><SidebarItem text={"Monitoring"} icon={"/assets/images/sidebar/monitoring.svg"}/></Link>
-                <Link to={"/guard/sos"}><SidebarItem text={"SOS"} icon={"/assets/images/sidebar/sos-guard.svg"}/></Link>
+                <Link to={"/guard/sos"}><SidebarItem text={"HelpMe"} icon={"/assets/images/sidebar/sos-guard.svg"}/></Link>
                 <Link to={"/guard/scan"}><SidebarItem text={"Scan"} icon={"/assets/images/sidebar/scan.svg"}/></Link>
                 <Link to={"/guard/profile"}><SidebarItem text={"Profile"} icon={"/assets/images/sidebar/profile.svg"}/></Link>
             </Sidebar>

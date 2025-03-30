@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 
 export default function PricingCard({  plan  }){
 
@@ -39,7 +40,7 @@ export default function PricingCard({  plan  }){
                 </li>
             ))}
             </ul>
-            <button
+            <Link to="/login"
                 className={`w-full py-2 rounded ${
                 plan.popular
                     ? "bg-secondary text-white"
@@ -47,7 +48,7 @@ export default function PricingCard({  plan  }){
                 }`}
             >
                 Get started
-            </button>
+            </Link>
             </div>
     </>
     )

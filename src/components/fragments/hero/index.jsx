@@ -21,14 +21,14 @@ export default function hero(){
                 <div className="flex gap-3 items-center" data-aos="fade"
                     data-aos-easing="ease-in-out"
                     data-aos-duration="800"
-                    data-aos-offset="250">
+                    data-aos-offset="100">
                     <Link className="text-white bg-primary hover:bg-primary-hover focus:ring-4 focus:ring-purple-300 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-primary-hobg-primary-hover " to="/register">Daftar Sekarang</Link>
                     <ScrollLink to="demo" smooth={true} duration={1000}  className=" cursor-pointer text-secondary flex gap-2 items-center  focus:ring-4 focus:ring-purple-300 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none dark:focus:ring-primary-hobg-primary-hover "><img src="/assets/images/play.svg" alt="" />Lihat Demo</ScrollLink>
                 </div>
                 <div className="flex w-full mt-14 items-center gap-7" data-aos="fade"
                     data-aos-easing="ease-in-out"
                     data-aos-duration="800"
-                    data-aos-offset="100">
+                    data-aos-offset="80">
                     <p className="lg:w-[25%] w-[40%] text-sm text-non-active">Hubungkan <br /> 
                     Sosial Media Kami</p>
                     <Link>

@@ -216,7 +216,7 @@ const SOSGuard = () => {
                 <>
                     <Sidebar session={userData} >
                         <Link to={"/guard"}><SidebarItem text={"Monitoring"} icon={"/assets/images/sidebar/monitoring.svg"}/></Link>
-                        <Link to={"/guard/sos"}><SidebarItem text={"SOS"} icon={"/assets/images/sidebar/sos-guard.svg"}/></Link>
+                        <Link to={"/guard/sos"}><SidebarItem text={"HelpMe"} icon={"/assets/images/sidebar/sos-guard.svg"}/></Link>
                         <Link to={"/guard/scan"}><SidebarItem text={"Scan"} icon={"/assets/images/sidebar/scan.svg"}/></Link>
                         <Link to={"/guard/profile"}><SidebarItem text={"Profile"} icon={"/assets/images/sidebar/profile.svg"}/></Link>
                     </Sidebar>
@@ -225,7 +225,7 @@ const SOSGuard = () => {
                         className="flex lg:p-5 lg:flex-row gap-5 flex-col w-full h-full relative overflow-hidden"
                         >
                             <div className="lg:p-5 bg-background rounded-2xl flex lg:flex-col gap-2 flex-col w-full h-full relative overflow-hidden">
-                                <p className="text-lg mb-0 lg:block hidden font-bold text-non-active text-center lg:text-start">SOS</p>
+                                <p className="text-lg mb-0 lg:block hidden font-bold text-non-active text-center lg:text-start">HelpMe</p>
                                 <div className="block lg:hidden w-full h-full">
                                     {page ? (
                                         <Chat messages={selectedChat ? selectedChat.messages : []} userInfo={selectedChat ? selectedChat.userInfo : null} vi_id={selectedChat?.vi_id} guard_email={userData?.email} onNewMessage={handleNewMessage} startCall={startCall} setPage={handleSetPage}/>

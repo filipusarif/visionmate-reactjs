@@ -239,10 +239,10 @@ const SOS = () => {
                         className="flex lg:p-5 lg:flex-row-reverse flex-col w-full gap-5 h-full relative overflow-hidden"
                         >
                             <div className="lg:p-5 lg:rounded-2xl flex lg:flex-col lg:gap-2 flex-col w-full h-full relative overflow-hidden">
-                                <p className="text-lg mb-0 font-bold text-non-active text-center lg:text-start hidden lg:block">Barcode</p>
+                                <p className="text-lg mb-0 font-bold text-non-active text-center lg:text-start hidden lg:block">HelpMe</p>
                                 <div className='w-full pt-16 lg:pt-0  h-full bg-opacity-40 lg:bg-transparent'>
                                     <div className='w-full px-4 z-40 block lg:hidden'>
-                                        <Back title={"SOS"} to={"/vi"} />
+                                        <Back title={"HelpMe"} to={"/vi"} />
                                     </div>
                                     {/* Header */}
                                     <div className="w-full flex flex-row  justify-between items-center bg-white rounded-lg shadow-md p-4 ">
