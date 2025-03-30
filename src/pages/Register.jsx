@@ -63,17 +63,17 @@ const Register = () => {
     };
 
     return (
-        <div className="h-fit lg:h-screen w-screen overflow-hidden flex flex-col lg:flex-row items-center bg-gray-50">
+        <div className="h-fit lg:min-h-screen w-screen overflow-hidden flex flex-col lg:flex-row items-center bg-gray-50">
             {/* Form Section */}
             <div className="container mx-auto">
 
-            <form onSubmit={handleRegister} className="flex-1 px-8 py-12 space-y-6 w-full lg:w-[65%] z-50">
+            <form onSubmit={handleRegister} className="flex-1 px-8 py-12 lg:py-2 space-x-6 lg:space-y-3 w-full lg:w-[65%] z-50">
                 <Link to="/" className="text-center mb-4">
                     <img src="assets/images/auth/Logo.svg" alt="VisionMate" className="w-16 mx-auto" />
                     <h2 className="text-2xl font-bold text-blue-600">VisionMate</h2>
                 </Link>
                 <div className="grid grid-cols-1 lg:grid-cols-2  gap-4">
-                    <div className="flex flex-col">
+                    <div className="flex flex-col z-50">
                         <label htmlFor="fullName" className="text-gray-700 text-sm mb-1">Nama Lengkap</label>
                         <input
                             name="fullName"
@@ -84,7 +84,7 @@ const Register = () => {
                             className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                         />
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col z-50">
                         <label htmlFor="email" className="text-gray-700 text-sm mb-1">Alamat Email</label>
                         <input
                             name="email"
@@ -95,7 +95,7 @@ const Register = () => {
                             className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                             />
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col z-50">
                         <label htmlFor="phone" className="text-gray-700 text-sm mb-1">Nomor Telepon</label>
                         <input
                             name="phone"
@@ -109,7 +109,7 @@ const Register = () => {
                             className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                         />
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col z-50">
                         <label htmlFor="language" className="text-gray-700 text-sm mb-1">Bahasa</label>
                         <select
                             name="language"
@@ -122,7 +122,7 @@ const Register = () => {
                             <option value="English">English</option>
                         </select>
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col z-50">
                         <label htmlFor="password" className="text-gray-700 text-sm mb-1">Password</label>
                         <input
                             name="password"
@@ -133,7 +133,7 @@ const Register = () => {
                             className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                         />
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col z-50">
                         <label htmlFor="confirmPassword" className="text-gray-700 text-sm mb-1">Konfirmasi Password</label>
                         <input
                             name="confirmPassword"
@@ -145,7 +145,7 @@ const Register = () => {
                             />
                     </div>
                 </div>
-                <div className="text-sm font-medium text-gray-700 mt-4">Silahkan pilih peran Anda:</div>
+                <div className="text-sm font-medium text-gray-700 mt-4 z-50">Silahkan pilih peran Anda:</div>
                 <div className="flex items-center space-x-4">
                     <label className="flex items-center">
                         <input
@@ -170,14 +170,15 @@ const Register = () => {
                         Guard
                     </label>
                 </div>
-                <div className="flex items-center mt-4">
+                {error && <p className='text-red-700 text-center pt-1 lg:pt-0'>{error}</p>}
+                <div className="flex items-center mt-2">
                     <input
                         type="checkbox"
                         checked={agreed}
                         onChange={() => setAgreed(!agreed)}
                         className="mr-2"
                     />
-                    <span className="text-sm text-gray-700">Dengan mencentang tombol disamping, anda telah menyetujui syarat dan ketentuan.</span>
+                    <span className="text-sm text-gray-700 z-50">Dengan mencentang tombol disamping, anda telah menyetujui syarat dan ketentuan.</span>
                 </div>
                 <p className="text-sm text-gray-600 mb-6">
                     Sudah Memiliki akun?{' '}
@@ -192,13 +193,12 @@ const Register = () => {
                 >
                     {loading ? "Mendaftarkan..." : "Daftar"}
                 </button>
-                {error && <p className='text-red-700 text-center pt-4'>{error}</p>}
             </form>
             
             </div>
             <img src="assets/images/auth/Group 2683.svg" alt="" className='absolute right-40 bottom-64 z-20 hidden lg:block '/>
                 <img src="assets/images/auth/Group 2682.svg" alt="" className='absolute right-14 bottom-16 z-20 w-[19rem] hidden lg:block '/>
-                <img src="assets/images/auth/Group 2654.svg" alt="" className='absolute -right-20 hidden lg:block lg:w-[30rem] lg:w-[40rem]  xl:w-[50rem]  h-screen z-10' />
+                <img src="assets/images/auth/Group 2654.svg" alt="" className='absolute -right-20 hidden lg:block  lg:w-[40rem]  xl:w-[50rem]  h-screen z-10' />
             <img src="assets/images/auth/Group 1.svg" alt="" className='z-20 absolute right-8 bg-background p-[15px] rounded-full hidden lg:block ' />
         </div>
     );

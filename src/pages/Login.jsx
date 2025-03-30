@@ -66,7 +66,7 @@ const Login = () => {
                 </Link>
                 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div className="flex flex-col">
+                    <div className="flex flex-col z-50">
                         <label htmlFor="email" className="text-gray-700 text-sm mb-1">Alamat Email</label>
                         <input
                             name="email"
@@ -76,7 +76,7 @@ const Login = () => {
                             className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                         />
                     </div>                    
-                    <div className="flex flex-col">
+                    <div className="flex flex-col z-50">
                         <label htmlFor="password" className="text-gray-700 text-sm mb-1">Password</label>
                         <input
                             name="password"
@@ -87,6 +87,8 @@ const Login = () => {
                         />
                     </div>
                 </div>
+                {error && <p className='text-red-700 text-center pt-2 lg:pt-0'>{error}</p>}
+
                     <div className="flex items-center">
                         <input
                             type="checkbox"
@@ -109,7 +111,6 @@ const Login = () => {
                 >
                     {loading ? "Memproses..." : "Masuk"}
                 </button>
-                {error && <p className='text-red-700 text-center pt-4'>{error}</p>}
             </form>
             </div>
                 <img src="assets/images/auth/Group 2683.svg" alt="" className='absolute right-40 hidden lg:block  bottom-64 z-20'/>
