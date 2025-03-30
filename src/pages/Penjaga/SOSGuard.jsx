@@ -87,25 +87,31 @@ const SOSGuard = () => {
                 const { data, error } = await supabase
                     .from("communications")
                     .select("id_user, chat, created_at")
-                    .order("created_at", { ascending: false }) 
-                    .limit(1);
-        
+                    .order("created_at", { ascending: false });
+    
                 if (error) {
                     console.error("Error fetching last chats:", error.message);
                 } else {
-                    // Konversi ke WIB (UTC+7) dan ambil jam & menit saja
-                    const convertedData = data.map(item => {
+                    const lastChatsMap = new Map();
+    
+                    data.forEach((item) => {
+                        if (!lastChatsMap.has(item.id_user)) {
+                            lastChatsMap.set(item.id_user, item);
+                        }
+                    });
+    
+                    const convertedData = Array.from(lastChatsMap.values()).map((item) => {
                         const date = new Date(item.created_at);
-                        date.setHours(date.getHours() + 7); // Konversi ke WIB
                         
-                        // Format: "HH:mm" (contoh: "14:30")
-                        const hours = String(date.getHours()).padStart(2, '0');
-                        const minutes = String(date.getMinutes()).padStart(2, '0');
+                        const hours = String(date.getHours()).padStart(2, "0");
+                        const minutes = String(date.getMinutes()).padStart(2, "0");
+    
                         return {
                             ...item,
-                            created_at: `${hours}:${minutes}`
+                            created_at: `${hours}:${minutes}`,
                         };
                     });
+    
                     setLastChats(convertedData);
                 }
             }
@@ -113,11 +119,10 @@ const SOSGuard = () => {
     
         fetchLastChats();
     }, [userData]);
+    
 
 
     const fetchChatByUser = async (vi_id) => {
-
-        // console.log("Fetching chat for VI:", vi_id);
         const { data: communications, error: commError } = await supabase
             .from("communications")
             .select("chat, created_at")
@@ -130,38 +135,68 @@ const SOSGuard = () => {
             .eq("vi_id", vi_id)
             .eq("guard_email", userData.email)
             .order("created_at", { ascending: true });
-
+    
         const { data: userInfo, error: userError } = await supabase
-        .from("users")
-        .select("fullName, phone, latitude, longitude, photo, destination, duration, status")
-        .eq("id", vi_id)
-        .single();
-        
+            .from("users")
+            .select("fullName, phone, latitude, longitude, photo, destination, duration, status, active")
+            .eq("id", vi_id)
+            .single();
     
         if (commError || respError || userError) {
             console.error("Error fetching chats:", commError || respError || userError);
             return;
         }
     
-        // Tandai asal pesan
-        const formattedCommunications = communications.map(msg => ({
-            ...msg,
-            sender: "other" // Pesan dari pengguna lain
-        }));
+        // Fungsi untuk mengonversi waktu ke WIB dan mengembalikan dua format
+        const convertToWIB = (isoDateString) => {
+            const date = new Date(isoDateString);
+            if (isNaN(date)) {
+                console.error("Invalid date format detected:", isoDateString);
+                return { original: isoDateString, formatted: "Invalid Date" };
+            }
     
-        const formattedResponses = responses.map(msg => ({
-            ...msg,
-            sender: "self" // Pesan dari sistem atau admin
-        }));
+            date.setHours(date.getHours() + 7); // Tambah 7 jam ke UTC+7 (WIB)
+            
+            const hours = String(date.getHours()).padStart(2, "0");
+            const minutes = String(date.getMinutes()).padStart(2, "0");
     
-        // Gabungkan dan urutkan berdasarkan waktu
-        const allMessages = [...formattedCommunications, ...formattedResponses].sort((a, b) => 
+            return {
+                original: date.toISOString(), // Gunakan waktu yang telah dikonversi untuk sorting
+                formatted: `${hours}:${minutes}` // Format WIB untuk tampilan
+            };
+        };
+    
+        // Tandai asal pesan, ubah waktu ke WIB, dan pastikan sorting menggunakan waktu yang benar
+        const formattedCommunications = communications.map(msg => {
+            const time = convertToWIB(msg.created_at);
+            return {
+                ...msg,
+                sender: "other", // Pesan dari pengguna lain
+                created_at: time.original, // Gunakan waktu yang sudah dikonversi untuk sorting
+                formatted_time: time.formatted // Gunakan WIB untuk tampilan
+            };
+        });
+    
+        const formattedResponses = responses.map(msg => {
+            const time = convertToWIB(msg.created_at);
+            return {
+                ...msg,
+                sender: "self", // Pesan dari sistem atau admin
+                created_at: time.original, // Gunakan waktu yang sudah dikonversi untuk sorting
+                formatted_time: time.formatted // Gunakan WIB untuk tampilan
+            };
+        });
+    
+        // Gabungkan dan pastikan sorting berdasarkan waktu yang sudah dikonversi ke WIB
+        const allMessages = [...formattedCommunications, ...formattedResponses].sort((a, b) =>
             new Date(a.created_at) - new Date(b.created_at)
         );
-
+    
         setSelectedChat({ vi_id, messages: allMessages, userInfo: userInfo });
         setPage(true);
     };
+    
+    
     
     useEffect(() => {
         // Inisialisasi SDK saat komponen dimuat

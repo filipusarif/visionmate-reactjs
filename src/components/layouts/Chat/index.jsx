@@ -5,6 +5,8 @@ const Chat = ({ messages, userInfo, vi_id, guard_email, onNewMessage, startCall,
     const [message, setMessage] = useState("");
     const [isSending, setIsSending] = useState(false);
 
+    console.log('messeg', messages);
+
     const handleSendMessage = async () => {
         if (!message.trim() || !vi_id || !guard_email) return;
         
@@ -104,7 +106,7 @@ const Chat = ({ messages, userInfo, vi_id, guard_email, onNewMessage, startCall,
                                 {msg.chat}
                             </div>
                             <p className="text-[12px] text-non-active">
-                                {new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                                {msg.formatted_time}
                             </p>
                         </div>
                     </div>
