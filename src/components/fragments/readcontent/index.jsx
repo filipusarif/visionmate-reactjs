@@ -15,7 +15,7 @@ export default function ReadContent({ message, responseTxt, setRead }) {
       isFirstRender.current = false;
 
       // Pesan sapaan awal
-      const initialMessage = "Halo Mate, Mau Baca apa? Bilang aja";
+      const initialMessage = "Halo Mate, Mau Baca apa? Bilang aja dengan 'Baca ini Sekarang'";
       setMessages([{ sender: "ai", text: initialMessage }]);
 
       // Text-to-Speech untuk pesan awal
