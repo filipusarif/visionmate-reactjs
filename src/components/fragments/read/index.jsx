@@ -74,36 +74,65 @@ export default function ReadCamera({ setCameraResponse, readStatus, setRead }) {
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            canvas.toBlob(async (blob) => {
-                const formData = new FormData();
-                formData.append("file", blob, "image.png");
-                formData.append("api_key", apiKey);
+            // Convert the canvas image to a base64 string
+            const base64Image = canvas.toDataURL("image/png");
 
-                try {
-                    // console.log("scann sir")
-                    const response = await fetch(import.meta.env.VITE_API_URL+"/detectread/", {
-                        method: "POST",
-                        body: formData,
-                    });
-                    if (!response.ok) throw new Error("API error: " + response.statusText);
+            // Prepare data to be sent to the API
+            const data = {
+                image: base64Image,
+                api_key: apiKey,
+            };
 
-                    const data = await response.json();
-                    const text = data.response.choices[0].message.content || "No response from API";
-                    // console.log(text);
-                    setCameraResponse(text); // Panggil handler untuk mengirim responseText ke parent
-                } catch (error) {
-                    console.error("Error uploading image:", error);
-                    setCameraResponse("Maaf, gagal melakukan scan. lakukan scan ulang")
-                    setError("Failed to upload image or process the response.");
-                }
-            }, "image/png");
+            try {
+                const response = await fetch(import.meta.env.VITE_API_URL + "/detectread/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data), // Send the base64 string as JSON
+                });
+                if (!response.ok) throw new Error("API error: " + response.statusText);
+    
+                const result = await response.json();
+                const text = result.response.choices[0].message.content || "No response from API";
+                setCameraResponse(text); // Pass the response text to the parent component
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                setCameraResponse("Maaf, gagal melakukan scan. lakukan scan ulang");
+                setError("Failed to upload image or process the response.");
+            }
+
+
+            // canvas.toBlob(async (blob) => {
+            //     const formData = new FormData();
+            //     formData.append("file", blob, "image.png");
+            //     formData.append("api_key", apiKey);
+
+            //     try {
+            //         const response = await fetch(import.meta.env.VITE_API_URL+"/detectread/", {
+            //             method: "POST",
+            //             body: formData,
+            //         });
+            //         if (!response.ok) throw new Error("API error: " + response.statusText);
+
+            //         const data = await response.json();
+            //         const text = data.response.choices[0].message.content || "No response from API";
+            //         // console.log(text);
+            //         setCameraResponse(text); // Panggil handler untuk mengirim responseText ke parent
+            //         // console.log("scann sir")
+            //     } catch (error) {
+            //         console.error("Error uploading image:", error);
+            //         setCameraResponse("Maaf, gagal melakukan scan. lakukan scan ulang")
+            //         setError("Failed to upload image or process the response.");
+            //     }
+            // }, "image/png");
         }
     };
 
 
     return (
-        <div className="w-full h-fit">
-            <video ref={videoRef} autoPlay playsInline className="rounded-none lg:rounded-md w-full" ></video>
+        <div className="w-full h-full">
+            <video ref={videoRef} autoPlay playsInline className="rounded-none object-cover lg:rounded-md w-full h-full" ></video>
             <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
         </div>
     );

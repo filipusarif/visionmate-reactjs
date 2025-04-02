@@ -15,7 +15,7 @@ export default function ReadContent({ message, responseTxt, setRead }) {
       isFirstRender.current = false;
 
       // Pesan sapaan awal
-      const initialMessage = "Halo Mate, Mau Baca apa? Bilang aja dengan 'Baca ini Sekarang'";
+      const initialMessage = "Halo Mate, Mau Baca apa? Bilang aja dengan 'Baca ini Sekarang' atau dengan double tap";
       setMessages([{ sender: "ai", text: initialMessage }]);
 
       // Text-to-Speech untuk pesan awal
@@ -109,13 +109,13 @@ export default function ReadContent({ message, responseTxt, setRead }) {
   };
 
   return (
-    <div className="lg:w-[45vw] relative lg:pt-0 lg:p-0 z-10 lg:max-h-screen w-screen h-full">
+    <div className="lg:w-[45vw] relative lg:pt-0 lg:p-0 z-10 lg:max-h-screen w-screen min-h-[22rem] max-h-[22rem]">
         {/* <p className="text-lg mb-0 pl-2 font-bold text-non-active text-center lg:text-start">Asistant Mate</p> */}
       <div className="w-full h-full flex lg:hidden items-start justify-start px-5 py-2 gap-2  rounded-t-3xl bg-secondary absolute -top-4 left-0 z-10">
       </div>
       <div className="flex flex-col w-full h-full lg:h-full gap-3 lg:gap-0 p-4 lg:p-0 pt-2 lg:pt-0 rounded-t-3xl border-[1px] border-gray-500 lg:rounded-xl z-50 relative top-5 left-0 lg:top-0 bg-background">
         {/* <div className="w-[20%] left-[40%] h-[5px] bg-background absolute -top-3.5 rounded-full z-50" /> */}
-        <div className="chat-box p-2 lg:p-4 pb-20 lg:pb-0 rounded basis-5/6 lg:basis-full overflow-y-auto mb-4 lg:mb-0 ">
+        <div className="chat-box p-2 lg:p-4 pb-12 lg:pb-0 rounded lg:basis-full h-full overflow-y-auto mb-4 lg:mb-0 ">
           {messages.map((msg, index) => (
             <div
               key={index}

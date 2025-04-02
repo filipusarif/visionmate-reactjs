@@ -31,6 +31,7 @@ const Read = () => {
     const [read, setRead] = useState(false);
     const [countdown, setCountdown] = useState(35); 
     const [sensor, setSensor] = useState(null);
+    const [lastTap, setLastTap] = useState(0);
 
     const { decryptSession } = UserAuth();
     const [userData, setUserData] = useState(null);
@@ -133,6 +134,21 @@ const Read = () => {
         setRead(data);
     }
 
+    const handleDoubleClick = () => {
+        // console.log("klik")
+        setRead(true);
+        setCameraResponse("Oke Mate, Sedang membaca. Tunggu Sebentar")
+    }
+
+    const handleDoubleTap = () => {
+        const now = Date.now();
+        if (now - lastTap < 500) {
+            setRead(true);
+            setCameraResponse("Oke Mate, Sedang membaca. Tunggu Sebentar")
+        }
+        setLastTap(now);
+    };
+
     return (
         <>
             {userData ? (
@@ -144,7 +160,11 @@ const Read = () => {
                         onMouseUp={handleMouseUp}
                         onMouseLeave={handleMouseUp}
                         onTouchStart={handleMouseDown}
-                        onTouchEnd={handleMouseUp}
+                        onDoubleClick={handleDoubleClick}
+                        onTouchEnd={(e) => {
+                            handleMouseUp();
+                            handleDoubleTap();
+                        }}
                     >
                             <>
                                 {/* <Navbar session={userData} mode="vi"/> */}
